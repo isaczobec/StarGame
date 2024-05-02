@@ -37,7 +37,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""HookRight"",
+                    ""name"": ""Right"",
                     ""type"": ""Button"",
                     ""id"": ""7b28305a-803b-4deb-b534-74eb1d85230f"",
                     ""expectedControlType"": ""Button"",
@@ -46,7 +46,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""HookLeft"",
+                    ""name"": ""Left"",
                     ""type"": ""Button"",
                     ""id"": ""091b4a0c-5091-49b5-8de5-7297798cef8e"",
                     ""expectedControlType"": ""Button"",
@@ -55,7 +55,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""HookUp"",
+                    ""name"": ""Up"",
                     ""type"": ""Button"",
                     ""id"": ""536b520c-10f6-4971-97aa-bef4d28b195e"",
                     ""expectedControlType"": ""Button"",
@@ -64,7 +64,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""HookDown"",
+                    ""name"": ""Down"",
                     ""type"": ""Button"",
                     ""id"": ""c2b33713-2d25-4c64-b67c-58e687272756"",
                     ""expectedControlType"": ""Button"",
@@ -136,7 +136,18 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""HookRight"",
+                    ""action"": ""Right"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4383dfb9-b434-4f29-8503-decdc90b234e"",
+                    ""path"": ""<Keyboard>/t"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Right"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -147,7 +158,18 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""HookLeft"",
+                    ""action"": ""Left"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c50b3c54-60c0-4271-bb83-83afb0d4c9ee"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Left"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -158,18 +180,40 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""HookUp"",
+                    ""action"": ""Up"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""61e66209-0228-4e73-8372-9317326b1947"",
+                    ""path"": ""<Keyboard>/i"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Up"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f9c09e1e-5c23-4da0-a8d9-623443ddafff"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Down"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
                     ""id"": ""7e5d0981-fa05-44dc-b336-edba84681c33"",
-                    ""path"": ""<Keyboard>/s"",
+                    ""path"": ""<Keyboard>/o"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""HookDown"",
+                    ""action"": ""Down"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -181,10 +225,10 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         // Movement
         m_Movement = asset.FindActionMap("Movement", throwIfNotFound: true);
         m_Movement_Move = m_Movement.FindAction("Move", throwIfNotFound: true);
-        m_Movement_HookRight = m_Movement.FindAction("HookRight", throwIfNotFound: true);
-        m_Movement_HookLeft = m_Movement.FindAction("HookLeft", throwIfNotFound: true);
-        m_Movement_HookUp = m_Movement.FindAction("HookUp", throwIfNotFound: true);
-        m_Movement_HookDown = m_Movement.FindAction("HookDown", throwIfNotFound: true);
+        m_Movement_Right = m_Movement.FindAction("Right", throwIfNotFound: true);
+        m_Movement_Left = m_Movement.FindAction("Left", throwIfNotFound: true);
+        m_Movement_Up = m_Movement.FindAction("Up", throwIfNotFound: true);
+        m_Movement_Down = m_Movement.FindAction("Down", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -247,19 +291,19 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Movement;
     private List<IMovementActions> m_MovementActionsCallbackInterfaces = new List<IMovementActions>();
     private readonly InputAction m_Movement_Move;
-    private readonly InputAction m_Movement_HookRight;
-    private readonly InputAction m_Movement_HookLeft;
-    private readonly InputAction m_Movement_HookUp;
-    private readonly InputAction m_Movement_HookDown;
+    private readonly InputAction m_Movement_Right;
+    private readonly InputAction m_Movement_Left;
+    private readonly InputAction m_Movement_Up;
+    private readonly InputAction m_Movement_Down;
     public struct MovementActions
     {
         private @PlayerInput m_Wrapper;
         public MovementActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_Movement_Move;
-        public InputAction @HookRight => m_Wrapper.m_Movement_HookRight;
-        public InputAction @HookLeft => m_Wrapper.m_Movement_HookLeft;
-        public InputAction @HookUp => m_Wrapper.m_Movement_HookUp;
-        public InputAction @HookDown => m_Wrapper.m_Movement_HookDown;
+        public InputAction @Right => m_Wrapper.m_Movement_Right;
+        public InputAction @Left => m_Wrapper.m_Movement_Left;
+        public InputAction @Up => m_Wrapper.m_Movement_Up;
+        public InputAction @Down => m_Wrapper.m_Movement_Down;
         public InputActionMap Get() { return m_Wrapper.m_Movement; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -272,18 +316,18 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Move.started += instance.OnMove;
             @Move.performed += instance.OnMove;
             @Move.canceled += instance.OnMove;
-            @HookRight.started += instance.OnHookRight;
-            @HookRight.performed += instance.OnHookRight;
-            @HookRight.canceled += instance.OnHookRight;
-            @HookLeft.started += instance.OnHookLeft;
-            @HookLeft.performed += instance.OnHookLeft;
-            @HookLeft.canceled += instance.OnHookLeft;
-            @HookUp.started += instance.OnHookUp;
-            @HookUp.performed += instance.OnHookUp;
-            @HookUp.canceled += instance.OnHookUp;
-            @HookDown.started += instance.OnHookDown;
-            @HookDown.performed += instance.OnHookDown;
-            @HookDown.canceled += instance.OnHookDown;
+            @Right.started += instance.OnRight;
+            @Right.performed += instance.OnRight;
+            @Right.canceled += instance.OnRight;
+            @Left.started += instance.OnLeft;
+            @Left.performed += instance.OnLeft;
+            @Left.canceled += instance.OnLeft;
+            @Up.started += instance.OnUp;
+            @Up.performed += instance.OnUp;
+            @Up.canceled += instance.OnUp;
+            @Down.started += instance.OnDown;
+            @Down.performed += instance.OnDown;
+            @Down.canceled += instance.OnDown;
         }
 
         private void UnregisterCallbacks(IMovementActions instance)
@@ -291,18 +335,18 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Move.started -= instance.OnMove;
             @Move.performed -= instance.OnMove;
             @Move.canceled -= instance.OnMove;
-            @HookRight.started -= instance.OnHookRight;
-            @HookRight.performed -= instance.OnHookRight;
-            @HookRight.canceled -= instance.OnHookRight;
-            @HookLeft.started -= instance.OnHookLeft;
-            @HookLeft.performed -= instance.OnHookLeft;
-            @HookLeft.canceled -= instance.OnHookLeft;
-            @HookUp.started -= instance.OnHookUp;
-            @HookUp.performed -= instance.OnHookUp;
-            @HookUp.canceled -= instance.OnHookUp;
-            @HookDown.started -= instance.OnHookDown;
-            @HookDown.performed -= instance.OnHookDown;
-            @HookDown.canceled -= instance.OnHookDown;
+            @Right.started -= instance.OnRight;
+            @Right.performed -= instance.OnRight;
+            @Right.canceled -= instance.OnRight;
+            @Left.started -= instance.OnLeft;
+            @Left.performed -= instance.OnLeft;
+            @Left.canceled -= instance.OnLeft;
+            @Up.started -= instance.OnUp;
+            @Up.performed -= instance.OnUp;
+            @Up.canceled -= instance.OnUp;
+            @Down.started -= instance.OnDown;
+            @Down.performed -= instance.OnDown;
+            @Down.canceled -= instance.OnDown;
         }
 
         public void RemoveCallbacks(IMovementActions instance)
@@ -323,9 +367,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     public interface IMovementActions
     {
         void OnMove(InputAction.CallbackContext context);
-        void OnHookRight(InputAction.CallbackContext context);
-        void OnHookLeft(InputAction.CallbackContext context);
-        void OnHookUp(InputAction.CallbackContext context);
-        void OnHookDown(InputAction.CallbackContext context);
+        void OnRight(InputAction.CallbackContext context);
+        void OnLeft(InputAction.CallbackContext context);
+        void OnUp(InputAction.CallbackContext context);
+        void OnDown(InputAction.CallbackContext context);
     }
 }

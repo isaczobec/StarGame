@@ -8,8 +8,10 @@ public class Player : MonoBehaviour
     [Header("Refereces")]
     [SerializeField] private PlayerInputManager playerInputManager;
     [SerializeField] private string wallTag;
-    [SerializeField] private string hitboxTag;
+    [SerializeField] private string hurtboxTag;
     [SerializeField] private LineRenderer hookRenderer;
+
+    [SerializeField] private PlayerHitbox playerHitbox;
 
 
     [Header("Player Stats")]
@@ -22,28 +24,43 @@ public class Player : MonoBehaviour
 
     [Header("Debug variables")]
     [SerializeField] private Vector2 initialVelocity;
+    [SerializeField] private Transform spawnPoint;
 
-    private enum PlayerState {
-        Free,
-        Hooked
+    [SerializeField] private PlayerGameModeState startingGameModeState;
+
+    // which logic the players movement is calculated by
+    private enum PlayerMovementState {
+        Free, // normal movement
+        Hooked // radial movement around a point
+
+    }
+
+    private enum PlayerGameModeState {
+        Hook, // radially attached to walls
+        Zap, // press once to instantly change your momentum to that direction
+        Normal, // normal bullet hell style movement, holding gives you a speed in a direction
     }
 
 
-
     // Player variables
-    private PlayerState currentPlayerState;
+    private PlayerMovementState currentPlayerMovementState;
+    private PlayerGameModeState currentPlayerGameModeState;
     private Vector2 hookedPosition;
     private float hookRadius;
     private Vector2 velocity;
 
+    private bool hookIsEnabled = false;
+
 
     private void Start() {
         //SUBSCRIBE TO EVENTS
-        playerInputManager.OnHookedInput += OnHook;
+        playerInputManager.OnMomentaryInput += OnMomentaryInput;
+        playerHitbox.OnHitObject += PlayerHitbox_OnHitObject;
 
         //Set initial variables
-        currentPlayerState = PlayerState.Free;
+        currentPlayerMovementState = PlayerMovementState.Free;
         velocity = initialVelocity;
+        currentPlayerGameModeState = startingGameModeState;
     }
 
 
@@ -57,12 +74,12 @@ public class Player : MonoBehaviour
 
     private void HandleMovement()
     {
-        switch (currentPlayerState)
+        switch (currentPlayerMovementState)
         {
-            case PlayerState.Free:
+            case PlayerMovementState.Free:
                 HandleFreeMovement();
                 break;
-            case PlayerState.Hooked:
+            case PlayerMovementState.Hooked:
                 HandleHookedMovement();
                 break;
         }
@@ -97,7 +114,10 @@ public class Player : MonoBehaviour
 
     private void HookToPosition(Vector2 position) {
 
-        currentPlayerState = PlayerState.Hooked;
+        
+
+        currentPlayerMovementState = PlayerMovementState.Hooked;
+        if (!hookIsEnabled) {EnableHook();}
         hookedPosition = position;
         hookRadius = Vector2.Distance(transform.position, hookedPosition);
 
@@ -116,16 +136,54 @@ public class Player : MonoBehaviour
     }
 
     private void UpdateHookPosition() {
-        if (currentPlayerState == PlayerState.Hooked) {
+        if (currentPlayerMovementState == PlayerMovementState.Hooked) {
             hookRenderer.SetPosition(0, transform.position);
         }
-    }   
+    }
+
+    private void UnHookPlayer() {
+        currentPlayerMovementState = PlayerMovementState.Free;
+        DisableHook();
+    }
+
+    private void EnableHook() {
+        hookIsEnabled = true;
+        hookRenderer.enabled = true;
+    }
+
+    private void DisableHook() {
+        hookIsEnabled = false;
+        hookRenderer.enabled = false;
+    }
 
     /// <summary>
     /// when the player inputs the hook button
     /// </summary>
-    private void OnHook(object sender, Vector2 direction)
+    private void OnMomentaryInput(object sender, Vector2 direction)
     {
-        PerformHook(direction);
+        switch (currentPlayerGameModeState) {
+            case PlayerGameModeState.Hook:
+                PerformHook(direction);
+                break;
+            case PlayerGameModeState.Zap:
+                velocity = direction * velocity.magnitude;
+                break;
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D other) {
+        
+            Debug.Log("Player hit the hitbox");
+        
+    }
+    private void PlayerHitbox_OnHitObject(object sender, PlayerHitbox.OnHitboxTriggeredEventArgs e)
+    {
+        PlayerDied();
+    }
+
+    private void PlayerDied() {
+        UnHookPlayer();
+        velocity = initialVelocity;
+        transform.position = spawnPoint.position;
     }
 }

@@ -9,7 +9,7 @@ public class PlayerInputManager : MonoBehaviour
     private PlayerInput playerInput;
     
     // Events
-    public event EventHandler<Vector2> OnHookedInput;
+    public event EventHandler<Vector2> OnMomentaryInput;
 
     private void Awake()
     {
@@ -17,16 +17,16 @@ public class PlayerInputManager : MonoBehaviour
         playerInput = new PlayerInput();
         playerInput.Movement.Enable();
 
-        playerInput.Movement.HookDown.performed += ctx => playerDirectionalHookInput(new Vector2(0,-1));
-        playerInput.Movement.HookUp.performed += ctx => playerDirectionalHookInput(new Vector2(0,1));
-        playerInput.Movement.HookLeft.performed += ctx => playerDirectionalHookInput(new Vector2(-1,0));
-        playerInput.Movement.HookRight.performed += ctx => playerDirectionalHookInput(new Vector2(1,0));
+        playerInput.Movement.Down.performed += ctx => playerDirectionalHookInput(new Vector2(0,-1));
+        playerInput.Movement.Up.performed += ctx => playerDirectionalHookInput(new Vector2(0,1));
+        playerInput.Movement.Left.performed += ctx => playerDirectionalHookInput(new Vector2(-1,0));
+        playerInput.Movement.Right.performed += ctx => playerDirectionalHookInput(new Vector2(1,0));
 
     }
 
     private void playerDirectionalHookInput(Vector2 direction)
     {
-        OnHookedInput?.Invoke(this, direction);
+        OnMomentaryInput?.Invoke(this, direction);
     }
 
 
