@@ -37,11 +37,11 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _Emission:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: ba783e96d0dbdbe40b66ea3126874408, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Emission2:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 6243be51f5d783b4dadac400f73f753c, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
@@ -63,7 +63,10 @@ Material:
     m_Ints: []
     m_Floats:
     - _PulseSpeed: -3
+    - _PulseSpeed2: 2
+    - _RotateSpeed: 5.55
     m_Colors:
     - _EmissionColor: {r: 0.61840373, g: 0.15378398, b: 2.1734805, a: 0.9647059}
     - _EmissionColor2: {r: 2.6283903, g: 0.26372072, b: 11.18176, a: 0}
+    - _PlayerColor: {r: 0.773145, g: 0.24899045, b: 0.9999998, a: 1}
   m_BuildTextureStacks: []
