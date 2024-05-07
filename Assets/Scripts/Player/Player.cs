@@ -49,25 +49,36 @@ public class Player : MonoBehaviour, IHitboxEntity
 
 
 
-    // Player variables
+    public static Player Instance { get; private set; } // static singleton
+
+
+    // -----------------------------
+
+    // PLAYER VARIABLES OR STATS
     private PlayerMovementState currentPlayerMovementState;
     private PlayerGameModeState currentPlayerGameModeState;
     private Vector2 hookedPosition;
     private float hookRadius;
     private Vector2 baseVelocity; // a base velocity to calculate some movement from, etc bullet hell instantaneuos acceleration
     private Vector2 velocity; // the current actual velocity of the player that they move every frame
-
     private bool hookIsEnabled = false;
 
-    public static Player Instance { get; private set; } // static singleton
+
+    // -----------------------------
+
+    // EVENTS
+    public event EventHandler<PlayerGameModeState> OnGameModeStateChange;
+
 
     private void Awake() {
+
         // Set the singleton
         if (Instance == null) {
             Instance = this;
         } else {
             Destroy(gameObject);
         }
+
     }
 
 
@@ -79,7 +90,7 @@ public class Player : MonoBehaviour, IHitboxEntity
         currentPlayerMovementState = PlayerMovementState.Free;
         velocity = initialVelocity;
         baseVelocity = initialVelocity;
-        currentPlayerGameModeState = startingGameModeState;
+        SetGameModeState(startingGameModeState); // set the starting game mode state, invoke function for extra functionality lol
 
         //Set the hitbox entity
         playerHitbox.SetOwnerHitboxEntity(this);
@@ -217,11 +228,17 @@ public class Player : MonoBehaviour, IHitboxEntity
         // If the player is moving in the same direction as the base velocity, multiply the velocity by the sameDirectionAsBaseVelocityMultiplier (move slower in that direction)
         if (baseVelocity.x > 0) {
             inputDirection.x = inputDirection.x * sameDirectionAsBaseVelocityMultiplier;
+
+            velocity.x = Mathf.Abs(1+inputDirection.x) * baseVelocity.x;
+            velocity.y = inputDirection.y*normalModeMovementSpeed + baseVelocity.y;
+
         } else {
             inputDirection.y = inputDirection.y * sameDirectionAsBaseVelocityMultiplier;
+
+            velocity.y = Mathf.Abs(1+inputDirection.y) * baseVelocity.y;
+            velocity.x = inputDirection.x*normalModeMovementSpeed + baseVelocity.x;
         }
 
-        velocity = baseVelocity + inputDirection * normalModeMovementSpeed;
     }
 
     private void GlideMovement(Vector2 inputDirection)
@@ -294,5 +311,6 @@ public class Player : MonoBehaviour, IHitboxEntity
         // Change the game mode state
         currentPlayerMovementState = PlayerMovementState.Free;
         currentPlayerGameModeState = playerGameModeState;
+        OnGameModeStateChange?.Invoke(this, playerGameModeState);
     }
 }
