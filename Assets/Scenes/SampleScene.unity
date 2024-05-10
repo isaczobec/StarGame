@@ -651,8 +651,8 @@ MonoBehaviour:
   hurtboxTag: hurtbox
   hookRenderer: {fileID: 53731864}
   playerHitbox: {fileID: 512379811}
-  normalModeMovementSpeed: 16
-  sameDirectionAsBaseVelocityMultiplier: 0.42
+  normalModeMovementSpeed: 20
+  sameDirectionAsBaseVelocityMultiplier: 0.6
   playerHookLength: 15
   glideModeDamping: 26
   glideModeMaxMovementSpeed: 30
@@ -8059,7 +8059,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 985177795562025847, guid: 11610b2abde24354d9f0d1fcb3008326, type: 3}
       propertyPath: speed
-      value: 40
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 3010358725042240925, guid: 11610b2abde24354d9f0d1fcb3008326, type: 3}
       propertyPath: m_LocalPosition.x
@@ -8120,7 +8120,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 985177795562025847, guid: 11610b2abde24354d9f0d1fcb3008326, type: 3}
       propertyPath: speed
-      value: 40
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 3010358725042240925, guid: 11610b2abde24354d9f0d1fcb3008326, type: 3}
       propertyPath: m_LocalPosition.x
@@ -10848,7 +10848,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 985177795562025847, guid: 11610b2abde24354d9f0d1fcb3008326, type: 3}
       propertyPath: speed
-      value: 40
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 3010358725042240925, guid: 11610b2abde24354d9f0d1fcb3008326, type: 3}
       propertyPath: m_LocalPosition.x
