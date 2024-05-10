@@ -17,6 +17,7 @@ public class GamemodeEffector : Effector
         color = DefaultPlayerColors.defaultColorsDict[playerGameModeState];
         color.a = alpha;
         spriteRenderer.color = color;
+
     }
 
     public override void OnEffectorTriggered(IHitboxEntity hitboxEntity)

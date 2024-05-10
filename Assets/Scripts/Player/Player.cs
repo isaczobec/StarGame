@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Collections;
 using UnityEngine;
 
 // which logic the players movement is calculated by
@@ -34,15 +35,16 @@ public class Player : MonoBehaviour, IHitboxEntity
     [Header("Player hook Movement variables")]
     [SerializeField] private float playerHookLength = 20f;
     [Header("Player glide Movement variables")]
-    [SerializeField] private float glideModeDamping = 30f;
+    [SerializeField] private float glideModeDamping = 60f;
     [SerializeField] private float glideModeMaxMovementSpeed = 30f;
-    [SerializeField] private float glideModeAcceleration = 5f;
+    [SerializeField] private float glideModeAcceleration = 45f;
 
     [Header("Hook variables")]
     [SerializeField] private float hookIntoWallOffset = 0.5f;
 
     [Header("Debug variables")]
-    [SerializeField] private Vector2 initialVelocity;
+    [SerializeField] private float initialSpeed;
+    [SerializeField] private Vector2 initialDirection;
     [SerializeField] private Transform spawnPoint;
 
     [SerializeField] private PlayerGameModeState startingGameModeState;
@@ -59,7 +61,8 @@ public class Player : MonoBehaviour, IHitboxEntity
     private PlayerGameModeState currentPlayerGameModeState;
     private Vector2 hookedPosition;
     private float hookRadius;
-    private Vector2 baseVelocity; // a base velocity to calculate some movement from, etc bullet hell instantaneuos acceleration
+    private float baseSpeed; // a base speed to calculate some movement from, etc bullet hell instantaneuos acceleration
+    private Vector2 baseDirection; // Should be a normalized cardinal direction. a base Velocity to calculate some movement from, etc bullet hell instantaneuos acceleration
     private Vector2 velocity; // the current actual velocity of the player that they move every frame
     private bool hookIsEnabled = false;
 
@@ -88,8 +91,9 @@ public class Player : MonoBehaviour, IHitboxEntity
 
         //Set initial variables
         currentPlayerMovementState = PlayerMovementState.Free;
-        velocity = initialVelocity;
-        baseVelocity = initialVelocity;
+        velocity = initialDirection.normalized * initialSpeed;
+        baseSpeed = initialSpeed;
+        baseDirection = initialDirection.normalized;
         SetGameModeState(startingGameModeState); // set the starting game mode state, invoke function for extra functionality lol
 
         //Set the hitbox entity
@@ -99,6 +103,8 @@ public class Player : MonoBehaviour, IHitboxEntity
 
     private void Update()
     {
+
+
         HandleMovement();
 
         UpdateHookPosition();
@@ -201,7 +207,7 @@ public class Player : MonoBehaviour, IHitboxEntity
                 PerformHook(direction);
                 break;
             case PlayerGameModeState.Zap:
-                velocity = direction * velocity.magnitude;
+                velocity = direction * baseSpeed;
                 break;
         }
     }
@@ -226,17 +232,15 @@ public class Player : MonoBehaviour, IHitboxEntity
     {
 
         // If the player is moving in the same direction as the base velocity, multiply the velocity by the sameDirectionAsBaseVelocityMultiplier (move slower in that direction)
-        if (baseVelocity.x > 0) {
-            inputDirection.x = inputDirection.x * sameDirectionAsBaseVelocityMultiplier;
+        if (Mathf.Abs(baseDirection.x) > Mathf.Abs(baseDirection.y)) { // if the base direction is horizontal
 
-            velocity.x = Mathf.Abs(1+inputDirection.x) * baseVelocity.x;
-            velocity.y = inputDirection.y*normalModeMovementSpeed + baseVelocity.y;
+            velocity.x = (inputDirection.x*sameDirectionAsBaseVelocityMultiplier + baseDirection.x) * baseSpeed;
+            velocity.y = inputDirection.y*normalModeMovementSpeed;
 
-        } else {
-            inputDirection.y = inputDirection.y * sameDirectionAsBaseVelocityMultiplier;
-
-            velocity.y = Mathf.Abs(1+inputDirection.y) * baseVelocity.y;
-            velocity.x = inputDirection.x*normalModeMovementSpeed + baseVelocity.x;
+        } else { // if the base direction is vertical
+            
+                velocity.x = inputDirection.x*normalModeMovementSpeed;
+                velocity.y = (inputDirection.y*sameDirectionAsBaseVelocityMultiplier + baseDirection.y) * baseSpeed;
         }
 
     }
@@ -258,7 +262,9 @@ public class Player : MonoBehaviour, IHitboxEntity
 
     private void PlayerDied() {
         UnHookPlayer();
-        velocity = initialVelocity;
+        baseSpeed = initialSpeed;
+        baseDirection = initialDirection.normalized;
+        velocity = initialDirection.normalized * initialSpeed;
         transform.position = spawnPoint.position;
         SetGameModeState(startingGameModeState);
     }
@@ -274,43 +280,76 @@ public class Player : MonoBehaviour, IHitboxEntity
     }
 
 
+    // not very well laid out 
     public void SetGameModeState(PlayerGameModeState playerGameModeState)
     {
         if (currentPlayerGameModeState == PlayerGameModeState.Hook) {
             UnHookPlayer();
         }
-        // If the player is currently in glide mode, set the velocity to be the same magnitude as the base velocity but retain the direction
-        if (currentPlayerGameModeState == PlayerGameModeState.Glide) {
-            velocity = velocity.normalized * baseVelocity.magnitude;
-        }
-        if (playerGameModeState == PlayerGameModeState.Normal) {
-            
-            // project the player velocity onto the axis with the speed magnitude, only allow movement in "straight" directions
+
+        if (currentPlayerGameModeState != PlayerGameModeState.Normal) { // do not set the base direction if the player is in normal mode since that gamemode has one locked movement direction
+
+            // set the base direction to be the (main) direction of the velocity
             if (Mathf.Abs(velocity.x) > Mathf.Abs(velocity.y)) {
-                velocity = new Vector2(velocity.x/Mathf.Abs(velocity.x) * velocity.magnitude, 0);
+                if (velocity.x >= 0) {
+                    baseDirection = new Vector2(1, 0);
+                }
+                else
+                {
+                    baseDirection = new Vector2(-1, 0);
+                }
             } else {
-                velocity = new Vector2(0, velocity.y/Mathf.Abs(velocity.y) * velocity.magnitude);
-            }
-            
-            if (currentPlayerGameModeState != PlayerGameModeState.Normal) {
-                baseVelocity = velocity;
+                if (velocity.y >= 0)
+                {
+                    baseDirection = new Vector2(0, 1);
+                }
+                else
+                {
+                    baseDirection = new Vector2(0, -1);
+                }
             }
 
-        } else { // if the player is not to be set into normal mode
-            if (currentPlayerGameModeState == PlayerGameModeState.Normal) {
-                velocity = baseVelocity;
-            }
+            velocity = velocity.normalized * baseSpeed;
+        } else { // if the player is in normal mode, set the velocity to be the base direction
+            velocity = baseDirection * baseSpeed;
+        }
+
 
         if (playerGameModeState == PlayerGameModeState.Glide && currentPlayerGameModeState != PlayerGameModeState.Glide) {
-            glideModeMaxMovementSpeed = velocity.magnitude;
-            baseVelocity = velocity;
+            glideModeMaxMovementSpeed = baseSpeed;
         }
 
-
-        }
+        
         // Change the game mode state
         currentPlayerMovementState = PlayerMovementState.Free;
         currentPlayerGameModeState = playerGameModeState;
         OnGameModeStateChange?.Invoke(this, playerGameModeState);
+    }
+
+    /// <summary>
+    /// Set the speed of the player
+    /// </summary>
+    /// <param name="speed"></param>
+    public void SetSpeed(float speed) {
+        baseSpeed = speed;
+
+        switch (currentPlayerGameModeState) {
+            case PlayerGameModeState.Glide:
+                glideModeMaxMovementSpeed = baseSpeed;
+                velocity = velocity.normalized * speed / velocity.magnitude;
+                break;
+            case PlayerGameModeState.Hook:
+                velocity = velocity.normalized * speed;
+                break;
+            case PlayerGameModeState.Normal:
+                break; // nothing to do here
+            case PlayerGameModeState.Zap:
+                velocity = velocity.normalized * speed;
+                break;
+        }
+    }
+
+    public Vector2 GetVelocity() {
+        return velocity;
     }
 }

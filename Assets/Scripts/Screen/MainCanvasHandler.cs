@@ -4,12 +4,11 @@ using UnityEngine;
 
 public class MainCanvasHandler : MonoBehaviour
 {
+    
 
-    private Canvas canvas;
+    [SerializeField] private GameObject mainCanvasObject;
     private void Awake() {
-        canvas = GetComponent<Canvas>();
-
-        canvas.enabled = true;
+        mainCanvasObject.SetActive(true);
     }
 
 }
