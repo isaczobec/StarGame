@@ -1,9 +1,7 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.U2D;
+using UnityEngine.AI;
 
 [Serializable]
 public struct SplinePoint
@@ -22,11 +20,26 @@ public struct SplinePoint
     
 }
 
+/// <summary>
+/// Return type for when sampling points on the curve
+/// </summary>
+public class SplinePointsInfo {
+    public List<Vector3> positions {get; private set;}
+    public List<Vector3> tangentials {get; private set;}
+
+    public SplinePointsInfo(List<Vector3> positions, List<Vector3> tangentials) {
+        this.positions = positions;
+        this.tangentials = tangentials;
+    }
+}
+
 public class SplineCurve {
 
     public SplinePoint[] splinePoints;
-    public SplineCurve(SplinePoint[] points) {
+    private float stepSize = 0.009f;
+    public SplineCurve(SplinePoint[] points, float stepSize = 0.009f) {
         splinePoints = points;
+        this.stepSize = stepSize;
 
     }
 
@@ -39,6 +52,7 @@ public class SplineCurve {
 
         // get the index of wich curve to sample and what the local t is
         int curveIndex = Mathf.FloorToInt(t * (splinePoints.Length - 1));
+        if (curveIndex == splinePoints.Length - 1) curveIndex--; // if we are at the end of the curve, go back one (to avoid out of bounds error
         float localT = (t * (splinePoints.Length - 1)) - curveIndex;
 
         // calculate the position of the curve using the bezier formula
@@ -56,6 +70,7 @@ public class SplineCurve {
 
         // get the index of wich curve to sample and what the local t is
         int curveIndex = Mathf.FloorToInt(t * (splinePoints.Length - 1));
+        if (curveIndex == splinePoints.Length - 1) curveIndex--; // if we are at the end of the curve, go back one (to avoid out of bounds error
         float localT = (t * (splinePoints.Length - 1)) - curveIndex;
 
         //calculate the derivative of the bernstein polynomial
@@ -68,6 +83,195 @@ public class SplineCurve {
 
         return p;
         
+    }
+
+    /// <summary>
+    /// Steps along the curve for and returns a list of points and tangentials
+    /// </summary>
+    /// <param name="amountOfPoints"></param>
+    /// <returns></returns>
+    public SplinePointsInfo StepSpline(int amountOfPoints, bool returnTangential = true) {
+
+        List<Vector3> positions = new List<Vector3>();
+        List<Vector3> tangentials = returnTangential ? new List<Vector3>() : null; // if we want to return tangentials, create and init a list
+
+        for (int i = 0; i < amountOfPoints; i++) {
+            float t = (float)i / (amountOfPoints - 1); // Normalized value between 0 and 1
+
+            Vector3 curvePosition = GetCurvePosition(t);
+            positions.Add(curvePosition);
+
+            if (returnTangential) {
+                Vector3 curveTangential = GetCurveTangential(t);
+                tangentials.Add(curveTangential);
+            }
+        }
+
+        return new SplinePointsInfo(positions, tangentials);
+
+    }
+
+    // public SplinePointsInfo StepSplineEvenlySpaced(float desiredSpace, float baseStepLength = 0.007f, float stepModifierMultiplier = 1.1f, bool returnTangential = true) {
+
+    //     List<Vector3> positions = new List<Vector3>() {splinePoints[0].position};
+    //     List<Vector3> tangentials = returnTangential ? new List<Vector3>() {GetCurveTangential(0)} : null; // if we want to return tangentials, create and init a list
+
+
+    //     float t = baseStepLength; // dont start at 0
+    //     float cumulativeDistance = 0;
+    //     int counter = 1;
+    //     float stepModifier = 1;
+
+    //     Vector2 currentPosition = GetCurvePosition(0);
+
+    //     while (t < 1f) {
+
+    //         Debug.Log("T: " + t);
+    //         Vector3 nextPosition = GetCurvePosition(t);
+    //         cumulativeDistance += Vector3.Distance(currentPosition, nextPosition);
+    //         currentPosition = nextPosition;
+
+    //         if (cumulativeDistance >= desiredSpace*counter) { // if we are within the desired space or within the error margin, add the point to the list
+    //             positions.Add(nextPosition);
+    //             if (returnTangential) {
+    //                 tangentials.Add(GetCurveTangential(t));
+    //             }
+    //             // increase counter and reset step modifier
+    //             counter++;
+    //             stepModifier = 1;
+    //         } 
+    //         t = Mathf.Clamp(t + baseStepLength * stepModifier, 0f, 5f);
+        
+    //     }
+    //     return new SplinePointsInfo(positions, tangentials);
+    
+    // }
+
+
+    public SplinePointsInfo StepSplineEvenlySpaced(float desiredSpace, float baseStepLength = 0f, float backTrackMultiplier = 0.6f, float maxError = 0.08f, bool returnTangential = true, int maxIterations = 50000) {
+
+        if (baseStepLength == 0) baseStepLength = stepSize; // if we dont specify a step length, use the default stepSize
+
+        List<Vector3> positions = new List<Vector3>() {splinePoints[0].position};
+        List<Vector3> tangentials = returnTangential ? new List<Vector3>() {GetCurveTangential(0)} : null; // if we want to return tangentials, create and init a list
+
+
+        float t = baseStepLength; // dont start at 0
+        float cumulativeDistance = 0;
+        int counter = 1;
+        float stepModifier = 1f;
+
+        int iterations = 0;
+
+        Vector2 currentPosition = GetCurvePosition(0f);
+
+        while (t < 1) {
+
+            Vector3 nextPosition = GetCurvePosition(t);
+            cumulativeDistance += Vector3.Distance(currentPosition, nextPosition) * stepModifier/Mathf.Abs(stepModifier);
+            currentPosition = nextPosition;
+
+            if (cumulativeDistance >= desiredSpace*counter && cumulativeDistance <= desiredSpace*counter + maxError) { // if we are within the desired space or within the error margin, add the point to the list
+                positions.Add(nextPosition);
+                if (returnTangential) {
+                    tangentials.Add(GetCurveTangential(t));
+                }
+                // increase counter and reset step modifier
+                counter++;
+                stepModifier = 1f;
+            } else if (cumulativeDistance > desiredSpace*counter + maxError) {  // if we overshot it
+                if (stepModifier > 0) {
+                    stepModifier = -stepModifier * backTrackMultiplier; // backtrack and reduce the step modifier
+                }
+            } else { // if we are under the desired space
+                if (stepModifier < 0)  {
+                    stepModifier = -stepModifier * backTrackMultiplier; // if we are backtracking, reset the step modifier
+                    }
+
+            }
+
+            t = Mathf.Clamp(t + baseStepLength * stepModifier, 0f, 1f);
+
+            iterations++;
+            if (iterations > maxIterations) {
+                Debug.LogError("Max iterations reached");
+                break;
+            }
+            
+
+
+
+
+        }
+        return new SplinePointsInfo(positions, tangentials);
+
+
+    }
+    public SplinePointsInfo StepSplineSideEvenlySpaced(bool left, float gap, float desiredSpace, float baseStepLength = 0f, float backTrackMultiplier = 0.6f, float maxError = 0.08f, bool returnTangential = true, int maxIterations = 500000) {
+
+        if (baseStepLength == 0) baseStepLength = stepSize; // if we dont specify a step length, use the default stepSize
+
+        int direction = left ? -1 : 1;
+
+        List<Vector3> positions = new List<Vector3>();
+        List<Vector3> tangentials = returnTangential ? new List<Vector3>() : null; // if we want to return tangentials, create and init a list
+
+
+        float t = baseStepLength; // dont start at 0
+        float cumulativeDistance = 0;
+        int counter = 1;
+        float stepModifier = 1f;
+
+        int iterations = 0;
+
+        Vector2 firstTangent = GetCurveTangential(0);
+        Vector2 currentPosition = GetCurvePosition(0f) + new Vector3(firstTangent.y,-firstTangent.x).normalized * direction * gap;
+        positions.Add(currentPosition);
+        tangentials.Add(firstTangent);
+
+        while (t < 1) {
+
+            Vector3 tangent = GetCurveTangential(t).normalized;
+            Vector3 normal = new Vector2(tangent.y, -tangent.x);
+            Vector3 nextPosition = GetCurvePosition(t) + normal * direction * gap;
+            cumulativeDistance += Vector3.Distance(currentPosition, nextPosition) * stepModifier/Mathf.Abs(stepModifier);
+            currentPosition = nextPosition;
+
+            if (cumulativeDistance >= desiredSpace*counter && cumulativeDistance <= desiredSpace*counter + maxError) { // if we are within the desired space or within the error margin, add the point to the list
+                positions.Add(nextPosition);
+                if (returnTangential) {
+                    tangentials.Add(GetCurveTangential(t));
+                }
+                // increase counter and reset step modifier
+                counter++;
+                stepModifier = 1f;
+            } else if (cumulativeDistance > desiredSpace*counter + maxError) {  // if we overshot it
+                if (stepModifier > 0) {
+                    stepModifier = -stepModifier * backTrackMultiplier; // backtrack and reduce the step modifier
+                }
+            } else { // if we are under the desired space
+                if (stepModifier < 0)  {
+                    stepModifier = -stepModifier * backTrackMultiplier; // if we are backtracking, reset the step modifier
+                    }
+
+            }
+
+            t = Mathf.Clamp(t + baseStepLength * stepModifier, 0f, 1f);
+
+            iterations++;
+            if (iterations > maxIterations) {
+                Debug.LogError("Max iterations reached");
+                break;
+            }
+            
+
+
+
+
+        }
+        return new SplinePointsInfo(positions, tangentials);
+
+
     }
     
 
@@ -92,35 +296,117 @@ public class CurveSpikeGenerator : MonoBehaviour
     [SerializeField] private Transform P3Hanlde2;
     SplinePoint splinePoint3;
 
-    [SerializeField] private float spikeGap = 2f;
-    [SerializeField] private int amountOfSpikes = 30;
+    [SerializeField] private bool tunnel = true;
+    [SerializeField] private float spikeDistance = 0.5f;
+    [SerializeField] private float spikeGap = 1.6f;
+    [SerializeField] private bool flipSpikes = false;
 
 
 
-    private void Start() {
+    private List<SplineCurve> splineCurves = new List<SplineCurve>();
+
+
+
+    private void Start()
+    {
+
         splinePoint1 = new SplinePoint(P1.position, P1Hanlde1.position, P1Hanlde2.position);
         splinePoint2 = new SplinePoint(P2.position, P2Hanlde1.position, P2Hanlde2.position);
         splinePoint3 = new SplinePoint(P3.position, P3Hanlde1.position, P3Hanlde2.position);
 
-        SplineCurve splineCurve = new SplineCurve(new SplinePoint[] {splinePoint1, splinePoint2, splinePoint3});
+        AddSplineCurve(new SplinePoint[] { splinePoint1, splinePoint2, splinePoint3 });
 
-        int amountOfSteps = amountOfSpikes;
+        if (tunnel) GenerateTunnelSpikes();
+        else GenerateStrandSpikes();
 
-        for (int i = 0; i < amountOfSteps; i++) {
-            float t = (float)i / (amountOfSteps - 1); // Normalized value between 0 and 1
+        // for (int i = 0; i < amountOfSpikes; i++) { 
 
-            Vector3 curvePosition = splineCurve.GetCurvePosition(t);
-            Vector3 curveTangential = splineCurve.GetCurveTangential(t).normalized;
-            Vector3 curveNormalXYPlane = new Vector3(curveTangential.y, -curveTangential.x, 0);
+        //     Debug.Log("Position: " + splinePointsInfo.positions[i] + " Tangential: " + splinePointsInfo.tangentials[i]);
+        //     Instantiate(testPrefab, splinePointsInfo.positions[i], Quaternion.LookRotation(Vector3.forward,-splinePointsInfo.tangentials[i]));
 
-            Instantiate(testPrefab, curvePosition + curveNormalXYPlane * spikeGap, Quaternion.identity);
-            Instantiate(testPrefab, curvePosition - curveNormalXYPlane * spikeGap, Quaternion.identity);
+        // }
 
 
 
+
+
+
+
+
+    }
+
+    private void GenerateTunnelSpikes()
+    {
+        float time = Time.realtimeSinceStartup;
+        SplinePointsInfo splinePointsInfoL = splineCurves[0].StepSplineSideEvenlySpaced(true, spikeGap, spikeDistance);
+        SplinePointsInfo splinePointsInfoR = splineCurves[0].StepSplineSideEvenlySpaced(false, spikeGap, spikeDistance);
+        Debug.Log("Time to generate bezier: " + (Time.realtimeSinceStartup - time));
+
+        int si = 0;
+        foreach (SplinePointsInfo info in new SplinePointsInfo[] { splinePointsInfoL, splinePointsInfoR })
+        {
+            for (int i = 0; i < info.positions.Count; i++)
+            {
+
+                Debug.Log("amount points: " + info.positions.Count);
+                Debug.Log("I: " + i);
+                Vector2 curveNormal = flipSpikes ? new Vector2(info.tangentials[i].y, -info.tangentials[i].x) : new Vector2(-info.tangentials[i].y, info.tangentials[i].x);
+                curveNormal = si == 0 ? curveNormal : -curveNormal;
+                Instantiate(testPrefab, info.positions[i], Quaternion.LookRotation(Vector3.forward, -curveNormal));
+
+            }
+            si++;
         }
+    }
+
+    private void GenerateStrandSpikes()
+    {
+        float time = Time.realtimeSinceStartup;
+        SplinePointsInfo splinePointsInfo = splineCurves[0].StepSplineEvenlySpaced(spikeDistance);
+        Debug.Log("Time to generate bezier: " + (Time.realtimeSinceStartup - time));
+
+            for (int i = 0; i < splinePointsInfo.positions.Count - 1; i++)
+            {
+
+                Vector2 curveNormal = flipSpikes ? new Vector2(splinePointsInfo.tangentials[i].y, -splinePointsInfo.tangentials[i].x) : new Vector2(-splinePointsInfo.tangentials[i].y, splinePointsInfo.tangentials[i].x);
+                Instantiate(testPrefab, splinePointsInfo.positions[i], Quaternion.LookRotation(Vector3.forward, -curveNormal));
+
+            }
+    }
+
+    // private void Start() {
+
+    //     splinePoint1 = new SplinePoint(P1.position, P1Hanlde1.position, P1Hanlde2.position);
+    //     splinePoint2 = new SplinePoint(P2.position, P2Hanlde1.position, P2Hanlde2.position);
+    //     splinePoint3 = new SplinePoint(P3.position, P3Hanlde1.position, P3Hanlde2.position);
+
+    //     AddSplineCurve(new SplinePoint[] {splinePoint1, splinePoint2, splinePoint3});
+
+    //     int amountOfSteps = amountOfSpikes;
+
+    //     for (int i = 0; i < amountOfSteps; i++) {
+    //         float t = (float)i / (amountOfSteps - 1); // Normalized value between 0 and 1
+
+    //         Vector3 curvePosition = splineCurves[0].GetCurvePosition(t);
+    //         Vector3 curveTangential = splineCurves[0].GetCurveTangential(t).normalized;
+    //         Vector3 curveNormalXYPlane = new Vector3(curveTangential.y, -curveTangential.x, 0);
+
+    //         Instantiate(testPrefab, curvePosition + curveNormalXYPlane * spikeGap, Quaternion.LookRotation(Vector3.forward,-curveNormalXYPlane));
+    //         Instantiate(testPrefab, curvePosition - curveNormalXYPlane * spikeGap, Quaternion.LookRotation(Vector3.forward,curveNormalXYPlane));
 
 
+
+    //     }
+
+
+    // }
+
+    /// <summary>
+    /// Adds a spline curve to the list of spline curves
+    /// </summary>
+    /// <param name="splinePoints"></param>
+    private void AddSplineCurve(SplinePoint[] splinePoints) {
+        splineCurves.Add(new SplineCurve(splinePoints));
     }
     
 }
