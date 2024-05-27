@@ -22,4 +22,8 @@ public class DefaultPlayerColors: MonoBehaviour
         defaultColorsDict.Add(PlayerGameModeState.Hook, hookColor);
     }
 
+    public static Color GetCurrentPlayerColor() {
+        return defaultColorsDict[Player.Instance.GetGameModeState()];
+    }
+
 }

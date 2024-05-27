@@ -71,6 +71,7 @@ public class Player : MonoBehaviour, IHitboxEntity
 
     // EVENTS
     public event EventHandler<PlayerGameModeState> OnGameModeStateChange;
+    public event EventHandler<EventArgs> OnPlayerDeath;
 
 
     private void Awake() {
@@ -267,6 +268,8 @@ public class Player : MonoBehaviour, IHitboxEntity
         velocity = initialDirection.normalized * initialSpeed;
         transform.position = spawnPoint.position;
         SetGameModeState(startingGameModeState);
+
+        OnPlayerDeath?.Invoke(this, EventArgs.Empty);
     }
 
     public void OnHurtBoxHit(HitboxTriggeredInfo hitboxTriggeredInfo)
@@ -324,6 +327,10 @@ public class Player : MonoBehaviour, IHitboxEntity
         currentPlayerMovementState = PlayerMovementState.Free;
         currentPlayerGameModeState = playerGameModeState;
         OnGameModeStateChange?.Invoke(this, playerGameModeState);
+    }
+
+    public PlayerGameModeState GetGameModeState() {
+        return currentPlayerGameModeState;
     }
 
     /// <summary>

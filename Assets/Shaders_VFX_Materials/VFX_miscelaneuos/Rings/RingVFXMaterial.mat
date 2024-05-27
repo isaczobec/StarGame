@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: PlayerTrailMaterial
-  m_Shader: {fileID: -6465566751694194690, guid: 19035c2988c4665448576d80f16dbb3c, type: 3}
+  m_Name: RingVFXMaterial
+  m_Shader: {fileID: -6465566751694194690, guid: 812c9f5a4dff12f42a501c061fb48c21, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -37,14 +37,16 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Power: 0.3
+    - _BigSineMultiplier: 5
     - _QueueControl: 0
     - _QueueOffset: 0
-    m_Colors:
-    - _Color: {r: 0.9999999, g: 0.995726, b: 3.0140998e-15, a: 1}
-    - _Color2: {r: 0.26415092, g: 0.26415092, b: 0.26415092, a: 1}
+    - _RingWidth: 0.07
+    - _SineSpeed: 2
+    - _SmallSineMultiplier: 20
+    - _TParameter: 0.38
+    m_Colors: []
   m_BuildTextureStacks: []
---- !u!114 &8080491044170629535
+--- !u!114 &2595620358089098709
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
