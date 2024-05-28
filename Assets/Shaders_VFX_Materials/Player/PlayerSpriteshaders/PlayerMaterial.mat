@@ -68,5 +68,5 @@ Material:
     m_Colors:
     - _EmissionColor: {r: 0.61840373, g: 0.15378398, b: 2.1734805, a: 0.9647059}
     - _EmissionColor2: {r: 2.6283903, g: 0.26372072, b: 11.18176, a: 0}
-    - _PlayerColor: {r: 0.9999999, g: 0.995726, b: 3.0140998e-15, a: 1}
+    - _PlayerColor: {r: 0.97394323, g: 0.4140208, b: 0.5842018, a: 1}
   m_BuildTextureStacks: []
