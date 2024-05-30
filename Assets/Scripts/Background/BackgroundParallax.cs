@@ -15,7 +15,8 @@ public class BackgroundParallax : MonoBehaviour
     {
         foreach (VisualEffect effect in parallaxEffectsToMove)
         {
-            effect.SetVector3(parallaxMovementReference, parallaxMovement.GetParallaxMovement());
+            Vector3 parallax = parallaxMovement.GetParallaxMovement();
+            effect.SetVector3(parallaxMovementReference, parallax);
         }
     }
 }

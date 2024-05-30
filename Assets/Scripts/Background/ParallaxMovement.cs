@@ -12,7 +12,10 @@ public class ParallaxMovement : MonoBehaviour
 
     private Vector3 lastCameraPosition;
 
+    private Vector3 parallaxMovement;
+
     private void Update() {
+        parallaxMovement = lastCameraPosition - targetCamera.position;
         lastCameraPosition = targetCamera.position;
     }
 
@@ -22,7 +25,7 @@ public class ParallaxMovement : MonoBehaviour
     public Vector3 GetParallaxMovement(
         bool negative = true
     ) {
-        if (negative) return -1 * (targetCamera.position - lastCameraPosition); else return lastCameraPosition - targetCamera.position;
+        if (negative) return -1 * parallaxMovement; else return parallaxMovement;
     }
 
 }
