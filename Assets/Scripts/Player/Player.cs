@@ -17,6 +17,12 @@ public enum PlayerGameModeState {
     Normal, // normal bullet hell style movement, holding gives you a speed in a direction
     Glide, // normal movement but not with instant acceleration
 }
+
+public enum PlayerMenuState {
+    active,
+    mainMenu
+}
+
 public class Player : MonoBehaviour, IHitboxEntity
 {
     [Header("Refereces")]
@@ -45,7 +51,6 @@ public class Player : MonoBehaviour, IHitboxEntity
     [Header("Debug variables")]
     [SerializeField] private float initialSpeed;
     [SerializeField] private Vector2 initialDirection;
-    [SerializeField] private Transform spawnPoint;
 
     [SerializeField] private PlayerGameModeState startingGameModeState;
 
@@ -59,6 +64,7 @@ public class Player : MonoBehaviour, IHitboxEntity
     // PLAYER VARIABLES OR STATS
     private PlayerMovementState currentPlayerMovementState;
     private PlayerGameModeState currentPlayerGameModeState;
+    private PlayerMenuState currentPlayerMenuState;
     private Vector2 hookedPosition;
     private float hookRadius;
     private float baseSpeed; // a base speed to calculate some movement from, etc bullet hell instantaneuos acceleration
@@ -66,12 +72,17 @@ public class Player : MonoBehaviour, IHitboxEntity
     private Vector2 velocity; // the current actual velocity of the player that they move every frame
     private bool hookIsEnabled = false;
 
+    private bool letPlayerMove = false;
+
+    private SpawnPoint playerSpawnPoint;
+
 
     // -----------------------------
 
     // EVENTS
     public event EventHandler<PlayerGameModeState> OnGameModeStateChange;
     public event EventHandler<EventArgs> OnPlayerDeath;
+    public event EventHandler<PlayerMenuState> OnPlayerMenuStateChange;
 
 
     private void Awake() {
@@ -92,9 +103,8 @@ public class Player : MonoBehaviour, IHitboxEntity
 
         //Set initial variables
         currentPlayerMovementState = PlayerMovementState.Free;
-        velocity = initialDirection.normalized * initialSpeed;
-        baseSpeed = initialSpeed;
-        baseDirection = initialDirection.normalized;
+        currentPlayerMenuState = PlayerMenuState.mainMenu;
+        SetVelocity(initialDirection.normalized * initialSpeed);
         SetGameModeState(startingGameModeState); // set the starting game mode state, invoke function for extra functionality lol
 
         //Set the hitbox entity
@@ -203,6 +213,7 @@ public class Player : MonoBehaviour, IHitboxEntity
     /// </summary>
     private void OnMomentaryInput(object sender, Vector2 direction)
     {
+        if (!letPlayerMove) { return; }
         switch (currentPlayerGameModeState) {
             case PlayerGameModeState.Hook:
                 PerformHook(direction);
@@ -215,7 +226,7 @@ public class Player : MonoBehaviour, IHitboxEntity
 
     private void HandleNormalModeInput() {
 
-
+        if (!letPlayerMove) { return; }
         Vector2 inputDirection = playerInputManager.GetPlayerMovementInput().normalized;
         switch (currentPlayerGameModeState) {
             case PlayerGameModeState.Normal:
@@ -266,7 +277,7 @@ public class Player : MonoBehaviour, IHitboxEntity
         baseSpeed = initialSpeed;
         baseDirection = initialDirection.normalized;
         velocity = initialDirection.normalized * initialSpeed;
-        transform.position = spawnPoint.position;
+        transform.position = playerSpawnPoint.GetPosition();
         SetGameModeState(startingGameModeState);
 
         OnPlayerDeath?.Invoke(this, EventArgs.Empty);
@@ -358,5 +369,32 @@ public class Player : MonoBehaviour, IHitboxEntity
 
     public Vector2 GetVelocity() {
         return velocity;
+    }
+    public void SetVelocity(Vector2 velocity) {
+        this.velocity = velocity;
+        baseSpeed = velocity.magnitude;
+        baseDirection = velocity.normalized;
+    }
+
+
+    public void SetPlayerMenuState(PlayerMenuState playerMenuState) {
+        currentPlayerMenuState = playerMenuState;
+        switch (playerMenuState) {
+            case PlayerMenuState.active:
+                letPlayerMove = true;
+                break;
+            case PlayerMenuState.mainMenu:
+                letPlayerMove = false;
+                break;
+        }
+        OnPlayerMenuStateChange?.Invoke(this, playerMenuState);
+    }
+
+    public PlayerMenuState GetPlayerMenuState() {
+        return currentPlayerMenuState;
+    }
+
+    public void SetPlayerSpawnPoint(SpawnPoint spawnPoint) {
+        playerSpawnPoint = spawnPoint;
     }
 }
