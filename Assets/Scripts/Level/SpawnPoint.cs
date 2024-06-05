@@ -8,6 +8,7 @@ public class SpawnPoint : MonoBehaviour
 
     [SerializeField] private PlayerGameModeState playerGameModeState;
     [SerializeField] private Vector2 startVelocity;
+    [SerializeField] private Vector2 initialDirection = Vector2.up; // should be cardinal and normalized
 
 
     private void Awake() {
@@ -23,11 +24,20 @@ public class SpawnPoint : MonoBehaviour
         return transform.position;
     }
 
-    public void InitializePlayer() {
-        Player.Instance.transform.position = transform.position;
-        Player.Instance.SetGameModeState(playerGameModeState);
-        Player.Instance.SetVelocity(startVelocity);
+    public void InitializePlayer(
+            bool changePosition = true,
+            bool changeGameMode = true,
+            bool changeVelocity = true
+        ) {
+        if (changePosition) Player.Instance.transform.position = transform.position;
+        if (changeGameMode) Player.Instance.SetGameModeState(playerGameModeState);
+        if (changeVelocity) Player.Instance.SetVelocity(startVelocity);
         Player.Instance.SetPlayerMenuState(PlayerMenuState.active);
         Player.Instance.SetPlayerSpawnPoint(this);
     }
+
+    public PlayerGameModeState GetStartingPlayerGameModeState() {
+        return playerGameModeState;
+    }
+
 }

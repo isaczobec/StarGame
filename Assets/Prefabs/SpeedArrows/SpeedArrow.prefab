@@ -249,6 +249,9 @@ MonoBehaviour:
   cycleOffsetString: CycleOffset
   speedArrowTriggeredString: ArrowTriggered
   speedArrowEffector: {fileID: 985177795562025847}
+  cameraShakeDuration: 0.3
+  cameraShakeMagnitude: 10
+  cameraShakeFrequency: 0.2
 --- !u!114 &985177795562025847
 MonoBehaviour:
   m_ObjectHideFlags: 0

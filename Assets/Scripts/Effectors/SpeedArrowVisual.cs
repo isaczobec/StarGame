@@ -13,6 +13,10 @@ public class SpeedArrowVisual : MonoBehaviour
 
     [SerializeField] private SpeedArrowEffector speedArrowEffector; // The effector that this visual is linked to
 
+    [SerializeField] private float cameraShakeDuration = 0.1f;
+    [SerializeField] private float cameraShakeMagnitude = 0.1f;
+    [SerializeField] private float cameraShakeFrequency = 0.1f;
+
 
 
     // Start is called before the first frame update
@@ -41,5 +45,7 @@ public class SpeedArrowVisual : MonoBehaviour
         {
             animator.SetTrigger(speedArrowTriggeredString);
         }
+        CameraShake.Instance.StartCameraShake(cameraShakeMagnitude, cameraShakeDuration, cameraShakeFrequency);
+
     }
 }

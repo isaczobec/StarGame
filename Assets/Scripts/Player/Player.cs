@@ -16,6 +16,7 @@ public enum PlayerGameModeState {
     Zap, // press once to instantly change your momentum to that direction
     Normal, // normal bullet hell style movement, holding gives you a speed in a direction
     Glide, // normal movement but not with instant acceleration
+    Practice, // Invulnerable and moves freely with wasd
 }
 
 public enum PlayerMenuState {
@@ -48,6 +49,11 @@ public class Player : MonoBehaviour, IHitboxEntity
     [Header("Hook variables")]
     [SerializeField] private float hookIntoWallOffset = 0.5f;
 
+    [Header("Practice mode variables")]
+    [SerializeField] private bool practiceModeEnabled = false;
+    [SerializeField] private float practiceModeSpeed = 10f;
+    [SerializeField] private Vector2 practiceModeSpawnDirection = Vector2.up;
+
     [Header("Debug variables")]
     [SerializeField] private float initialSpeed;
     [SerializeField] private Vector2 initialDirection;
@@ -75,7 +81,12 @@ public class Player : MonoBehaviour, IHitboxEntity
     private bool letPlayerMove = false;
 
     private SpawnPoint playerSpawnPoint;
+    
+    private bool playerIsInvulnerable = false;
 
+    // practice mode
+    private Vector2 practiceModeSpawnPoint = Vector2.zero;
+    private PlayerGameModeState practiceModeGameModeState = PlayerGameModeState.Practice;
 
     // -----------------------------
 
@@ -111,6 +122,20 @@ public class Player : MonoBehaviour, IHitboxEntity
         playerHitbox.SetOwnerHitboxEntity(this);
     }
 
+    public void InitializePlayer()
+    {
+        if (!practiceModeEnabled) { // if the player is not in practice mode
+            SpawnPoint.Instance.InitializePlayer();
+        } else {
+
+            // if the player is in practice mode
+            baseDirection = practiceModeSpawnDirection;
+            transform.position = practiceModeSpawnPoint;
+            velocity = practiceModeSpawnDirection * baseSpeed;
+            SetGameModeState(practiceModeGameModeState);
+            SpawnPoint.Instance.InitializePlayer(changePosition:false,changeVelocity:false,changeGameMode:false);
+        }
+    }
 
     private void Update()
     {
@@ -237,6 +262,9 @@ public class Player : MonoBehaviour, IHitboxEntity
                 /// Glide mode movement
                 GlideMovement(inputDirection);
                 break;
+            case PlayerGameModeState.Practice:
+                PracticeMovement(inputDirection);
+                break;
         }   
     }
 
@@ -266,25 +294,28 @@ public class Player : MonoBehaviour, IHitboxEntity
         }
     }
 
+    private void PracticeMovement(Vector2 inputDirection) {
+        velocity = inputDirection * practiceModeSpeed;
+    }
+
     private void OnTriggerEnter2D(Collider2D other) {
         
             Debug.Log("Player hit the hitbox");
         
     }
 
-    private void PlayerDied() {
+    private void PlayerDied()
+    {
         UnHookPlayer();
-        baseSpeed = initialSpeed;
-        baseDirection = initialDirection.normalized;
-        velocity = initialDirection.normalized * initialSpeed;
-        transform.position = playerSpawnPoint.GetPosition();
-        SetGameModeState(startingGameModeState);
+        InitializePlayer();
 
         OnPlayerDeath?.Invoke(this, EventArgs.Empty);
     }
 
+
     public void OnHurtBoxHit(HitboxTriggeredInfo hitboxTriggeredInfo)
     {
+        if (playerIsInvulnerable) { return; } // do not take damage if the player is invulnerable
         PlayerDied();
     }
 
@@ -297,6 +328,12 @@ public class Player : MonoBehaviour, IHitboxEntity
     // not very well laid out 
     public void SetGameModeState(PlayerGameModeState playerGameModeState)
     {
+
+        // do not to anything if we try to enter practice mode from practice mode
+        if (currentPlayerGameModeState == PlayerGameModeState.Practice && playerGameModeState == PlayerGameModeState.Practice) {
+            return;
+        }
+
         if (currentPlayerGameModeState == PlayerGameModeState.Hook) {
             UnHookPlayer();
         }
@@ -333,7 +370,13 @@ public class Player : MonoBehaviour, IHitboxEntity
             glideModeMaxMovementSpeed = baseSpeed;
         }
 
-        
+        // make the player invulnerable if they ender  practice mode
+        if (playerGameModeState == PlayerGameModeState.Practice) {
+            playerIsInvulnerable = true;
+        } else {
+            playerIsInvulnerable = false;
+        }
+
         // Change the game mode state
         currentPlayerMovementState = PlayerMovementState.Free;
         currentPlayerGameModeState = playerGameModeState;
@@ -370,6 +413,10 @@ public class Player : MonoBehaviour, IHitboxEntity
     public Vector2 GetVelocity() {
         return velocity;
     }
+
+    /// <summary>
+    /// Set the velocity of the player. Should be in a cardinal direction (Fix please?)
+    /// <summary>
     public void SetVelocity(Vector2 velocity) {
         this.velocity = velocity;
         baseSpeed = velocity.magnitude;
@@ -397,4 +444,59 @@ public class Player : MonoBehaviour, IHitboxEntity
     public void SetPlayerSpawnPoint(SpawnPoint spawnPoint) {
         playerSpawnPoint = spawnPoint;
     }
+
+    public void SetBaseDirection(Vector2 direction) {
+        baseDirection = direction;
+    }
+    public Vector2 GetBaseDirection() {
+        return baseDirection;
+    }
+
+
+
+    // ------------------- PRACTICE MODE -------------------
+
+    public void SetPracticeModeEnabled(bool enabled) {
+        practiceModeEnabled = enabled;
+        if (enabled) {
+            SetGameModeState(PlayerGameModeState.Practice);
+        } else {
+            SetGameModeState(SpawnPoint.Instance.GetStartingPlayerGameModeState());
+        }
+        
+    }
+    public bool GetPracticeModeEnabled() {
+        return practiceModeEnabled;
+    }
+
+    public bool GetIsInvulnerable() {
+        return playerIsInvulnerable;
+    }
+
+    public void SetPracticeModeSpawnDirection(Vector2 direction) {
+        practiceModeSpawnDirection = direction;
+    }
+    public Vector2 GetPracticeModeSpawnDirection() {
+        return practiceModeSpawnDirection;
+    }
+
+    public void SetPracticeModeSpawnPoint(Vector2 spawnPoint) {
+        practiceModeSpawnPoint = spawnPoint;
+    }
+
+    public Vector2 GetPracticeModeStartVelocity() {
+        return initialDirection.normalized * initialSpeed;
+    }
+
+    public void SetGameModeStatePracticeMode(PlayerGameModeState gameModeState) {
+        practiceModeGameModeState = gameModeState;
+        SetGameModeState(gameModeState);
+        velocity = practiceModeSpawnDirection * baseSpeed;
+    }
+
+    public void KillPlayer() {
+        PlayerDied();
+    }
+
+
 }

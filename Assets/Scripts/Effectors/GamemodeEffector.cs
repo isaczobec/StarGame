@@ -24,6 +24,9 @@ public class GamemodeEffector : Effector
     {
         if (hitboxEntity.isPlayer())
         {
+
+            if (Player.Instance.GetIsInvulnerable()) {return;} // do not change the players game mode if they are invulnerable
+
             Player player = (Player)hitboxEntity;
             player.SetGameModeState(playerGameModeState);
 

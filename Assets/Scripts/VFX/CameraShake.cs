@@ -15,6 +15,12 @@ public class CameraShake : MonoBehaviour
     [SerializeField] private float deathShakeIntensity = 6f; 
     private Coroutine shakeCoroutine;
 
+    public static CameraShake Instance {get; private set;}
+
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     private void Start()
     {
@@ -29,6 +35,7 @@ public class CameraShake : MonoBehaviour
 
     public void StartCameraShake(float intensity, float time, float frequency = 0)
     {
+        Debug.Log("Shake");
         if (shakeCoroutine != null)
         {
             StopCoroutine(shakeCoroutine);
