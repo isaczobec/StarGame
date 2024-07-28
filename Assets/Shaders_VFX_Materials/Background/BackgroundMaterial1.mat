@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: PlayerTrailMaterial
-  m_Shader: {fileID: -6465566751694194690, guid: 19035c2988c4665448576d80f16dbb3c, type: 3}
+  m_Name: BackgroundMaterial1
+  m_Shader: {fileID: -6465566751694194690, guid: 235389361daa7b444b15acdf9cc5b1b8, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -36,15 +36,10 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
-    m_Floats:
-    - _Power: 0.3
-    - _QueueControl: 0
-    - _QueueOffset: 0
-    m_Colors:
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _Color2: {r: 0.26415092, g: 0.26415092, b: 0.26415092, a: 1}
+    m_Floats: []
+    m_Colors: []
   m_BuildTextureStacks: []
---- !u!114 &8080491044170629535
+--- !u!114 &7384383010744436609
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
