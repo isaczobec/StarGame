@@ -13,21 +13,35 @@ public class PlayerVisuals : MonoBehaviour
     [SerializeField] private Player player;
     [SerializeField] private Material playerMaterial;
     [SerializeField] private string playerColorName = "_PlayerColor";
+    [SerializeField] private string playerFlashAmountName = "_FlashAmount";
     [SerializeField] private Material trailMaterial;
     [SerializeField] private VisualEffect trailVFX;
     [SerializeField] private string trailVFXColorName = "Color";
     [SerializeField] private string trailMaterialColorName = "_Color";
 
     [SerializeField] private PlayerRingVFX playerRingVFX;
+
+    [Header("playerAnimator References")]
+    [SerializeField] private Animator playerAnimator;
+
+    // playerAnimator ref string
+    private const string playerBleepRef = "PlayerBleep";
+    private const string isHorisontalRef = "IsHorisontal";
     
 
     // COURUTINES
     private Coroutine fadeToPlayerColorCoroutine;
+    private Coroutine setFlashAmountCoroutine;
 
 
     // EXPOSED VARIABLES
+    [Header("rotation settings")]
     [SerializeField] private float RotationSpeed = 5f;
+    [Header("player color settings")]
     [SerializeField] private float playerColorFadeDuration= 0.8f;
+    [Header("player flash settings")]
+    [SerializeField] private float playerFlashDurationClick = 0.12f;
+
 
 
     // VARIABLES
@@ -53,6 +67,7 @@ public class PlayerVisuals : MonoBehaviour
 
     private void Start() {
         player.OnGameModeStateChange += Player_OnGameModeStateChange;
+        player.OnPlayerMomentaryDirectionChanged += Player_OnPlayerMomentaryDirectionChanged;
     }
 
 
@@ -108,6 +123,39 @@ public class PlayerVisuals : MonoBehaviour
         playerRingVFX.SpawnRingVFX(newColor);
         ShockWaveHandler.instance.SpawnShockWave(player.transform.position, null);
         
+    }
+
+
+    // --------- making player bleep when the player changes direction
+
+    
+    private void Player_OnPlayerMomentaryDirectionChanged(object sender, Vector2 e)
+    {
+        // make the player bleep
+        playerAnimator.SetBool(isHorisontalRef, e.x != 0);
+        playerAnimator.SetTrigger(playerBleepRef);
+
+        FlashPlayer(1f,playerFlashDurationClick);
+    }
+
+
+    // --------- setting flash amount
+
+    private void FlashPlayer(float flashAmount, float duration) {
+        if (setFlashAmountCoroutine != null) {
+            StopCoroutine(setFlashAmountCoroutine);
+        }
+        setFlashAmountCoroutine = StartCoroutine(FlashAmountCoroutine(flashAmount, duration));
+    }
+
+    private IEnumerator FlashAmountCoroutine(float flashAmount, float duration) {
+
+        playerMaterial.SetFloat(playerFlashAmountName, flashAmount);
+        trailMaterial.SetFloat(playerFlashAmountName, flashAmount);
+        yield return new WaitForSeconds(duration);
+        playerMaterial.SetFloat(playerFlashAmountName, 0);
+        trailMaterial.SetFloat(playerFlashAmountName, 0);
+        yield break;
     }
 
 }
