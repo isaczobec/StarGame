@@ -95,6 +95,7 @@ public class Player : MonoBehaviour, IHitboxEntity
     public event EventHandler<EventArgs> OnPlayerDeath;
     public event EventHandler<PlayerMenuState> OnPlayerMenuStateChange;
 
+    public event EventHandler<Vector2> OnPlayerMomentaryDirectionChanged;
 
     private void Awake() {
 
@@ -239,13 +240,19 @@ public class Player : MonoBehaviour, IHitboxEntity
     private void OnMomentaryInput(object sender, Vector2 direction)
     {
         if (!letPlayerMove) { return; }
-        switch (currentPlayerGameModeState) {
-            case PlayerGameModeState.Hook:
-                PerformHook(direction);
-                break;
-            case PlayerGameModeState.Zap:
-                velocity = direction * baseSpeed;
-                break;
+
+        if (velocity.normalized != direction.normalized) {
+
+            switch (currentPlayerGameModeState) {
+                case PlayerGameModeState.Hook:
+                    PerformHook(direction);
+                OnPlayerMomentaryDirectionChanged?.Invoke(this, direction);
+                    break;
+                case PlayerGameModeState.Zap:
+                    velocity = direction * baseSpeed;
+                OnPlayerMomentaryDirectionChanged?.Invoke(this, direction);
+                    break;
+            }
         }
     }
 

@@ -11,7 +11,9 @@ GameObject:
   - component: {fileID: 4227837685020338752}
   - component: {fileID: 8433714063297113848}
   - component: {fileID: 1507534549511992667}
+  - component: {fileID: 3795345058117398038}
   - component: {fileID: 3349868428140303022}
+  - component: {fileID: 3446526571317798911}
   m_Layer: 0
   m_Name: _BaseGameModePortal
   m_TagString: effector
@@ -65,6 +67,25 @@ MonoBehaviour:
   spriteRenderer: {fileID: 8060166397483421540}
   shakeDuration: 0.15
   shakeStrength: 10
+--- !u!114 &3795345058117398038
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 651627242202120061}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cafda7f6be9de4041a150e237ff27257, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gamemodeSoundPlayer: {fileID: 3446526571317798911}
+  gamemodeEffector: {fileID: 8433714063297113848}
+  audioName: PortalEntered
+  pitch: 1
+  volume: 1
+  randomPitchRange: 0.2
+  randomVolumeRange: 0
 --- !u!61 &3349868428140303022
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -110,6 +131,25 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &3446526571317798911
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 651627242202120061}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8430348be4e41ac438293d7aff701af6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sounds:
+  - name: PortalEntered
+    audioClip: {fileID: 8300000, guid: 5b061028d17b1aa44be90c9818c7c274, type: 3}
+    mixerGroupType: 1
+    masterVolume: 1
+    spatialBlend: 0.3
+    doplerLevel: 0
 --- !u!1 &2044597590873864767
 GameObject:
   m_ObjectHideFlags: 0
