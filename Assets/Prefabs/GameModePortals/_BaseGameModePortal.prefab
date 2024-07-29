@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4227837685020338752}
   - component: {fileID: 8433714063297113848}
+  - component: {fileID: 1507534549511992667}
   - component: {fileID: 3349868428140303022}
   m_Layer: 0
   m_Name: _BaseGameModePortal
@@ -47,8 +48,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerGameModeState: 0
+--- !u!114 &1507534549511992667
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 651627242202120061}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31859b8f148b44243b1f5cd37eccc776, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gamemodeEffector: {fileID: 8433714063297113848}
   alpha: 0.5
   spriteRenderer: {fileID: 8060166397483421540}
+  shakeDuration: 0.15
+  shakeStrength: 10
 --- !u!61 &3349868428140303022
 BoxCollider2D:
   m_ObjectHideFlags: 0

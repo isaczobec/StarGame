@@ -24,9 +24,9 @@ public class DeleteGameObject : MonoBehaviour
     }
 
 
-    private IEnumerator DestroyAfterTime()
+    private IEnumerator DestroyAfterTime(float time)
     {
-        yield return new WaitForSeconds(timeToDestroyAfterSpawn);
+        yield return new WaitForSeconds(time);
         Destroy(gameObject);
     }
 
@@ -40,7 +40,7 @@ public class DeleteGameObject : MonoBehaviour
             if (destroyCoroutine != null) {
             StopCoroutine(destroyCoroutine);
             }
-            destroyCoroutine = StartCoroutine(DestroyAfterTime());
+            destroyCoroutine = StartCoroutine(DestroyAfterTime(afterTime));
         }
         else
         {

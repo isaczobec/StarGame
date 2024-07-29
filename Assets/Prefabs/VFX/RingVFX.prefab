@@ -76,6 +76,9 @@ VisualEffect:
       - m_Value: 8
         m_Name: LargeStarSize
         m_Overridden: 1
+      - m_Value: 4
+        m_Name: LargeStarColorMultiplier
+        m_Overridden: 1
     m_Vector2f:
       m_Array: []
     m_Vector3f:

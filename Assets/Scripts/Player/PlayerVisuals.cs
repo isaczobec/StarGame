@@ -9,6 +9,7 @@ public class PlayerVisuals : MonoBehaviour
 
 
     // REFERENCES
+    [Header("References")]
     [SerializeField] private Player player;
     [SerializeField] private Material playerMaterial;
     [SerializeField] private string playerColorName = "_PlayerColor";
@@ -16,6 +17,8 @@ public class PlayerVisuals : MonoBehaviour
     [SerializeField] private VisualEffect trailVFX;
     [SerializeField] private string trailVFXColorName = "Color";
     [SerializeField] private string trailMaterialColorName = "_Color";
+
+    [SerializeField] private PlayerRingVFX playerRingVFX;
     
 
     // COURUTINES
@@ -102,6 +105,9 @@ public class PlayerVisuals : MonoBehaviour
     {
         Color newColor = DefaultPlayerColors.defaultColorsDict[e];
         FadePlayerColor(newColor,playerColorFadeDuration);
+        playerRingVFX.SpawnRingVFX(newColor);
+        ShockWaveHandler.instance.SpawnShockWave(player.transform.position, null);
+        
     }
 
 }
