@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: BackgroundMaterial1
-  m_Shader: {fileID: -6465566751694194690, guid: 235389361daa7b444b15acdf9cc5b1b8, type: 3}
+  m_Name: CaveTileMaterial
+  m_Shader: {fileID: -6465566751694194690, guid: d0d51fe55e2de514ca6db9e54bacb4fa, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -23,6 +23,10 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -37,13 +41,13 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _BackgroundMovementMultiplier: 0.003
-    m_Colors:
-    - _CameraLocation: {r: 0.053688563, g: 3.2067313, b: -2.3904657, a: 0}
-    - _Color1: {r: 0.1269957, g: 0, b: 0.23584908, a: 1}
-    - _Color2: {r: 0.02525932, g: 0, b: 0.14150941, a: 1}
+    - _GlowStrength: 13
+    - _GradientNoiseScale: 4
+    - _VorpingMultiplier: 0.2
+    - _VorpingSpeed: 2.5
+    m_Colors: []
   m_BuildTextureStacks: []
---- !u!114 &7384383010744436609
+--- !u!114 &6832313932301490639
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}

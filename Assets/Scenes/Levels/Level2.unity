@@ -809,7 +809,7 @@ TilemapRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: 3e9e2d320567ee646b9d624ae095dbc1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -7143,6 +7143,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerGameModeState: 2
   startVelocity: {x: 0, y: 10}
+  initialDirection: {x: 0, y: 1}
 --- !u!1001 &1768697394
 PrefabInstance:
   m_ObjectHideFlags: 0

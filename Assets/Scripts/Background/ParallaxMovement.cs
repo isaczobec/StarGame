@@ -28,4 +28,12 @@ public class ParallaxMovement : MonoBehaviour
         if (negative) return -1 * parallaxMovement; else return parallaxMovement;
     }
 
+    /// <summary>
+    /// Get the position of the target camera.
+    /// </summary>
+    /// <returns></returns>
+    public Vector3 GetParallaxPosition(bool negative = false) {
+        return negative ? -1 * targetCamera.position : targetCamera.position;
+    }
+
 }

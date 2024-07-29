@@ -2163,6 +2163,9 @@ MonoBehaviour:
   parallaxEffectsToMove:
   - {fileID: 1638200115}
   parallaxMovementReference: ParallaxMovement
+  parallaxMaterialsToMove:
+  - {fileID: 2100000, guid: 34a029b9d61927c45a8d2a393990f8c9, type: 2}
+  cameraLocationReference: _CameraLocation
   parallaxMovement: {fileID: 519420035}
 --- !u!1 &792838061
 GameObject:
