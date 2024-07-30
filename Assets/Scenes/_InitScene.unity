@@ -360,6 +360,8 @@ MonoBehaviour:
   glideModeMaxMovementSpeed: 30
   glideModeAcceleration: 44
   hookIntoWallOffset: 0.5
+  respawnTime: 1
+  moveBackToSpawnPointTime: 0.7
   practiceModeEnabled: 0
   practiceModeSpeed: 20
   practiceModeSpawnDirection: {x: 0, y: 1}
@@ -444,8 +446,6 @@ GameObject:
   m_Component:
   - component: {fileID: 185347774}
   - component: {fileID: 185347773}
-  - component: {fileID: 185347775}
-  - component: {fileID: 185347776}
   m_Layer: 6
   m_Name: PlayerVisual
   m_TagString: Untagged
@@ -520,48 +520,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1639002563}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &185347775
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 185347772}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ae3fcf1e7e123364e99b3c3c5325069e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 128579258}
-  playerMaterial: {fileID: 2100000, guid: f7b616a2e34daec4b84c5025a6ddc351, type: 2}
-  playerColorName: _PlayerColor
-  playerFlashAmountName: _FlashAmount
-  trailMaterial: {fileID: 2100000, guid: 5d666c1eb49fc3d44989f2925c289522, type: 2}
-  trailVFX: {fileID: 292475380}
-  trailVFXColorName: Color
-  trailMaterialColorName: _Color
-  playerRingVFX: {fileID: 999166248}
-  playerAnimator: {fileID: 635787106}
-  RotationSpeed: 499
-  playerColorFadeDuration: 0.8
-  playerFlashDurationClick: 0.12
---- !u!114 &185347776
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 185347772}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bf77e9de4a02bb74a8542b14ff542530, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  normalColor: {r: 1, g: 0.9957261, b: 0, a: 1}
-  zapColor: {r: 0.9553981, g: 0, b: 1, a: 1}
-  glideColor: {r: 0, g: 1, b: 0.9908633, a: 1}
-  hookColor: {r: 0, g: 1, b: 0.5104327, a: 1}
-  practiceColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &207560038
 GameObject:
   m_ObjectHideFlags: 0
@@ -574,6 +532,7 @@ GameObject:
   - component: {fileID: 207560039}
   - component: {fileID: 207560041}
   - component: {fileID: 207560042}
+  - component: {fileID: 207560043}
   m_Layer: 0
   m_Name: Virtual Camera
   m_TagString: Untagged
@@ -651,8 +610,8 @@ MonoBehaviour:
   virtualCamera: {fileID: 207560039}
   defaultShakeFrequency: 0.7
   deathShakeFrequency: 0.2
-  deathShakeTime: 0.6
-  deathShakeIntensity: 18
+  deathShakeTime: 0.7
+  deathShakeIntensity: 21
 --- !u!114 &207560042
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -668,6 +627,215 @@ MonoBehaviour:
   virtualCamera: {fileID: 207560039}
   menuYOffset: 10
   defaultPlayerZOffset: -12
+--- !u!114 &207560043
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 207560038}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8cab88b5a2ecdf42bc2efac2e04a637, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  virtualCamera: {fileID: 207560039}
+  baseOrthoSize: 14.8
+  deathZoomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0.7509623
+      outSlope: 0.7509623
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.06666614
+      value: 0.05006376
+      inSlope: -0.19803157
+      outSlope: -0.19803157
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.19789456
+      value: -0.10045858
+      inSlope: -0.5224275
+      outSlope: -0.5224275
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.17720129
+    - serializedVersion: 3
+      time: 0.35085866
+      value: -0.13064235
+      inSlope: -0.014652668
+      outSlope: -0.014652668
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.4308158
+    - serializedVersion: 3
+      time: 0.61140496
+      value: -0.053663284
+      inSlope: 0.44492832
+      outSlope: 0.44492832
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.23213945
+    - serializedVersion: 3
+      time: 0.8058118
+      value: 0.0068713725
+      inSlope: 0.00059305754
+      outSlope: 0.00059305754
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 1
+      outWeight: 1
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -0.0021873699
+      outSlope: -0.0021873699
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 1
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  portalZoomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0.40739194
+      outSlope: 0.40739194
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.06249947
+      value: 0.02546178
+      inSlope: -0.12503888
+      outSlope: -0.12503888
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.22342418
+      value: -0.08034134
+      inSlope: -0.2770069
+      outSlope: -0.2770069
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0.103455886
+      outSlope: 0.103455886
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  speedArrowZoomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0.6266588
+      outSlope: 0.6266588
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.05416614
+      value: 0.033943687
+      inSlope: -0.024276495
+      outSlope: -0.024276495
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.22342418
+      value: -0.08034134
+      inSlope: -0.28587794
+      outSlope: -0.28587794
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0.103455886
+      outSlope: 0.103455886
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  winLevelZoomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0.6266588
+      outSlope: 0.6266588
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.05416614
+      value: 0.033943687
+      inSlope: -0.024276495
+      outSlope: -0.024276495
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.22342418
+      value: -0.08034134
+      inSlope: -0.28587794
+      outSlope: -0.28587794
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0.103455886
+      outSlope: 0.103455886
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &208840992
 GameObject:
   m_ObjectHideFlags: 0
@@ -2060,6 +2228,8 @@ GameObject:
   m_Component:
   - component: {fileID: 635787105}
   - component: {fileID: 635787106}
+  - component: {fileID: 635787107}
+  - component: {fileID: 635787108}
   m_Layer: 0
   m_Name: PlayerVisualObject
   m_TagString: Untagged
@@ -2105,6 +2275,55 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &635787107
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 635787104}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae3fcf1e7e123364e99b3c3c5325069e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 128579258}
+  playerMaterial: {fileID: 2100000, guid: f7b616a2e34daec4b84c5025a6ddc351, type: 2}
+  playerColorName: _PlayerColor
+  playerFlashAmountName: _FlashAmount
+  trailMaterial: {fileID: 2100000, guid: 5d666c1eb49fc3d44989f2925c289522, type: 2}
+  trailVFX: {fileID: 292475380}
+  trailVFXColorName: Color
+  trailMaterialColorName: _Color
+  playerRingVFX: {fileID: 999166248}
+  playerAnimator: {fileID: 635787106}
+  playerSpriteObject: {fileID: 185347772}
+  playerVisualGameObjects:
+  - {fileID: 1639002562}
+  - {fileID: 359108980}
+  - {fileID: 292475377}
+  RotationSpeed: 499
+  playerColorFadeDuration: 0.8
+  playerFlashDurationClick: 0.12
+  deathZoomDuration: 1.3
+  deathZoomMultiplier: 20
+--- !u!114 &635787108
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 635787104}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf77e9de4a02bb74a8542b14ff542530, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  normalColor: {r: 1, g: 0.9957261, b: 0, a: 1}
+  zapColor: {r: 0.9553981, g: 0, b: 1, a: 1}
+  glideColor: {r: 0, g: 1, b: 0.9908633, a: 1}
+  hookColor: {r: 0, g: 1, b: 0.5104327, a: 1}
+  practiceColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &684302604
 GameObject:
   m_ObjectHideFlags: 0
@@ -5526,6 +5745,7 @@ GameObject:
   - component: {fileID: 1982102647}
   - component: {fileID: 1982102646}
   - component: {fileID: 1982102645}
+  - component: {fileID: 1982102648}
   m_Layer: 0
   m_Name: MusicManager
   m_TagString: Untagged
@@ -5581,6 +5801,159 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1982102648
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1982102644}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bc2dda7bbc957949bc852ad0023100d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  musicReverbDryParameter: MusicReverbDryLevel
+  musicReverbWetParameter: MusicReverbWetLevel
+  musicLowPassFrequencyParameter: MusicLowpassCutoff
+  deathMusicReverbWetCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 41.904926
+      outSlope: 41.904926
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.016596304
+      value: 0.69546694
+      inSlope: 0.97975695
+      outSlope: 0.97975695
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.41435874
+    - serializedVersion: 3
+      time: 0.11156967
+      value: 0.9926243
+      inSlope: -0.056045275
+      outSlope: -0.056045275
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 1
+    - serializedVersion: 3
+      time: 0.88762313
+      value: 0.9540922
+      inSlope: -0.30784622
+      outSlope: -0.30784622
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.13791154
+      outWeight: 0.8900084
+    - serializedVersion: 3
+      time: 0.98562175
+      value: 0.66387546
+      inSlope: -1.0068882
+      outSlope: -1.0068882
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 1
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -46.172203
+      outSlope: -46.172203
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  deathMusicReverbDryCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: -0.19771998
+      outSlope: -0.19771998
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.4488904
+      value: 0.9112454
+      inSlope: -0.011135575
+      outSlope: -0.011135575
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.64356434
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0.16104709
+      outSlope: 0.16104709
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  deathMusicLowPassCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: -3.026432
+      outSlope: -3.026432
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.3031206
+      value: 0.08262604
+      inSlope: -0.27736345
+      outSlope: -0.27736345
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.37966636
+    - serializedVersion: 3
+      time: 0.69231063
+      value: 0.301732
+      inSlope: 1.7812672
+      outSlope: 1.7812672
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0.04519255
+      outSlope: 0.04519255
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.23043482
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  defaultReverbWetLevel: -10000
+  defaultReverbDryLevel: 0
+  defaultLowPassLevel: 22000
 --- !u!1 &1992146113
 GameObject:
   m_ObjectHideFlags: 0

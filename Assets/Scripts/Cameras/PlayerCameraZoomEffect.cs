@@ -11,9 +11,10 @@ public class PlayerCameraZoomEffect : MonoBehaviour
 
     [Header("Animation curves")]
     [Header("Should start and end at 0")]
-    [SerializeField] public AnimationCurve DeathZoomCurve;
-    [SerializeField] public AnimationCurve PortalZoomCurve;
-    [SerializeField] public AnimationCurve SpeedArrowZoomCurve;
+    [SerializeField] public AnimationCurve deathZoomCurve;
+    [SerializeField] public AnimationCurve portalZoomCurve;
+    [SerializeField] public AnimationCurve speedArrowZoomCurve;
+    [SerializeField] public AnimationCurve winLevelZoomCurve;
 
 
     public static PlayerCameraZoomEffect Instance { get; private set; }
@@ -35,20 +36,20 @@ public class PlayerCameraZoomEffect : MonoBehaviour
     }
 
 
-    public void PlayZoomEffect(AnimationCurve zoomCurve, float zoomScale = 1) {
+    public void PlayZoomEffect(AnimationCurve zoomCurve, float zoomScale = 1, float duration = 0.5f) {
         if (zoomCoroutine != null) {
             StopCoroutine(zoomCoroutine);
         }
-        zoomCoroutine = StartCoroutine(ZoomCoroutine(zoomCurve, zoomScale));
+        zoomCoroutine = StartCoroutine(ZoomCoroutine(zoomCurve, zoomScale, duration));
     }
 
-    private IEnumerator ZoomCoroutine(AnimationCurve zoomCurve, float zoomScale = 1) {
+    private IEnumerator ZoomCoroutine(AnimationCurve zoomCurve, float zoomScale = 1, float duration = 0.5f) {
         float time = 0;
-        float duration = zoomCurve.keys[zoomCurve.length - 1].time;
         while (time < duration) {
             time += Time.deltaTime;
-            float val = zoomCurve.Evaluate(time);
-            float zoom = baseOrthoSize + val * zoomScale;
+            float timeNormalized = time / duration;
+            float val = zoomCurve.Evaluate(timeNormalized);
+            float zoom = baseOrthoSize - val * zoomScale;
             virtualCamera.m_Lens.OrthographicSize = zoom;
             yield return null;
         }

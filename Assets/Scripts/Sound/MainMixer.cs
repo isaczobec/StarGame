@@ -11,6 +11,11 @@ public class MainMixer : MonoBehaviour
     [SerializeField] private AudioMixer mixer;
     [SerializeField] private AudioMixerGroup musicGroup;
     [SerializeField] private AudioMixerGroup sfxGroup;
+
+    public AudioMixer GetMainAudioMixer()
+    {
+        return mixer;
+    }
     public AudioMixerGroup GetMusicGroup()
     {
         return musicGroup;

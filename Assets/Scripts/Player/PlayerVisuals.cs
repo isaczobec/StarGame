@@ -23,6 +23,9 @@ public class PlayerVisuals : MonoBehaviour
 
     [Header("playerAnimator References")]
     [SerializeField] private Animator playerAnimator;
+    [Header("player gameobject references")]
+    [SerializeField] private GameObject playerSpriteObject; // go with player sprite. Rotates
+    [SerializeField] private GameObject[] playerVisualGameObjects; // gameobjects that are part of the player visuals. Toggled on or off on death
 
     // playerAnimator ref string
     private const string playerBleepRef = "PlayerBleep";
@@ -41,6 +44,9 @@ public class PlayerVisuals : MonoBehaviour
     [SerializeField] private float playerColorFadeDuration= 0.8f;
     [Header("player flash settings")]
     [SerializeField] private float playerFlashDurationClick = 0.12f;
+    [Header("zoom vfx settings")]
+    [SerializeField] private float deathZoomDuration = 0.24f;
+    [SerializeField] private float deathZoomMultiplier = 15f;
 
 
 
@@ -68,6 +74,8 @@ public class PlayerVisuals : MonoBehaviour
     private void Start() {
         player.OnGameModeStateChange += Player_OnGameModeStateChange;
         player.OnPlayerMomentaryDirectionChanged += Player_OnPlayerMomentaryDirectionChanged;
+        player.OnPlayerDeath += Player_OnPlayerDeath;
+        player.OnPlayerSpawn += Player_OnPlayerSpawn;
     }
 
 
@@ -77,7 +85,7 @@ public class PlayerVisuals : MonoBehaviour
     }
 
     private void Rotate() {
-        transform.Rotate(Vector3.forward * RotationSpeed * Time.deltaTime);
+        playerSpriteObject.transform.Rotate(Vector3.forward * RotationSpeed * Time.deltaTime);
     }
 
 
@@ -141,6 +149,11 @@ public class PlayerVisuals : MonoBehaviour
 
     // --------- setting flash amount
 
+    /// <summary>
+    /// Makes the player and trail material flash with a given amount for a given duration.
+    /// </summary>
+    /// <param name="flashAmount"></param>
+    /// <param name="duration"></param>
     private void FlashPlayer(float flashAmount, float duration) {
         if (setFlashAmountCoroutine != null) {
             StopCoroutine(setFlashAmountCoroutine);
@@ -156,6 +169,27 @@ public class PlayerVisuals : MonoBehaviour
         playerMaterial.SetFloat(playerFlashAmountName, 0);
         trailMaterial.SetFloat(playerFlashAmountName, 0);
         yield break;
+    }
+
+    private void SetPlayerVisible(bool visible) {
+        foreach (GameObject go in playerVisualGameObjects) {
+            go.SetActive(visible);
+        }
+    }
+
+
+
+
+
+    // --------- player death
+    private void Player_OnPlayerDeath(object sender, PlayerDeathEventArgs e)
+    {
+        PlayerCameraZoomEffect.Instance.PlayZoomEffect(PlayerCameraZoomEffect.Instance.deathZoomCurve, deathZoomMultiplier, deathZoomDuration);
+        SetPlayerVisible(false); // make the player invisible on death
+    }
+    private void Player_OnPlayerSpawn(object sender, EventArgs e)
+    {
+        SetPlayerVisible(true); // make the player visible on spawn
     }
 
 }

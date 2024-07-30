@@ -71,7 +71,7 @@ public class CameraShake : MonoBehaviour
     }
 
     // ----- SHAKE THE SCREEN ON CERTAIN EVENTS -----
-    private void Player_OnPlayerDeath(object sender, EventArgs e)
+    private void Player_OnPlayerDeath(object sender, PlayerDeathEventArgs e)
     {
         StartCameraShake(deathShakeIntensity, deathShakeTime, deathShakeFrequency);
     }

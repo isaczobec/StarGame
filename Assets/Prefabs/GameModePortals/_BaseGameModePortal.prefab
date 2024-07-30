@@ -50,7 +50,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerGameModeState: 0
-  timeStopDuration: 0.1
 --- !u!114 &1507534549511992667
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -66,8 +65,10 @@ MonoBehaviour:
   gamemodeEffector: {fileID: 8433714063297113848}
   alpha: 0.5
   spriteRenderer: {fileID: 8060166397483421540}
-  shakeDuration: 0.15
-  shakeStrength: 10
+  shakeDuration: 0.14
+  shakeStrength: 8.5
+  zoomDuration: 0.15
+  zoomStrength: 3.3
 --- !u!114 &3795345058117398038
 MonoBehaviour:
   m_ObjectHideFlags: 0

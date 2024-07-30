@@ -49,6 +49,12 @@ public class Player : MonoBehaviour, IHitboxEntity
     [Header("Hook variables")]
     [SerializeField] private float hookIntoWallOffset = 0.5f;
 
+
+    [Header("Death settings")]
+    [SerializeField] private float respawnTime = 1f;
+    [SerializeField] private float moveBackToSpawnPointTime = 0.7f; // when the player invisibly teleports back to spawn and the camera starts to reset after the player dies
+
+
     [Header("Practice mode variables")]
     [SerializeField] private bool practiceModeEnabled = false;
     [SerializeField] private float practiceModeSpeed = 10f;
@@ -84,15 +90,28 @@ public class Player : MonoBehaviour, IHitboxEntity
     
     private bool playerIsInvulnerable = false;
 
+    // death
+    private bool playerIsDead = false;
+
+
     // practice mode
     private Vector2 practiceModeSpawnPoint = Vector2.zero;
     private PlayerGameModeState practiceModeGameModeState = PlayerGameModeState.Practice;
+
+
+    // ---- coroutines ----
+
+    private Coroutine respawnPlayerCoroutine;
 
     // -----------------------------
 
     // EVENTS
     public event EventHandler<PlayerGameModeState> OnGameModeStateChange;
-    public event EventHandler<EventArgs> OnPlayerDeath;
+    public event EventHandler<PlayerDeathEventArgs> OnPlayerDeath;
+    /// <summary>
+    /// Called when the player spawns or respawns
+    /// </summary>
+    public event EventHandler<EventArgs> OnPlayerSpawn; 
     public event EventHandler<PlayerMenuState> OnPlayerMenuStateChange;
 
     public event EventHandler<Vector2> OnPlayerMomentaryDirectionChanged;
@@ -131,22 +150,25 @@ public class Player : MonoBehaviour, IHitboxEntity
 
             // if the player is in practice mode
             baseDirection = practiceModeSpawnDirection;
-            transform.position = practiceModeSpawnPoint;
+            MoveToSpawnPoint();
             velocity = practiceModeSpawnDirection * baseSpeed;
             SetGameModeState(practiceModeGameModeState);
             SpawnPoint.Instance.InitializePlayer(changePosition:false,changeVelocity:false,changeGameMode:false);
         }
+
+        OnPlayerSpawn?.Invoke(this, EventArgs.Empty);
     }
 
     private void Update()
     {
 
 
-        HandleMovement();
-
-        UpdateHookPosition();
-
-        HandleNormalModeInput();
+        // if the player is not dead, handle movement
+        if (!playerIsDead) {
+            HandleMovement();
+            UpdateHookPosition();
+            HandleNormalModeInput();
+        }
 
     }
 
@@ -241,6 +263,8 @@ public class Player : MonoBehaviour, IHitboxEntity
     {
         if (!letPlayerMove) { return; }
 
+        if (playerIsDead) { return; }
+
         if (velocity.normalized != direction.normalized) {
 
             switch (currentPlayerGameModeState) {
@@ -259,6 +283,7 @@ public class Player : MonoBehaviour, IHitboxEntity
     private void HandleNormalModeInput() {
 
         if (!letPlayerMove) { return; }
+        if (playerIsDead) { return; }
         Vector2 inputDirection = playerInputManager.GetPlayerMovementInput().normalized;
         switch (currentPlayerGameModeState) {
             case PlayerGameModeState.Normal:
@@ -311,18 +336,56 @@ public class Player : MonoBehaviour, IHitboxEntity
         
     }
 
+    /// <summary>
+    /// Called when the player dies. Sets the player to be dead and starts the respawn coroutine.
+    /// </summary>
     private void PlayerDied()
     {
         UnHookPlayer();
-        InitializePlayer();
+        playerIsDead = true;
+        StartPlayerRespawn();
 
-        OnPlayerDeath?.Invoke(this, EventArgs.Empty);
+        OnPlayerDeath?.Invoke(this, 
+            new PlayerDeathEventArgs {
+                respawnTime = respawnTime
+            });
+    }
+
+
+    // ----- respawning -----
+
+    /// <summary>
+    /// Starts the player respawn coroutine. Cancels the previous respawn coroutine if it exists.
+    /// </summary>
+    private void StartPlayerRespawn() {
+        if (respawnPlayerCoroutine != null) {
+            StopCoroutine(respawnPlayerCoroutine);
+        }
+        StartCoroutine(RespawnPlayerCoroutine());
+    }
+
+    private IEnumerator RespawnPlayerCoroutine() {
+        yield return new WaitForSeconds(moveBackToSpawnPointTime);
+
+        MoveToSpawnPoint();
+
+        yield return new WaitForSeconds(respawnTime - moveBackToSpawnPointTime);
+
+        InitializePlayer();
+        playerIsDead = false;
+    }
+
+    /// <summary>
+    /// Moves the player to the spawnpoint.
+    /// </summary>
+    private void MoveToSpawnPoint() {
+        transform.position = practiceModeSpawnPoint;
     }
 
 
     public void OnHurtBoxHit(HitboxTriggeredInfo hitboxTriggeredInfo)
     {
-        if (playerIsInvulnerable) { return; } // do not take damage if the player is invulnerable
+        if (playerIsInvulnerable || playerIsDead) { return; } // do not take damage if the player is invulnerable
         PlayerDied();
     }
 
@@ -469,6 +532,8 @@ public class Player : MonoBehaviour, IHitboxEntity
 
 
 
+
+
     // ------------------- PRACTICE MODE -------------------
 
     public void SetPracticeModeEnabled(bool enabled) {
@@ -514,4 +579,11 @@ public class Player : MonoBehaviour, IHitboxEntity
     }
 
 
+}
+
+// event args
+
+
+public class PlayerDeathEventArgs {
+    public float respawnTime;
 }
