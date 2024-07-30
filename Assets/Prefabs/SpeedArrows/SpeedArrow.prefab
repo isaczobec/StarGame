@@ -201,8 +201,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3010358725042240925}
-  - component: {fileID: 5274768275314646444}
   - component: {fileID: 985177795562025847}
+  - component: {fileID: 5274768275314646444}
+  - component: {fileID: 8118581464795820126}
+  - component: {fileID: 6795366473900053896}
   - component: {fileID: 5772239724965998169}
   m_Layer: 0
   m_Name: SpeedArrow
@@ -229,6 +231,20 @@ Transform:
   - {fileID: 7841154180291773128}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &985177795562025847
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4367747660681718687}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f41bfb52d169f314484c7eb5464177fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timeStopDuration: 0.1
+  speed: 0
 --- !u!114 &5274768275314646444
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -252,7 +268,7 @@ MonoBehaviour:
   cameraShakeDuration: 0.3
   cameraShakeMagnitude: 10
   cameraShakeFrequency: 0.2
---- !u!114 &985177795562025847
+--- !u!114 &8118581464795820126
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -261,10 +277,38 @@ MonoBehaviour:
   m_GameObject: {fileID: 4367747660681718687}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f41bfb52d169f314484c7eb5464177fe, type: 3}
+  m_Script: {fileID: 11500000, guid: 6679dfe24a1fd0545bd962dc6389fb7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 0
+  speedArrowEffector: {fileID: 985177795562025847}
+  speedUpRefString: SpeedUp
+  speedDownRefString: SpeedDown
+  soundPlayer: {fileID: 6795366473900053896}
+--- !u!114 &6795366473900053896
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4367747660681718687}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8430348be4e41ac438293d7aff701af6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sounds:
+  - name: SpeedUp
+    audioClip: {fileID: 8300000, guid: 2d4fd4508ef4a1c40926869e4876363d, type: 3}
+    mixerGroupType: 1
+    masterVolume: 1
+    spatialBlend: 0.3
+    doplerLevel: 0
+  - name: SpeedDown
+    audioClip: {fileID: 8300000, guid: 0e2187415d515d44d898ec4be1d4e050, type: 3}
+    mixerGroupType: 1
+    masterVolume: 1
+    spatialBlend: 0.3
+    doplerLevel: 0
 --- !u!61 &5772239724965998169
 BoxCollider2D:
   m_ObjectHideFlags: 0

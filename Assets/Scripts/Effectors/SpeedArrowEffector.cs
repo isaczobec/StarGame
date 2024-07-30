@@ -7,7 +7,8 @@ public class SpeedArrowEffector : Effector
 {
 
     [SerializeField] private float speed; // the speed of the arrow
-    public event EventHandler<EventArgs> OnSpeedArrowVisualTriggered;
+    public event EventHandler<OnSpeedArrowTriggeredEventArgs> OnSpeedArrowTriggered;
+
 
     
 
@@ -19,12 +20,24 @@ public class SpeedArrowEffector : Effector
         {
 
             Player player = (Player)hitboxEntity;
+
+            OnSpeedArrowTriggered?.Invoke(this, 
+                new OnSpeedArrowTriggeredEventArgs
+                {
+                    spedUp = player.GetSpeed() < speed,
+                    speed = speed
+                });
+
             player.SetSpeed(speed);
 
-            OnSpeedArrowVisualTriggered?.Invoke(this, EventArgs.Empty);
 
 
         }
     }
 
+}
+
+public class OnSpeedArrowTriggeredEventArgs {
+    public bool spedUp;
+    public float speed;
 }

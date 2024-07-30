@@ -395,6 +395,14 @@ public class Player : MonoBehaviour, IHitboxEntity
     }
 
     /// <summary>
+    /// Gets the base speed of the player, ie the speed of the last speed arrow they hit
+    /// </summary>
+    /// <returns></returns>
+    public float GetSpeed() {
+        return baseSpeed;
+    }
+
+    /// <summary>
     /// Set the speed of the player
     /// </summary>
     /// <param name="speed"></param>

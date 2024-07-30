@@ -24,7 +24,7 @@ public class SpeedArrowVisual : MonoBehaviour
     {
         SetupArrowAnimators();
 
-        speedArrowEffector.OnSpeedArrowVisualTriggered += SpeedArrowEffector_OnEffectorTriggered; // subscribe to the effector event
+        speedArrowEffector.OnSpeedArrowTriggered += SpeedArrowEffector_OnEffectorTriggered; // subscribe to the effector event
     }
 
 
@@ -39,7 +39,7 @@ public class SpeedArrowVisual : MonoBehaviour
         }
     }
 
-    private void SpeedArrowEffector_OnEffectorTriggered(object sender, EventArgs e)
+    private void SpeedArrowEffector_OnEffectorTriggered(object sender, OnSpeedArrowTriggeredEventArgs e)
     {
         foreach (Animator animator in arrowAnimators)
         {

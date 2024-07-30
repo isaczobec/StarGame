@@ -7,7 +7,9 @@ public class GamemodeEffector : Effector
 {
 
     [SerializeField] private PlayerGameModeState playerGameModeState; // The state this effector will set the player to
+    
     public PlayerGameModeState GetPlayerGameModeState() { return playerGameModeState; }
+
 
 
     public event EventHandler<EventArgs> OnEffectorTriggeredByPlayerEvent;
@@ -23,6 +25,7 @@ public class GamemodeEffector : Effector
             player.SetGameModeState(playerGameModeState);
 
             OnEffectorTriggeredByPlayerEvent?.Invoke(this, EventArgs.Empty);
+
 
         }
     }

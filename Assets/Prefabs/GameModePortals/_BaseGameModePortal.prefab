@@ -50,6 +50,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerGameModeState: 0
+  timeStopDuration: 0.1
 --- !u!114 &1507534549511992667
 MonoBehaviour:
   m_ObjectHideFlags: 0
