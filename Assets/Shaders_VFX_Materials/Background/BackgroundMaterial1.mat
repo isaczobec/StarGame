@@ -39,7 +39,7 @@ Material:
     m_Floats:
     - _BackgroundMovementMultiplier: 0.003
     m_Colors:
-    - _CameraLocation: {r: -20.38855, g: 104.91999, b: -12, a: 0}
+    - _CameraLocation: {r: 4.265004, g: 55.157143, b: -2.2312021, a: 0}
     - _Color1: {r: 0.1269957, g: 0, b: 0.23584908, a: 1}
     - _Color2: {r: 0.02525932, g: 0, b: 0.14150941, a: 1}
   m_BuildTextureStacks: []
