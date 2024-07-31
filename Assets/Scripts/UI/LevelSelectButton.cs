@@ -1,13 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class LevelSelectButton : UIButton
 {
 
-    // serializefield for testing
-    private LevelSO levelSO;
+    public LevelSO levelSO {get; private set;}
 
 
     [SerializeField] private TMPro.TextMeshProUGUI levelNameText;
@@ -17,15 +17,38 @@ public class LevelSelectButton : UIButton
     [SerializeField] private TMPro.TextMeshProUGUI timesDiedText;
 
     [Header("Visuals")]
+    [Header("Animator")]
     [SerializeField] private Animator buttonAnimator;
+    [SerializeField] private float cycleOffsetRandomMax = 3f;
+    
+    [Header("Shader and sprite")]
     [SerializeField] private Shader buttonShader;
     [SerializeField] private Image buttonImage;
+
+    [Header("MoveToNewPosition")]
+    [SerializeField] private AnimationCurve moveToNewPositionCurve;
+
+
 
     private const string isHoveredRef = "_IsHovered";
 
     private const string begingHoverRef = "BeginHover";
     private const string endHoverRef = "EndHover";
+    private const string appearRef = "Appear";
+    private const string disappearRef = "Disappear";
     private const string cycleOffsetRef = "CycleOffset";
+
+    private const string appearSpeedRef = "AppearSpeed";
+
+
+    // member variables
+
+    private bool isVisible;
+
+    // coroutines
+
+    private Coroutine appearCoroutine;
+    private Coroutine moveToNewPositionCoroutine;
 
     // instead of start
     public override void InitButton()
@@ -47,6 +70,8 @@ public class LevelSelectButton : UIButton
         secondsPlayedText.text = ParseSeconds(levelSO.secondsPlayed);
         timesDiedText.text = levelSO.timesDied.ToString();
 
+        // set the cycle offset
+        buttonAnimator.SetFloat(cycleOffsetRef, Random.Range(0f, cycleOffsetRandomMax));
         
     }
 
@@ -84,7 +109,8 @@ public class LevelSelectButton : UIButton
 
     public override void OnClick()
     {
-        LevelHandler.Insance.LoadLevel(levelSO.sceneToLoadRefString);
+        if (!isVisible) return;
+        LevelButtonHandler.Instance.LevelButtonClicked(this);
     }
 
 
@@ -92,14 +118,71 @@ public class LevelSelectButton : UIButton
 
     public override void OnHoverEnter()
     {
+        if (!isVisible) return;
         buttonAnimator.SetTrigger(begingHoverRef);
         buttonImage.material.SetFloat(isHoveredRef, 1f);
     }
 
     public override void OnHoverExit()
     {
+        if (!isVisible) return;
         buttonAnimator.SetTrigger(endHoverRef);
         buttonImage.material.SetFloat(isHoveredRef, 0f);
+    }
+
+
+    /// <summary>
+    /// Make the button appear. This is called by the IEnumerator WaitToAppearCoroutine coroutine.
+    /// </summary>
+    private void ChangeButtonVisualsVisible(bool visible, float speedMultiplier = 1f) {
+        buttonAnimator.SetFloat(appearSpeedRef, speedMultiplier);
+        if (visible) {
+            buttonAnimator.SetTrigger(appearRef);
+        } else {
+            buttonAnimator.SetTrigger(disappearRef);
+        }
+        isVisible = visible;
+    }
+
+    private IEnumerator WaitToAppearCoroutine(bool visible, float timeUntilAppearStart, float speedMultiplier = 1f) {
+        yield return new WaitForSeconds(timeUntilAppearStart);
+        ChangeButtonVisualsVisible(visible, speedMultiplier);
+    }
+
+    /// <summary>
+    /// Begin the wait for the button to appear. After the timeUntilAppearStart, the button will appear
+    /// </summary>
+    /// <param name="timeUntilAppearStart"></param>
+    public void ChangeVisible(bool visible, float timeUntilStart = 0f, float speedMultiplier = 1f) {
+        if (isVisible == visible) return;
+        if (appearCoroutine != null) {
+            StopCoroutine(appearCoroutine);
+        }
+        if (timeUntilStart <= 0) {
+            ChangeButtonVisualsVisible(visible, speedMultiplier);
+            return;
+        }
+        appearCoroutine = StartCoroutine(WaitToAppearCoroutine(visible,timeUntilStart));
+    }
+
+
+    public void MoveToNewPosition(Vector3 targetPosition, float timeToMove) {
+        if (moveToNewPositionCoroutine != null) {
+            StopCoroutine(moveToNewPositionCoroutine);
+        }
+        moveToNewPositionCoroutine = StartCoroutine(MoveToNewPositionCoroutine(targetPosition, timeToMove));
+    }
+
+    private IEnumerator MoveToNewPositionCoroutine(Vector3 targetPosition, float timeToMove) {
+        Vector3 startPosition = transform.position;
+        float timeElapsed = 0;
+        while (timeElapsed < timeToMove) {
+            timeElapsed += Time.deltaTime;
+            float t = moveToNewPositionCurve.Evaluate(timeElapsed / timeToMove);
+            transform.position = Vector3.Lerp(startPosition, targetPosition, t);
+            yield return null;
+        }
+        transform.position = targetPosition;
     }
 
 }

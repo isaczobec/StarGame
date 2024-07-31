@@ -42,7 +42,7 @@ Material:
     - _QueueControl: 0
     - _QueueOffset: 0
     m_Colors:
-    - _Color: {r: 0.9999963, g: 0.99564606, b: 0.000080290636, a: 1}
+    - _Color: {r: 1, g: 0.9957261, b: 0, a: 1}
     - _Color2: {r: 0.26415092, g: 0.26415092, b: 0.26415092, a: 1}
     - _FlashColor1: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []

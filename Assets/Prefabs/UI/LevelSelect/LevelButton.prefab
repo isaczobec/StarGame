@@ -457,8 +457,33 @@ MonoBehaviour:
   secondsPlayedText: {fileID: 3607190855628240021}
   timesDiedText: {fileID: 8961611781078314181}
   buttonAnimator: {fileID: 5009339715846907594}
+  cycleOffsetRandomMax: 3
   buttonShader: {fileID: -6465566751694194690, guid: b70439bbe38ffd24a855770efeb56e50, type: 3}
   buttonImage: {fileID: 7458055429835464062}
+  moveToNewPositionCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!114 &4386027782289041445
 MonoBehaviour:
   m_ObjectHideFlags: 0

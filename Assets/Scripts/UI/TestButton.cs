@@ -21,6 +21,6 @@ public class TestButton : MonoBehaviour
 
     private void OnClick()
     {
-        LevelHandler.Insance.LoadLevel(levelToLoad);
+        LevelHandler.Insance.ExitToMainMenuScreenCovered(0.5f,0.3f);
     }
 }

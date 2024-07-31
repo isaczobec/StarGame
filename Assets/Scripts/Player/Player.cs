@@ -128,18 +128,28 @@ public class Player : MonoBehaviour, IHitboxEntity
     }
 
 
-    private void Start() {
+    private void Start()
+    {
         //SUBSCRIBE TO EVENTS
         playerInputManager.OnMomentaryInput += OnMomentaryInput;
 
         //Set initial variables
-        currentPlayerMovementState = PlayerMovementState.Free;
-        currentPlayerMenuState = PlayerMenuState.mainMenu;
-        SetVelocity(initialDirection.normalized * initialSpeed);
-        SetGameModeState(startingGameModeState); // set the starting game mode state, invoke function for extra functionality lol
+        EnablePlayerMenuMode();
 
         //Set the hitbox entity
         playerHitbox.SetOwnerHitboxEntity(this);
+
+        // subscribe to other events
+        LevelHandler.Insance.OnReturnToMenu += OnReturnToMenu;
+    }
+
+
+    private void EnablePlayerMenuMode()
+    {
+        currentPlayerMovementState = PlayerMovementState.Free;
+        SetPlayerMenuState(PlayerMenuState.mainMenu);
+        SetVelocity(initialDirection.normalized * initialSpeed);
+        SetGameModeState(startingGameModeState); // set the starting game mode state, invoke function for extra functionality lol
     }
 
     public void InitializePlayer()
@@ -379,7 +389,9 @@ public class Player : MonoBehaviour, IHitboxEntity
     /// Moves the player to the spawnpoint.
     /// </summary>
     private void MoveToSpawnPoint() {
-        transform.position = practiceModeSpawnPoint;
+        if (practiceModeSpawnPoint != null) {
+            transform.position = practiceModeSpawnPoint;
+        }
     }
 
 
@@ -579,6 +591,11 @@ public class Player : MonoBehaviour, IHitboxEntity
     }
 
 
+
+    private void OnReturnToMenu(object sender, EventArgs e)
+    {
+        EnablePlayerMenuMode();
+    }
 }
 
 // event args
