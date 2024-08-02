@@ -348,8 +348,6 @@ public class CurveSpikeGenerator : MonoBehaviour
             for (int i = 0; i < info.positions.Count; i++)
             {
 
-                Debug.Log("amount points: " + info.positions.Count);
-                Debug.Log("I: " + i);
                 Vector2 curveNormal = flipSpikes ? new Vector2(info.tangentials[i].y, -info.tangentials[i].x) : new Vector2(-info.tangentials[i].y, info.tangentials[i].x);
                 curveNormal = si == 0 ? curveNormal : -curveNormal;
                 Instantiate(testPrefab, info.positions[i], Quaternion.LookRotation(Vector3.forward, -curveNormal));

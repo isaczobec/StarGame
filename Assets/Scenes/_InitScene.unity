@@ -2309,6 +2309,8 @@ MonoBehaviour:
   - {fileID: 1403716679}
   - {fileID: 684302604}
   - {fileID: 1982102644}
+  - {fileID: 440735392}
+  menuSpawnPointPrefab: {fileID: 6963600018150469384, guid: 3a37a3ded4b39e843951f08bc684c5e0, type: 3}
 --- !u!4 &588224959
 Transform:
   m_ObjectHideFlags: 0

@@ -155,6 +155,7 @@ public class Player : MonoBehaviour, IHitboxEntity
     public void InitializePlayer()
     {
         if (!practiceModeEnabled) { // if the player is not in practice mode
+            Debug.Log("Spawnpoint: " + SpawnPoint.Instance);
             SpawnPoint.Instance.InitializePlayer();
         } else {
 

@@ -10,6 +10,8 @@ public class SpawnPoint : MonoBehaviour
     [SerializeField] private Vector2 startVelocity;
     [SerializeField] private Vector2 initialDirection = Vector2.up; // should be cardinal and normalized
 
+    [SerializeField] private bool isMenuSpawnPoint = false;
+
 
     private void Awake() {
         Debug.Log("SpawnPoint Awake");
@@ -32,7 +34,7 @@ public class SpawnPoint : MonoBehaviour
         if (changePosition) Player.Instance.transform.position = transform.position;
         if (changeGameMode) Player.Instance.SetGameModeState(playerGameModeState);
         if (changeVelocity) Player.Instance.SetVelocity(startVelocity);
-        Player.Instance.SetPlayerMenuState(PlayerMenuState.active);
+        Player.Instance.SetPlayerMenuState(isMenuSpawnPoint ? PlayerMenuState.mainMenu : PlayerMenuState.active);
         Player.Instance.SetPlayerSpawnPoint(this);
     }
 

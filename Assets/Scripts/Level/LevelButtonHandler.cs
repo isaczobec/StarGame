@@ -96,6 +96,7 @@ public class LevelButtonHandler : MonoBehaviour
 
         for (int i = 0; i < levelButtons.Count; i++) {
             if (buttonsToSpare.Contains(levelButtons[i])) { continue; }
+            Debug.Log("disappear after: " + i * timeBetweenButtonDisppearances);
             levelButtons[i].ChangeVisible(false, i * timeBetweenButtonDisppearances);
         }
     }
@@ -122,6 +123,7 @@ public class LevelButtonHandler : MonoBehaviour
 
 
     private IEnumerator LoadLevelSequence(LevelSelectButton levelButton) {
+        currentlyStartingLevel = true;
         levelButton.MoveToNewPosition(transform.position + choosenLevelPositionOffset, timeForButtonToMoveToCenter);
         DisappearButtons(timeBetweenButtonDisappearances, new List<LevelSelectButton> {levelButton});
         levelButton.ChangeVisible(false, timeUntilClickedButtonDisappears); // Make the clicked button disappear after a certain time

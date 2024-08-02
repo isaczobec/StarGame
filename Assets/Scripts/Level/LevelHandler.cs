@@ -2,11 +2,13 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LevelHandler : MonoBehaviour
 {
 
     [SerializeField] private GameObject[] dontDestroyOnLoadObjects;
+    [SerializeField] private GameObject menuSpawnPointPrefab;
 
     public static LevelHandler Insance { get; private set; }    
 
@@ -18,11 +20,14 @@ public class LevelHandler : MonoBehaviour
     public bool isCurrentlyLoadingLevel { get; private set; } = false;
     public bool isCurrentlyReturningToMenu { get; private set; } = false;
     public LevelSO levelToLoad { get; private set; }
+    public LevelSO currentLevel { get; private set; }
     private float screenUnCoverTime = 0.3f;
 
 
     public event EventHandler OnLevelLoaded;
     public event EventHandler OnReturnToMenu;
+
+
 
     private void Awake()
     {
@@ -41,11 +46,18 @@ public class LevelHandler : MonoBehaviour
     }
 
 
-    public void LoadLevel(string levelName)
+    public void LoadLevel(LevelSO levelSO)
     {
-        Debug.Log("Loading level: " + levelName);
-        UnityEngine.SceneManagement.SceneManager.LoadScene(levelName);
+        Debug.Log("Loading level: " + levelSO.name);
+        SceneManager.LoadScene(levelSO.sceneToLoadRefString);
         
+    }
+
+    public void UnloadLevel(LevelSO levelSO)
+    {
+        Debug.Log("Unloading level: " + levelSO.name);
+        SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
+        SceneManager.UnloadSceneAsync(levelSO.sceneToLoadRefString);
     }
 
     public void LoadLevelScreenCovered(LevelSO levelToLoad, float screenCoverTime, float screenUnCoverTime)
@@ -65,19 +77,22 @@ public class LevelHandler : MonoBehaviour
 
     private void OnCoverComplete(object sender, bool covered)
     {
+        // loading a level
         if (isCurrentlyLoadingLevel && covered) {
-            LoadLevel(levelToLoad.sceneToLoadRefString);
+            LoadLevel(levelToLoad);
             ScreenCoverer.instance.EndCover(screenUnCoverTime);
             isCurrentlyLoadingLevel = false;
+            currentLevel = levelToLoad;
             levelToLoad = null;
             OnLevelLoaded?.Invoke(this, EventArgs.Empty);
             return;
         }
 
+        // returning to menu
         if (isCurrentlyReturningToMenu && covered) {
-            DeleteObjectsInWorldObjectHandlers();
-            UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
-            Player.Instance.SetPlayerMenuState(PlayerMenuState.mainMenu);
+            UnloadLevel(currentLevel);
+            currentLevel = null;
+            Instantiate(menuSpawnPointPrefab, Vector3.zero, Quaternion.identity, transform); // create a new spawn point for the menu
             ScreenCoverer.instance.EndCover(screenUnCoverTime);
             isCurrentlyReturningToMenu = false;
             OnReturnToMenu?.Invoke(this, EventArgs.Empty);
@@ -98,6 +113,12 @@ public class LevelHandler : MonoBehaviour
             Debug.LogWarning("Already returning");
             return;
         }
+    
+        if (currentLevel == null) {
+            Debug.LogWarning("No current level to return from");
+            return;
+        }
+
 
         isCurrentlyReturningToMenu = true;
         this.screenUnCoverTime = screenUnCoverTime;
@@ -105,10 +126,4 @@ public class LevelHandler : MonoBehaviour
 
     }
 
-    private void DeleteObjectsInWorldObjectHandlers() {
-        foreach (LevelWorldObjectsHandler handler in levelWorldObjectsHandlers) {
-            Destroy(handler.gameObject);
-        }
-        levelWorldObjectsHandlers.Clear();
-    }
 }
