@@ -15,7 +15,9 @@ MonoBehaviour:
   levelName: dassadfsdsad
   levelDifficulty: HAERTE
   author: Isac
-  secondsPlayed: 234556657
-  timesDied: 0
-  completed: 0
+  levelData:
+    secondsPlayed: 0
+    timesDied: 0
+    completed: 0
+  levelID: 823xn9q37qt4b6
   sceneToLoadRefString: Level2

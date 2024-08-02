@@ -15,7 +15,9 @@ MonoBehaviour:
   levelName: TestLevel
   levelDifficulty: ExTrEmE
   author: Isac
-  secondsPlayed: 123
-  timesDied: 0
-  completed: 0
+  levelData:
+    secondsPlayed: 0
+    timesDied: 0
+    completed: 0
+  levelID: jce3cuei3cdw
   sceneToLoadRefString: Level1

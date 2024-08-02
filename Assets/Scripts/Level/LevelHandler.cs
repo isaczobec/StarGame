@@ -24,6 +24,11 @@ public class LevelHandler : MonoBehaviour
     private float screenUnCoverTime = 0.3f;
 
 
+    /// <summary>
+    /// The level data manager, used for saving and loading level data
+    /// </summary>
+    public LevelDataManager levelDataManager {get; private set;}
+
     public event EventHandler OnLevelLoaded;
     public event EventHandler OnReturnToMenu;
 
@@ -32,17 +37,23 @@ public class LevelHandler : MonoBehaviour
     private void Awake()
     {
         Insance = this;
+        levelDataManager = new LevelDataManager();
     }
 
     // Start is called before the first frame update
     void Start()
     {
+        // make sure objects are not destroyed on load
         foreach (GameObject obj in dontDestroyOnLoadObjects)
         {
             DontDestroyOnLoad(obj);
         }
 
+        // subscribe to screen cover events
         ScreenCoverer.instance.OnCoverComplete += OnCoverComplete;
+
+        // setup level data manager
+        levelDataManager.Setup();
     }
 
 
@@ -77,24 +88,50 @@ public class LevelHandler : MonoBehaviour
 
     private void OnCoverComplete(object sender, bool covered)
     {
-        // loading a level
+        // LOADING A LEVEL
         if (isCurrentlyLoadingLevel && covered) {
+
+
+            // load level
             LoadLevel(levelToLoad);
+
+            // end cover
             ScreenCoverer.instance.EndCover(screenUnCoverTime);
+
+            // set variables
             isCurrentlyLoadingLevel = false;
             currentLevel = levelToLoad;
             levelToLoad = null;
+
+            // start tracking the level Data
+            levelDataManager.StartTrackingLevelData(currentLevel, Time.time);
+
+            // invoke event
             OnLevelLoaded?.Invoke(this, EventArgs.Empty);
             return;
         }
 
-        // returning to menu
+        // RETURNING TO MENU
         if (isCurrentlyReturningToMenu && covered) {
+
+            // save and untrack level data
+            levelDataManager.SaveLevelData(currentLevel, Time.time);
+            levelDataManager.StopTrackingLevelData();
+
+            // unload level
             UnloadLevel(currentLevel);
             currentLevel = null;
+
+            // create a new spawn point for the menu
             Instantiate(menuSpawnPointPrefab, Vector3.zero, Quaternion.identity, transform); // create a new spawn point for the menu
+
+            // end cover
             ScreenCoverer.instance.EndCover(screenUnCoverTime);
+
+            // set variables
             isCurrentlyReturningToMenu = false;
+
+            // invoke event
             OnReturnToMenu?.Invoke(this, EventArgs.Empty);
             return;
         }

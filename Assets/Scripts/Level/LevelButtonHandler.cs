@@ -71,13 +71,22 @@ public class LevelButtonHandler : MonoBehaviour
         int currentRow = 0;
         int buttonIndex = 0;
         foreach (LevelSO levelSO in levelSOs) {
+
+            // load the level data
+            LevelHandler.Insance.levelDataManager.LoadLevelData(levelSO);
+
+            // increase row and column if needed
             if (currentColumn >= maxLevelColumns) {
                 currentColumn = 0;
                 currentRow++;
             }
+
+            // calculate position and offset spawn time
             Vector3 pos = new Vector3(((float)currentColumn - ((maxLevelColumns-1)/2f)) * columnSpacing, (currentRow-defaultRowBeginOffset) * -rowSpacing, 0);
             float timeUntilAppear = buttonIndex * timeBetweenButtonAppearances;
             SpawnSingleLevelButton(levelSO,pos,timeUntilAppear);
+
+            // increment column and button index
             currentColumn++;
             buttonIndex++;
         }
@@ -96,7 +105,6 @@ public class LevelButtonHandler : MonoBehaviour
 
         for (int i = 0; i < levelButtons.Count; i++) {
             if (buttonsToSpare.Contains(levelButtons[i])) { continue; }
-            Debug.Log("disappear after: " + i * timeBetweenButtonDisppearances);
             levelButtons[i].ChangeVisible(false, i * timeBetweenButtonDisppearances);
         }
     }

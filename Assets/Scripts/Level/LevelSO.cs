@@ -11,11 +11,15 @@ public class LevelSO : ScriptableObject
     public string levelName;
     public string levelDifficulty;
     public string author;
-    public int secondsPlayed;
-    public int timesDied;
 
-    public bool completed;
+    public LevelData levelData;
 
+
+    [Header("LevelID")]
+    /// <summary>
+    /// The ID of the level, used for saving and loading level data
+    /// </summary>
+    public string levelID;
     [Header("Level Scene")]
     public string sceneToLoadRefString;
 }

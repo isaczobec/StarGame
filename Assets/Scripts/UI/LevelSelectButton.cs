@@ -67,8 +67,8 @@ public class LevelSelectButton : UIButton
         levelNameText.text = levelSO.levelName;
         levelDifficultyText.text = levelSO.levelDifficulty;
         authorText.text = levelSO.author;
-        secondsPlayedText.text = ParseSeconds(levelSO.secondsPlayed);
-        timesDiedText.text = levelSO.timesDied.ToString();
+        secondsPlayedText.text = ParseSeconds(levelSO.levelData.secondsPlayed);
+        timesDiedText.text = levelSO.levelData.timesDied.ToString();
 
         // set the cycle offset
         buttonAnimator.SetFloat(cycleOffsetRef, Random.Range(0f, cycleOffsetRandomMax));
