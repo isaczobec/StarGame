@@ -971,6 +971,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   button: {fileID: 208840994}
+  soundPlayer: {fileID: 0}
+  onClickSoundName: buttonClick
+  onHoverSoundName: buttonHover
+  onHoverExitSoundName: buttonHoverExit
   practiceModeButtons:
   - {fileID: 1992146113}
   - {fileID: 1677986491}
@@ -1580,6 +1584,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   button: {fileID: 481828915}
+  soundPlayer: {fileID: 0}
+  onClickSoundName: buttonClick
+  onHoverSoundName: buttonHover
+  onHoverExitSoundName: buttonHoverExit
   gameModeState: 3
   image: {fileID: 481828916}
 --- !u!114 &481828915
@@ -2183,6 +2191,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   button: {fileID: 581276939}
+  soundPlayer: {fileID: 0}
+  onClickSoundName: buttonClick
+  onHoverSoundName: buttonHover
+  onHoverExitSoundName: buttonHoverExit
   gameModeState: 1
   image: {fileID: 581276940}
 --- !u!114 &581276939
@@ -2600,6 +2612,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   button: {fileID: 704589163}
+  soundPlayer: {fileID: 0}
+  onClickSoundName: buttonClick
+  onHoverSoundName: buttonHover
+  onHoverExitSoundName: buttonHoverExit
   gameModeState: 4
   image: {fileID: 704589164}
 --- !u!114 &704589163
@@ -3382,6 +3398,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   button: {fileID: 1005800517}
+  soundPlayer: {fileID: 0}
+  onClickSoundName: buttonClick
+  onHoverSoundName: buttonHover
+  onHoverExitSoundName: buttonHoverExit
   direction: {x: 0, y: -1}
 --- !u!114 &1005800519
 MonoBehaviour:
@@ -3620,6 +3640,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   button: {fileID: 1074717254}
+  soundPlayer: {fileID: 0}
+  onClickSoundName: buttonClick
+  onHoverSoundName: buttonHover
+  onHoverExitSoundName: buttonHoverExit
   gameModeState: 0
   image: {fileID: 1074717255}
 --- !u!1 &1090396167
@@ -4023,6 +4047,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   button: {fileID: 1226420447}
+  soundPlayer: {fileID: 0}
+  onClickSoundName: buttonClick
+  onHoverSoundName: buttonHover
+  onHoverExitSoundName: buttonHoverExit
   direction: {x: -1, y: 0}
 --- !u!114 &1226420449
 MonoBehaviour:
@@ -4755,6 +4783,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   button: {fileID: 1473042516}
+  soundPlayer: {fileID: 0}
+  onClickSoundName: buttonClick
+  onHoverSoundName: buttonHover
+  onHoverExitSoundName: buttonHoverExit
   gameModeState: 2
   image: {fileID: 1473042517}
 --- !u!114 &1473042516
@@ -4893,6 +4925,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1607021430}
   - component: {fileID: 1607021431}
+  - component: {fileID: 1607021432}
   m_Layer: 5
   m_Name: ScreenCoverer
   m_TagString: Untagged
@@ -4933,6 +4966,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   coverImage: {fileID: 1944337094}
+  covererSoundPlayer: {fileID: 1607021432}
+  onCoverSoundName: cover
+  onUncoverSoundName: uncover
+--- !u!114 &1607021432
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1607021429}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8430348be4e41ac438293d7aff701af6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sounds:
+  - name: cover
+    audioClip: {fileID: 8300000, guid: d88a8c9aadf1bd4428bc0eac031977ed, type: 3}
+    mixerGroupType: 1
+    masterVolume: 1
+    spatialBlend: 0
+    doplerLevel: 0
+  - name: uncover
+    audioClip: {fileID: 8300000, guid: 774904f4bac23494daed99fca32d003f, type: 3}
+    mixerGroupType: 1
+    masterVolume: 1
+    spatialBlend: 0
+    doplerLevel: 0
 --- !u!1 &1638200113
 GameObject:
   m_ObjectHideFlags: 0
@@ -5296,6 +5357,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   button: {fileID: 1677986493}
+  soundPlayer: {fileID: 0}
+  onClickSoundName: buttonClick
+  onHoverSoundName: buttonHover
+  onHoverExitSoundName: buttonHoverExit
 --- !u!1 &1806622194
 GameObject:
   m_ObjectHideFlags: 0
@@ -5802,6 +5867,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   button: {fileID: 1889894491}
+  soundPlayer: {fileID: 0}
+  onClickSoundName: buttonClick
+  onHoverSoundName: buttonHover
+  onHoverExitSoundName: buttonHoverExit
   direction: {x: 0, y: 1}
 --- !u!114 &1889894493
 MonoBehaviour:
@@ -6405,6 +6474,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   button: {fileID: 1992146116}
+  soundPlayer: {fileID: 0}
+  onClickSoundName: buttonClick
+  onHoverSoundName: buttonHover
+  onHoverExitSoundName: buttonHoverExit
   checkPointPrefab: {fileID: 2913529758011283932, guid: 14432de42f37cd240900b84da8a5e16a, type: 3}
 --- !u!1 &2014995932
 GameObject:
@@ -6502,6 +6575,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   button: {fileID: 2014995934}
+  soundPlayer: {fileID: 0}
+  onClickSoundName: buttonClick
+  onHoverSoundName: buttonHover
+  onHoverExitSoundName: buttonHoverExit
   direction: {x: 1, y: 0}
 --- !u!114 &2014995936
 MonoBehaviour:

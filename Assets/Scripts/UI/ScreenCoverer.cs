@@ -13,6 +13,9 @@ public class ScreenCoverer : MonoBehaviour
     private Material covererMaterial;
 
     [SerializeField] private Image coverImage;
+    [SerializeField] private SoundPlayer covererSoundPlayer;
+    [SerializeField] private string onCoverSoundName = "cover";
+    [SerializeField] private string onUncoverSoundName = "uncover";
 
 
     /// <summary>
@@ -49,12 +52,14 @@ public class ScreenCoverer : MonoBehaviour
     {
         coverImage.enabled = true;
         StartCoverCoroutine(1, timeToCover);
+        covererSoundPlayer?.PlayOneShot(onCoverSoundName);
     }
 
 
     public void EndCover(float timeToUncover)
     {
         StartCoverCoroutine(0, timeToUncover);
+        covererSoundPlayer?.PlayOneShot(onUncoverSoundName);
     }
 
     private void UpdateCoverAmount(float newCoverAmount)

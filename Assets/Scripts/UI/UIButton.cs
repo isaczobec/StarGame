@@ -7,9 +7,14 @@ using UnityEngine.UI;
 public class UIButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] public Button button;
+    [SerializeField] private SoundPlayer soundPlayer;
+    [SerializeField] private string onClickSoundName = "buttonClick";
+    [SerializeField] private string onHoverSoundName = "buttonHover";
+    [SerializeField] private string onHoverExitSoundName = "buttonHoverExit";
+
     public void Start()
     {
-        button.onClick.AddListener(OnClick);
+        button.onClick.AddListener(OnClickEvent);
         InitButton();
     }
 
@@ -39,13 +44,21 @@ public class UIButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     public virtual void OnHoverExit() {
     }
 
+    public void OnClickEvent()
+    {
+        soundPlayer?.PlayOneShot(onClickSoundName);
+        OnClick();
+    }
+
     public void OnPointerEnter(PointerEventData eventData)
     {
+        soundPlayer?.PlayOneShot(onHoverSoundName);
         OnHoverEnter();
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
+        soundPlayer?.PlayOneShot(onHoverExitSoundName);
         OnHoverExit();
     }
 }
