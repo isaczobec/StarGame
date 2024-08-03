@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,10 +11,20 @@ public class UIButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     [Header("Visuals")]
     [Header("Sound")]
-    [SerializeField] private SoundPlayer soundPlayer;
-    [SerializeField] private string onClickSoundName = "buttonClick";
-    [SerializeField] private string onHoverSoundName = "buttonHover";
-    [SerializeField] private string onHoverExitSoundName = "buttonHoverExit";
+    [SerializeField] public SoundPlayer soundPlayer;
+    [SerializeField] public string onClickSoundName = "buttonClick";
+    [SerializeField] public string onHoverSoundName = "buttonHover";
+    [SerializeField] public string onHoverExitSoundName = "buttonHoverExit";
+
+    /// <summary>
+    /// Called when the button is clicked. Add your custom functionality to this event.
+    /// </summary>
+    public event EventHandler<EventArgs> OnUIButtonClicked;
+
+    /// <summary>
+    /// Called when the button is hovered. Add your custom functionality to this event. THe bool parameter is true if the button is hovered, false if it is not.
+    /// </summary>
+    public event EventHandler<bool> OnUIButtonHoveredChanged;
 
     public void Start()
     {
@@ -47,21 +58,36 @@ public class UIButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     public virtual void OnHoverExit() {
     }
 
-    public void OnClickEvent()
+
+    // METHODS NOT CALLED BY THIS CLASS
+    public virtual void OnClickEvent()
     {
         soundPlayer?.PlayOneShot(onClickSoundName);
         OnClick();
+        OnUIButtonClicked?.Invoke(this, EventArgs.Empty);
     }
 
-    public void OnPointerEnter(PointerEventData eventData)
+    public virtual void OnPointerEnter(PointerEventData eventData)
     {
         soundPlayer?.PlayOneShot(onHoverSoundName);
         OnHoverEnter();
+        OnUIButtonHoveredChanged?.Invoke(this, true);
     }
 
-    public void OnPointerExit(PointerEventData eventData)
+    public virtual void OnPointerExit(PointerEventData eventData)
     {
         soundPlayer?.PlayOneShot(onHoverExitSoundName);
         OnHoverExit();
+        OnUIButtonHoveredChanged?.Invoke(this, false);
+    }
+
+    public void InvokeOnClickEvent()
+    {
+        OnUIButtonClicked?.Invoke(this, EventArgs.Empty);
+    }
+
+    public void InvokeOnHoverChangedEnterEvent(bool hovered)
+    {
+        OnUIButtonHoveredChanged?.Invoke(this, hovered);
     }
 }
