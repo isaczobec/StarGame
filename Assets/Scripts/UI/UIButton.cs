@@ -7,6 +7,9 @@ using UnityEngine.UI;
 public class UIButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] public Button button;
+
+    [Header("Visuals")]
+    [Header("Sound")]
     [SerializeField] private SoundPlayer soundPlayer;
     [SerializeField] private string onClickSoundName = "buttonClick";
     [SerializeField] private string onHoverSoundName = "buttonHover";

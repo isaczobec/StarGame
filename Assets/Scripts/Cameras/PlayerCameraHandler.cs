@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Cinemachine.CinemachineVirtualCamera))]
 public class PlayerCameraHandler : MonoBehaviour
 {
     
@@ -19,12 +20,17 @@ public class PlayerCameraHandler : MonoBehaviour
     [SerializeField] private float menuYOffset = 14f;
     [SerializeField] private const float defaultMoveTime = 0.5f;
     [SerializeField] private float defaultPlayerZOffset = -10f;
+    [SerializeField] private float defaultXDamping = 0.35f;
+    [SerializeField] private float defaultYDamping = 0.30f;
+    [SerializeField] private float levelCompletedDamping = 2f;
+
 
 
     // ---- Variables ----
     private CameraState cameraState = CameraState.menu;
     private Coroutine moveCameraCoroutine;
 
+    private Cinemachine.CinemachineTransposer transposer;
     public static PlayerCameraHandler Instance { get; private set; }
 
 
@@ -32,6 +38,8 @@ public class PlayerCameraHandler : MonoBehaviour
 
     private void Awake() {
         Instance = this;
+        transposer = virtualCamera.GetCinemachineComponent<Cinemachine.CinemachineTransposer>();
+        SetFollowDamping(defaultXDamping, defaultYDamping);
     }
     
     private void Start() {
@@ -63,8 +71,6 @@ public class PlayerCameraHandler : MonoBehaviour
 
     private IEnumerator MoveCameraToPosition(Vector2 targetPosition, float time) {
 
-        Cinemachine.CinemachineTransposer transposer = virtualCamera.GetCinemachineComponent<Cinemachine.CinemachineTransposer>();
-
         Vector3 offsetTargetPosition = new Vector3(targetPosition.x, targetPosition.y, defaultPlayerZOffset); // Set z to default value
         Debug.Log("Move camera to position: " + offsetTargetPosition);
         Vector3 startPosition = transposer.m_FollowOffset;
@@ -89,6 +95,23 @@ public class PlayerCameraHandler : MonoBehaviour
                 SetCameraState(CameraState.activeGame);
                 break;
         }
+    }
+
+    public void SetCameraTargetObject(Transform target) {
+        virtualCamera.Follow = target;
+    }
+
+    private void SetFollowDamping(float xDamping, float yDamping) {
+        transposer.m_XDamping = xDamping;
+        transposer.m_YDamping = yDamping;
+    }
+
+    public void OnLevelCompleted() {
+        SetFollowDamping(levelCompletedDamping, levelCompletedDamping);
+    }
+
+    public void ResetToDefaultValues() {
+        SetFollowDamping(defaultXDamping, defaultYDamping);
     }
 
 }

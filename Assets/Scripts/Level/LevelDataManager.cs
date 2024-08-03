@@ -56,6 +56,10 @@ public class LevelDataManager {
         currentLevelData.timesDied++;
     }
 
+    public void SetLevelCompleted() {
+        currentLevelData.completed = true;
+    }
+
 
     /// <summary>
     /// Saves the levelData of a levelSO to a file. The file will be named after the levelID of the levelSO.

@@ -7,7 +7,8 @@ using UnityEngine;
 // which logic the players movement is calculated by
 public enum PlayerMovementState {
     Free, // normal movement
-    Hooked // radial movement around a point
+    Hooked, // radial movement around a point
+    LevelFinnished // the player is moving automatically to the level finish point
 
 }
 
@@ -54,6 +55,9 @@ public class Player : MonoBehaviour, IHitboxEntity
     [SerializeField] private float respawnTime = 1f;
     [SerializeField] private float moveBackToSpawnPointTime = 0.7f; // when the player invisibly teleports back to spawn and the camera starts to reset after the player dies
 
+    [Header("Level completion settings")]
+    [SerializeField] private float moveTowardsFinishSpeed = 2f;
+
 
     [Header("Practice mode variables")]
     [SerializeField] private bool practiceModeEnabled = false;
@@ -92,6 +96,9 @@ public class Player : MonoBehaviour, IHitboxEntity
 
     // death
     private bool playerIsDead = false;
+
+    // level completion
+    private Vector3 moveTowardsFinishPosition;
 
 
     // practice mode
@@ -193,6 +200,9 @@ public class Player : MonoBehaviour, IHitboxEntity
             case PlayerMovementState.Hooked:
                 HandleHookedMovement();
                 break;
+            case PlayerMovementState.LevelFinnished:
+                HandleLevelFinnishedMovement();
+                break;
         }
         
     }
@@ -205,6 +215,10 @@ public class Player : MonoBehaviour, IHitboxEntity
         Vector2 radiusDirection = (hookedPosition - (Vector2)transform.position).normalized;
         velocity += MathF.Pow(velocity.magnitude,2) / hookRadius * radiusDirection * Time.deltaTime;
         transform.position += (Vector3)velocity * Time.deltaTime;
+    }
+
+    private void HandleLevelFinnishedMovement() {
+        transform.position = Vector3.Lerp(transform.position, moveTowardsFinishPosition, moveTowardsFinishSpeed * Time.deltaTime);
     }
 
     /// <summary>
@@ -520,9 +534,11 @@ public class Player : MonoBehaviour, IHitboxEntity
         switch (playerMenuState) {
             case PlayerMenuState.active:
                 letPlayerMove = true;
+                playerIsInvulnerable = false;
                 break;
             case PlayerMenuState.mainMenu:
                 letPlayerMove = false;
+                playerIsInvulnerable = true;
                 break;
         }
         OnPlayerMenuStateChange?.Invoke(this, playerMenuState);
@@ -543,6 +559,20 @@ public class Player : MonoBehaviour, IHitboxEntity
         return baseDirection;
     }
 
+
+    
+    public void EnablePlayerFinishedLevelMode(Vector3 levelFinishPosition) {
+        playerIsInvulnerable = true;
+        letPlayerMove = false;
+        currentPlayerMovementState = PlayerMovementState.LevelFinnished;
+        moveTowardsFinishPosition = levelFinishPosition;
+    }
+
+    public void ExitPlayerFinishedLevelMode() {
+        playerIsInvulnerable = false;
+        letPlayerMove = true;
+        currentPlayerMovementState = PlayerMovementState.Free;
+    }
 
 
 

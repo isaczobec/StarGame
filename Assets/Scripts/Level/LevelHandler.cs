@@ -106,6 +106,7 @@ public class LevelHandler : MonoBehaviour
             // start tracking the level Data
             levelDataManager.StartTrackingLevelData(currentLevel, Time.time);
 
+
             // invoke event
             OnLevelLoaded?.Invoke(this, EventArgs.Empty);
             return;
@@ -113,6 +114,10 @@ public class LevelHandler : MonoBehaviour
 
         // RETURNING TO MENU
         if (isCurrentlyReturningToMenu && covered) {
+
+            // set camera target and reset its settings
+            PlayerCameraHandler.Instance.SetCameraTargetObject(Player.Instance.transform);
+            PlayerCameraHandler.Instance.ResetToDefaultValues();
 
             // save and untrack level data
             levelDataManager.SaveLevelData(currentLevel, Time.time);
@@ -130,6 +135,8 @@ public class LevelHandler : MonoBehaviour
 
             // set variables
             isCurrentlyReturningToMenu = false;
+
+            Player.Instance.ExitPlayerFinishedLevelMode();
 
             // invoke event
             OnReturnToMenu?.Invoke(this, EventArgs.Empty);
@@ -160,6 +167,17 @@ public class LevelHandler : MonoBehaviour
         isCurrentlyReturningToMenu = true;
         this.screenUnCoverTime = screenUnCoverTime;
         ScreenCoverer.instance.BeginCover(screenCoverTime);
+
+    }
+
+    public void BeginLevelCompletedSequence(Transform levelCompleteObjectTransform) {
+
+        // save completed data instantly to prevent rage moments from computer crashes or similair
+        levelDataManager.SetLevelCompleted();
+        levelDataManager.SaveLevelData(currentLevel, Time.time);
+
+        // start the level completed sequence   
+        LevelCompletedSequence.Instance.StartLevelCompletedSequence(levelCompleteObjectTransform);
 
     }
 
