@@ -110,6 +110,8 @@ public class PlayerVisuals : MonoBehaviour
         }
         playerMaterial.SetColor(playerColorName, newColor);
         isFadingToPlayerColor = false;
+
+        fadeToPlayerColorCoroutine = null;
     
         yield break;
 
@@ -168,6 +170,8 @@ public class PlayerVisuals : MonoBehaviour
         yield return new WaitForSeconds(duration);
         playerMaterial.SetFloat(playerFlashAmountName, 0);
         trailMaterial.SetFloat(playerFlashAmountName, 0);
+
+        setFlashAmountCoroutine = null;
         yield break;
     }
 

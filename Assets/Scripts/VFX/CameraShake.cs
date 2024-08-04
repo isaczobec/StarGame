@@ -62,6 +62,8 @@ public class CameraShake : MonoBehaviour
 
         noise.m_AmplitudeGain = 0f;
         noise.m_FrequencyGain = 0f;
+
+        shakeCoroutine = null;
     }
 
     private void SetShakeFrequency(float frequency)

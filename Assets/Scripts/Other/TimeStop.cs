@@ -30,6 +30,8 @@ public class TimeStop : MonoBehaviour
         Time.timeScale = 0;
         yield return new WaitForSecondsRealtime(duration);
         Time.timeScale = 1;
+
+        timeStopCoroutine = null;
     }
 
 }

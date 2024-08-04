@@ -27,6 +27,8 @@ public class DeleteGameObject : MonoBehaviour
     private IEnumerator DestroyAfterTime(float time)
     {
         yield return new WaitForSeconds(time);
+
+        destroyCoroutine = null;
         Destroy(gameObject);
     }
 

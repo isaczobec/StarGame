@@ -24,6 +24,8 @@ public class LevelSelectButton : UIButton
     [Header("Shader and sprite")]
     [SerializeField] private Shader buttonShader;
     [SerializeField] private Image buttonImage;
+    [SerializeField] private Image starImage;
+    [SerializeField] private Color completedStarColor = Color.green;
 
     [Header("MoveToNewPosition")]
     [SerializeField] private AnimationCurve moveToNewPositionCurve;
@@ -31,6 +33,7 @@ public class LevelSelectButton : UIButton
 
 
     private const string isHoveredRef = "_IsHovered";
+    private const string completedRef = "_Completed";
 
     private const string begingHoverRef = "BeginHover";
     private const string endHoverRef = "EndHover";
@@ -62,6 +65,13 @@ public class LevelSelectButton : UIButton
 
         // Instantiate material
         buttonImage.material = new Material(buttonShader);
+        buttonImage.material.SetFloat(completedRef, levelSO.levelData.completed ? 1f : 0f);
+
+        // set the star color
+        if (levelSO.levelData.completed)
+        {starImage.color = completedStarColor;}
+
+        Debug.Log("completed?" + levelSO.levelData.completed + " " + levelSO.levelName);
 
         // set the text
         levelNameText.text = levelSO.levelName;
@@ -147,6 +157,8 @@ public class LevelSelectButton : UIButton
     private IEnumerator WaitToAppearCoroutine(bool visible, float timeUntilAppearStart, float speedMultiplier = 1f) {
         yield return new WaitForSeconds(timeUntilAppearStart);
         ChangeButtonVisualsVisible(visible, speedMultiplier);
+
+        appearCoroutine = null;
     }
 
     /// <summary>
@@ -183,6 +195,8 @@ public class LevelSelectButton : UIButton
             yield return null;
         }
         transform.position = targetPosition;
+
+        moveToNewPositionCoroutine = null;
     }
 
 }

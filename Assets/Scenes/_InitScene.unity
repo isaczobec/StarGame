@@ -3640,6 +3640,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   exitToMainMenuButton: {fileID: 1842581639}
   levelCompletedSequenceTime: 2
+  screenCoverTimeExitToMenu: 0.4
 --- !u!4 &1094234173
 Transform:
   m_ObjectHideFlags: 0

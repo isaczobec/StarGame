@@ -12,6 +12,7 @@ public class LevelCompletedSequence : MonoBehaviour {
     [Header("Settings")]
 
     [SerializeField] private float levelCompletedSequenceTime = 2f;
+    [SerializeField] private float screenCoverTimeExitToMenu = 0.6f;
 
 
 
@@ -57,6 +58,8 @@ public class LevelCompletedSequence : MonoBehaviour {
 
         // show the exit to main menu button
         exitToMainMenuButton.ChangeVisible(true);
+
+        levelCompletedSequenceCoroutine = null;
     }
 
 
@@ -65,7 +68,7 @@ public class LevelCompletedSequence : MonoBehaviour {
     // called when the exit to main menu button is clicked
     private void ExitToMainMenuButton_OnUIButtonClicked(object sender, EventArgs e)
     {
-        LevelHandler.Insance.ExitToMainMenuScreenCovered(1f,1f);
+        LevelHandler.Insance.ExitToMainMenuScreenCovered(screenCoverTimeExitToMenu,screenCoverTimeExitToMenu);
     }
     private void LevelHandler_OnReturnToMenu(object sender, EventArgs e)
     {

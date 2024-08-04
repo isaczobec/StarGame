@@ -89,7 +89,10 @@ public class ScreenCoverer : MonoBehaviour
             yield return null;
         }
         UpdateCoverAmount(targetCoverAmount);
+        coverCoroutine = null;
         OnCoverComplete?.Invoke(this, targetCoverAmount > startCoverAmount);
+
+        coverCoroutine = null;
     }
     private void UpdateImageActive(object sender, bool covered)
     {

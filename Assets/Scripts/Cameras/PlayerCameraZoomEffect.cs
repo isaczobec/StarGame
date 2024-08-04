@@ -54,5 +54,7 @@ public class PlayerCameraZoomEffect : MonoBehaviour
             yield return null;
         }
         virtualCamera.m_Lens.OrthographicSize = baseOrthoSize;
+
+        zoomCoroutine = null;
     }
 }

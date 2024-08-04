@@ -143,6 +143,8 @@ public class LevelButtonHandler : MonoBehaviour
 
         LevelHandler.Insance.LoadLevelScreenCovered(levelToLoad, screenCoverTime, screenUnCoverTime);
 
+        loadLevelSequenceCoroutine = null;
+
     }
 
 

@@ -83,6 +83,7 @@ public class PlayerCameraHandler : MonoBehaviour
         }
 
         transposer.m_FollowOffset = offsetTargetPosition;
+        moveCameraCoroutine = null;
     }
     private void Player_OnPlayerMenuStateChange(object sender, PlayerMenuState s)
     {

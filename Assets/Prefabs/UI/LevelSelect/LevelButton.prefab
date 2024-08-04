@@ -465,6 +465,8 @@ MonoBehaviour:
   cycleOffsetRandomMax: 3
   buttonShader: {fileID: -6465566751694194690, guid: b70439bbe38ffd24a855770efeb56e50, type: 3}
   buttonImage: {fileID: 7458055429835464062}
+  starImage: {fileID: 8863492233661819084}
+  completedStarColor: {r: 0, g: 1, b: 0, a: 1}
   moveToNewPositionCurve:
     serializedVersion: 2
     m_Curve:

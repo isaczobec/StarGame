@@ -128,6 +128,8 @@ public class UIButtonAnimated : UIButton {
     private IEnumerator WaitToAppearCoroutine(bool visible, float timeUntilAppearStart, float speedMultiplier = 1f) {
         yield return new WaitForSeconds(timeUntilAppearStart);
         ChangeButtonVisualsVisible(visible, speedMultiplier);
+
+        appearCoroutine = null;
     }
 
     /// <summary>
@@ -164,6 +166,8 @@ public class UIButtonAnimated : UIButton {
             yield return null;
         }
         transform.position = targetPosition;
+
+        moveToNewPositionCoroutine = null;
     }
 
 }

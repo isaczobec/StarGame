@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -172,9 +173,11 @@ public class LevelHandler : MonoBehaviour
 
     public void BeginLevelCompletedSequence(Transform levelCompleteObjectTransform) {
 
+        if (!Player.Instance.GetPracticeModeEnabled()) { // dont save data if in practice mode
         // save completed data instantly to prevent rage moments from computer crashes or similair
-        levelDataManager.SetLevelCompleted();
-        levelDataManager.SaveLevelData(currentLevel, Time.time);
+            levelDataManager.SetLevelCompleted();
+            levelDataManager.SaveLevelData(currentLevel, Time.time);
+        }
 
         // start the level completed sequence   
         LevelCompletedSequence.Instance.StartLevelCompletedSequence(levelCompleteObjectTransform);

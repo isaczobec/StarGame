@@ -398,14 +398,18 @@ public class Player : MonoBehaviour, IHitboxEntity
 
         InitializePlayer();
         playerIsDead = false;
+
+        respawnPlayerCoroutine = null;
     }
 
     /// <summary>
     /// Moves the player to the spawnpoint.
     /// </summary>
     private void MoveToSpawnPoint() {
-        if (practiceModeSpawnPoint != null) {
+        if (practiceModeEnabled) {
             transform.position = practiceModeSpawnPoint;
+        } else {
+            transform.position = playerSpawnPoint.GetPosition();
         }
     }
 
@@ -569,7 +573,7 @@ public class Player : MonoBehaviour, IHitboxEntity
     }
 
     public void ExitPlayerFinishedLevelMode() {
-        playerIsInvulnerable = false;
+        // playerIsInvulnerable = false;
         letPlayerMove = true;
         currentPlayerMovementState = PlayerMovementState.Free;
     }
@@ -585,6 +589,7 @@ public class Player : MonoBehaviour, IHitboxEntity
             SetGameModeState(PlayerGameModeState.Practice);
         } else {
             SetGameModeState(SpawnPoint.Instance.GetStartingPlayerGameModeState());
+            MoveToSpawnPoint();
         }
         
     }
@@ -625,6 +630,8 @@ public class Player : MonoBehaviour, IHitboxEntity
 
     private void OnReturnToMenu(object sender, EventArgs e)
     {
+        SetPracticeModeSpawnPoint(playerSpawnPoint.GetPosition());
+        SetPracticeModeEnabled(false);
         EnablePlayerMenuMode();
     }
 }

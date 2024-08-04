@@ -60,5 +60,6 @@ public class MusicEffects : MonoBehaviour {
             passedTime += Time.deltaTime;
             yield return null;
         }
+        deathMusicEffectCoroutine = null;
     }
 }
