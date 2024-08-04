@@ -5871,6 +5871,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   soundPlayer: {fileID: 1982102645}
   audioName: testMusic
+  testSong: {fileID: 11400000, guid: 990b093c60cdb45438f85ac1efe8e48d, type: 2}
+  baseFadeTime: 0.5
 --- !u!4 &1982102647
 Transform:
   m_ObjectHideFlags: 0
