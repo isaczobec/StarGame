@@ -12,6 +12,8 @@ public class LevelSO : ScriptableObject
     public string levelDifficulty;
     public string author;
 
+    public SongSO levelSong;
+
     public LevelData levelData;
 
 

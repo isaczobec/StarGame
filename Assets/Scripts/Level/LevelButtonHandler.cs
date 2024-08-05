@@ -27,6 +27,9 @@ public class LevelButtonHandler : MonoBehaviour
     [SerializeField] private float screenCoverTime = 0.5f;
     [SerializeField] private float screenUnCoverTime = 0.3f;
 
+    [Header("Sound")]
+    [SerializeField] private SoundPlayer soundPlayer;
+    [SerializeField] private string selectedButtonDisapearSound = "SelectedButtonDisappear";
 
 
 
@@ -136,8 +139,12 @@ public class LevelButtonHandler : MonoBehaviour
         DisappearButtons(timeBetweenButtonDisappearances, new List<LevelSelectButton> {levelButton});
         levelButton.ChangeVisible(false, timeUntilClickedButtonDisappears); // Make the clicked button disappear after a certain time
 
+        yield return new WaitForSeconds(timeUntilClickedButtonDisappears);
+        soundPlayer.PlayOneShot(selectedButtonDisapearSound, pitch : 2f);
+        MusicManager.insance.StopAllMusic(0.4f);
 
-        yield return new WaitForSeconds(timeUntilBeginScreenCover);
+
+        yield return new WaitForSeconds(timeUntilBeginScreenCover - timeUntilClickedButtonDisappears); 
 
         // loading level
 

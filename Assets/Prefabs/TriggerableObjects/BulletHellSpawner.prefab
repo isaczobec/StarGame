@@ -52,7 +52,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: 06143921ad334f24a9e4ef8fd081cbb8, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -72,7 +72,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -3
+  m_SortingOrder: 3
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -94,6 +94,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5863924315395130792}
   - component: {fileID: 3760101896446585899}
+  - component: {fileID: 7500441580474957429}
   m_Layer: 0
   m_Name: BulletHellSpawner
   m_TagString: Untagged
@@ -137,6 +138,20 @@ MonoBehaviour:
   timeBetweenBullets: 0.1
   bulletDirection: {x: -1, y: 0}
   bulletLifeTime: 6
+--- !u!114 &7500441580474957429
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3895829853608035045}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b64d228dcee829d44a562132ceda30e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  distortionEffectPrefab: {fileID: 3135271441734579919, guid: 31cd0de373cc23247957c748b44e00cc, type: 3}
+  distortionEffectScaleMargin: 0.4
 --- !u!1 &8458486028929242362
 GameObject:
   m_ObjectHideFlags: 0

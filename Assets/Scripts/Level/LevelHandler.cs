@@ -22,7 +22,10 @@ public class LevelHandler : MonoBehaviour
     public bool isCurrentlyReturningToMenu { get; private set; } = false;
     public LevelSO levelToLoad { get; private set; }
     public LevelSO currentLevel { get; private set; }
-    private float screenUnCoverTime = 0.3f;
+    [Header("Settings")]
+    [SerializeField] private float screenUnCoverTime = 0.3f;
+    [SerializeField] private float musicFadeOutTime = 0.5f;
+
 
 
     /// <summary>
@@ -83,6 +86,8 @@ public class LevelHandler : MonoBehaviour
         this.levelToLoad = levelToLoad;
         isCurrentlyLoadingLevel = true;
         this.screenUnCoverTime = screenUnCoverTime;
+
+
         ScreenCoverer.instance.BeginCover(screenCoverTime);
 
     }
@@ -107,6 +112,9 @@ public class LevelHandler : MonoBehaviour
             // start tracking the level Data
             levelDataManager.StartTrackingLevelData(currentLevel, Time.time);
 
+            // play music
+            MusicManager.insance.PlaySong(currentLevel.levelSong);
+
 
             // invoke event
             OnLevelLoaded?.Invoke(this, EventArgs.Empty);
@@ -124,6 +132,7 @@ public class LevelHandler : MonoBehaviour
             levelDataManager.SaveLevelData(currentLevel, Time.time);
             levelDataManager.StopTrackingLevelData();
 
+
             // unload level
             UnloadLevel(currentLevel);
             currentLevel = null;
@@ -138,6 +147,9 @@ public class LevelHandler : MonoBehaviour
             isCurrentlyReturningToMenu = false;
 
             Player.Instance.ExitPlayerFinishedLevelMode();
+
+            // play music
+            MusicManager.insance.PlayMenuMusic();
 
             // invoke event
             OnReturnToMenu?.Invoke(this, EventArgs.Empty);
@@ -167,6 +179,10 @@ public class LevelHandler : MonoBehaviour
 
         isCurrentlyReturningToMenu = true;
         this.screenUnCoverTime = screenUnCoverTime;
+
+        // stop music
+        if (currentLevel != null) MusicManager.insance.StopSong(currentLevel.levelSong, musicFadeOutTime);
+
         ScreenCoverer.instance.BeginCover(screenCoverTime);
 
     }

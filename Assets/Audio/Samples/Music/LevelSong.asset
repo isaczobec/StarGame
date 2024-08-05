@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9331b032d4b77d648a191841d0867eaf, type: 3}
-  m_Name: New Song
+  m_Name: LevelSong
   m_EditorClassIdentifier: 
-  songName: dhusa
-  artist: dhuasid
+  songName: Lveijvei
+  artist: ashdsuiah
   clip: {fileID: 8300000, guid: 9d8e2dc39aa734146b131d432ed77fd9, type: 3}

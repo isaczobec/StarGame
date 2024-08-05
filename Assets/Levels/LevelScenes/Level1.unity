@@ -588,14 +588,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1149150921}
     m_Modifications:
-    - target: {fileID: 1744990152176125856, guid: 13fd5ca448ed9a240849676bca35b5d4, type: 3}
-      propertyPath: m_SortingOrder
-      value: -1
-      objectReference: {fileID: 0}
     - target: {fileID: 3760101896446585899, guid: 13fd5ca448ed9a240849676bca35b5d4, type: 3}
       propertyPath: endTrigger
       value: 
       objectReference: {fileID: 458501508}
+    - target: {fileID: 3760101896446585899, guid: 13fd5ca448ed9a240849676bca35b5d4, type: 3}
+      propertyPath: bulletSpeed
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 3760101896446585899, guid: 13fd5ca448ed9a240849676bca35b5d4, type: 3}
       propertyPath: startTrigger
       value: 
@@ -606,7 +606,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3760101896446585899, guid: 13fd5ca448ed9a240849676bca35b5d4, type: 3}
       propertyPath: timeBetweenBullets
-      value: 0.07
+      value: 0.03
       objectReference: {fileID: 0}
     - target: {fileID: 3895829853608035045, guid: 13fd5ca448ed9a240849676bca35b5d4, type: 3}
       propertyPath: m_Name
@@ -618,7 +618,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5863924315395130792, guid: 13fd5ca448ed9a240849676bca35b5d4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -12.627291
+      value: -13.627291
       objectReference: {fileID: 0}
     - target: {fileID: 5863924315395130792, guid: 13fd5ca448ed9a240849676bca35b5d4, type: 3}
       propertyPath: m_LocalPosition.y
@@ -5859,6 +5859,71 @@ TilemapCollider2D:
   m_MaximumTileChangeCount: 1000
   m_ExtrusionFactor: 0
   m_UseDelaunayMesh: 0
+--- !u!1001 &384708002
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3760101896446585899, guid: 13fd5ca448ed9a240849676bca35b5d4, type: 3}
+      propertyPath: bulletSpeed
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3760101896446585899, guid: 13fd5ca448ed9a240849676bca35b5d4, type: 3}
+      propertyPath: timeBetweenBullets
+      value: 0.03
+      objectReference: {fileID: 0}
+    - target: {fileID: 3895829853608035045, guid: 13fd5ca448ed9a240849676bca35b5d4, type: 3}
+      propertyPath: m_Name
+      value: BulletHellSpawner (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5863924315395130792, guid: 13fd5ca448ed9a240849676bca35b5d4, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 6.212127
+      objectReference: {fileID: 0}
+    - target: {fileID: 5863924315395130792, guid: 13fd5ca448ed9a240849676bca35b5d4, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.4271164
+      objectReference: {fileID: 0}
+    - target: {fileID: 5863924315395130792, guid: 13fd5ca448ed9a240849676bca35b5d4, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5863924315395130792, guid: 13fd5ca448ed9a240849676bca35b5d4, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5863924315395130792, guid: 13fd5ca448ed9a240849676bca35b5d4, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5863924315395130792, guid: 13fd5ca448ed9a240849676bca35b5d4, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5863924315395130792, guid: 13fd5ca448ed9a240849676bca35b5d4, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5863924315395130792, guid: 13fd5ca448ed9a240849676bca35b5d4, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5863924315395130792, guid: 13fd5ca448ed9a240849676bca35b5d4, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5863924315395130792, guid: 13fd5ca448ed9a240849676bca35b5d4, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 13fd5ca448ed9a240849676bca35b5d4, type: 3}
 --- !u!1001 &454238576
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6822,6 +6887,75 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3010358725042240925, guid: 11610b2abde24354d9f0d1fcb3008326, type: 3}
   m_PrefabInstance: {fileID: 1819174962}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1242944963
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3760101896446585899, guid: 13fd5ca448ed9a240849676bca35b5d4, type: 3}
+      propertyPath: bulletSpeed
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3760101896446585899, guid: 13fd5ca448ed9a240849676bca35b5d4, type: 3}
+      propertyPath: timeBetweenBullets
+      value: 0.03
+      objectReference: {fileID: 0}
+    - target: {fileID: 3895829853608035045, guid: 13fd5ca448ed9a240849676bca35b5d4, type: 3}
+      propertyPath: m_Name
+      value: BulletHellSpawner
+      objectReference: {fileID: 0}
+    - target: {fileID: 5863924315395130792, guid: 13fd5ca448ed9a240849676bca35b5d4, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 7.075
+      objectReference: {fileID: 0}
+    - target: {fileID: 5863924315395130792, guid: 13fd5ca448ed9a240849676bca35b5d4, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -6.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5863924315395130792, guid: 13fd5ca448ed9a240849676bca35b5d4, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 3.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5863924315395130792, guid: 13fd5ca448ed9a240849676bca35b5d4, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5863924315395130792, guid: 13fd5ca448ed9a240849676bca35b5d4, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5863924315395130792, guid: 13fd5ca448ed9a240849676bca35b5d4, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5863924315395130792, guid: 13fd5ca448ed9a240849676bca35b5d4, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5863924315395130792, guid: 13fd5ca448ed9a240849676bca35b5d4, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5863924315395130792, guid: 13fd5ca448ed9a240849676bca35b5d4, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5863924315395130792, guid: 13fd5ca448ed9a240849676bca35b5d4, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5863924315395130792, guid: 13fd5ca448ed9a240849676bca35b5d4, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 13fd5ca448ed9a240849676bca35b5d4, type: 3}
 --- !u!1001 &1244034551
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8245,6 +8379,10 @@ PrefabInstance:
       value: 4354385
       objectReference: {fileID: 0}
     - target: {fileID: 3760101896446585899, guid: 13fd5ca448ed9a240849676bca35b5d4, type: 3}
+      propertyPath: bulletSpeed
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3760101896446585899, guid: 13fd5ca448ed9a240849676bca35b5d4, type: 3}
       propertyPath: startTrigger
       value: 
       objectReference: {fileID: 454238577}
@@ -8254,7 +8392,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3760101896446585899, guid: 13fd5ca448ed9a240849676bca35b5d4, type: 3}
       propertyPath: timeBetweenBullets
-      value: 0.07
+      value: 0.03
       objectReference: {fileID: 0}
     - target: {fileID: 3895829853608035045, guid: 13fd5ca448ed9a240849676bca35b5d4, type: 3}
       propertyPath: m_Name
@@ -8266,7 +8404,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5863924315395130792, guid: 13fd5ca448ed9a240849676bca35b5d4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -31.62729
+      value: -30.62729
       objectReference: {fileID: 0}
     - target: {fileID: 5863924315395130792, guid: 13fd5ca448ed9a240849676bca35b5d4, type: 3}
       propertyPath: m_LocalPosition.y
@@ -8578,3 +8716,5 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 1149150921}
+  - {fileID: 1242944963}
+  - {fileID: 384708002}

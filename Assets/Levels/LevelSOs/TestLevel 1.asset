@@ -15,6 +15,7 @@ MonoBehaviour:
   levelName: dassadfsdsad
   levelDifficulty: HAERTE
   author: Isac
+  levelSong: {fileID: 11400000, guid: 929b30488e8d541459919bb344f1dd29, type: 2}
   levelData:
     secondsPlayed: 0
     timesDied: 0

@@ -8,9 +8,8 @@ public class MusicManager : MonoBehaviour {
     public static MusicManager insance { get; private set; }
 
     [Header("References")]
-    [SerializeField] private SoundPlayer soundPlayer;
     [SerializeField] private string audioName = "testMusic";
-    [SerializeField] private SongSO testSong;
+    [SerializeField] private SongSO menuSong;
 
     [Header("Settings")]
 
@@ -39,8 +38,7 @@ public class MusicManager : MonoBehaviour {
     private void Start()
     {
         musicGroup = MainMixer.instance.GetMusicGroup();
-
-        PlaySong(testSong);
+        PlaySong(menuSong);
     }
 
 
@@ -79,6 +77,12 @@ public class MusicManager : MonoBehaviour {
         FadeToVolume(song, 0f, fadeOutTime, destroyAudioSourceObjectOnFadeOut: true);
     }
 
+    public void StopAllMusic(float fadeOutTime) {
+        foreach (var item in songAndAudioSources) {
+            StopSong(item.song, fadeOutTime);
+        }
+    }
+
     public void FadeToVolume(SongSO song, float targetVolume, float fadeTime, bool destroyAudioSourceObjectOnFadeOut = false) {
         SongAndAudioSource songAndAudioSource = TryGetSongAndAudioSource(song);
         if (songAndAudioSource == null) {
@@ -88,6 +92,10 @@ public class MusicManager : MonoBehaviour {
             StopCoroutine(songAndAudioSource.fadeCoroutine);
         }
         songAndAudioSource.fadeCoroutine = StartCoroutine(FadeToVolumeCoroutine(song, targetVolume, fadeTime, destroyAudioSourceObjectOnFadeOut));
+    }
+
+    public void PlayMenuMusic() {
+        PlaySong(menuSong);
     }
 
     private IEnumerator FadeToVolumeCoroutine(SongSO song, float targetVolume, float fadeTime, bool destroyAudioSourceObjectOnFadeOut = false) {
@@ -130,6 +138,7 @@ public class MusicManager : MonoBehaviour {
         Destroy(songAndAudioSource.audioSource);
         songAndAudioSources.Remove(songAndAudioSource);
     }
+
 }
 
 

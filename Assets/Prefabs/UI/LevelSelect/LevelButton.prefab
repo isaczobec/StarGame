@@ -549,7 +549,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sounds:
   - name: buttonClick
-    audioClip: {fileID: 8300000, guid: 982c2fb479c199d4a9bd27b26dd45b82, type: 3}
+    audioClip: {fileID: 8300000, guid: aa4d63b35dee9704b9d62c135974ebd9, type: 3}
     mixerGroupType: 1
     masterVolume: 1
     spatialBlend: 0

@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: PlayerTrailMaterial
-  m_Shader: {fileID: -6465566751694194690, guid: 19035c2988c4665448576d80f16dbb3c, type: 3}
+  m_Name: BulletHellSpawnerMaterial
+  m_Shader: {fileID: -6465566751694194690, guid: 772465e5a5557b94ca127b8786bf3b9f, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -37,16 +37,18 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _FlashAmount: 0
-    - _Power: 0.3
-    - _QueueControl: 0
-    - _QueueOffset: 0
+    - _BorderThickness: 0.1
+    - _distScale: 3.88
+    - _distStren: -0.15
+    - _distTime: 0.16
+    - _noiseScale: 1.02
+    - _noiseSpeed: 4.2
     m_Colors:
-    - _Color: {r: 1, g: 0.9957261, b: 1.8608026e-21, a: 1}
-    - _Color2: {r: 0.26415092, g: 0.26415092, b: 0.26415092, a: 1}
-    - _FlashColor1: {r: 1, g: 1, b: 1, a: 1}
+    - _BorderColor: {r: 7.377203, g: 0.5915683, b: 0.5915683, a: 1}
+    - _DetailColor: {r: 0.5372549, g: 0, b: 0.030018512, a: 1}
+    - _MainColor: {r: 0, g: 0, b: 0, a: 1}
   m_BuildTextureStacks: []
---- !u!114 &8080491044170629535
+--- !u!114 &1665477851391500205
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
