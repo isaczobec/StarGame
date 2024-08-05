@@ -77,22 +77,39 @@ public class TileArrayManager : MonoBehaviour
         // only proceed if the tile is within the bounds of the level
         if (!tilemap.HasTile(tilePos)) {
 
-            // get the tile and rotation
-            TileBitMaskAndRotation tileBitMaskAndRotation = currentTileArray.GetTileBitMaskAndRotation(tilePos.x, tilePos.y);
+            // Set solid
+            currentTileArray.SetSolid(tilePos.x, tilePos.y, true);
+
+            // place the tile
+            UpdateAndPlaceTile(currentTileArray, tilePos.x, tilePos.y);
+
+            // update the surrounding tiles
+            for (int i = 0; i < directions.Length; i++) {
+                Vector2Int direction = directions[i];
+                UpdateAndPlaceTile(currentTileArray, tilePos.x + direction.x, tilePos.y + direction.y, true);
+            }
+
+        }
+        
+    }
+
+    public void UpdateAndPlaceTile(TileArray tileArray, int xWorldPos, int yWorldPos, bool onlyUpdate = false) {
+
+        // get if it is solid
+        bool solid = tileArray.solidArray[xWorldPos + LevelEditorDataManager.instance.editorLevelData.levelSizeX, yWorldPos + LevelEditorDataManager.instance.editorLevelData.levelSizeY];
+        if (onlyUpdate && !solid) return;
+
+        // get the tile and rotation
+            TileBitMaskAndRotation tileBitMaskAndRotation = tileArray.GetTileBitMaskAndRotation(xWorldPos, yWorldPos);
             TileChangeData tileChangeData = new TileChangeData {
                 tile = tileBitMaskAndRotation.tile,
-                position = tilePos,
+                position = new Vector3Int(xWorldPos, yWorldPos, 0),
                 transform = rotationDict[tileBitMaskAndRotation.rotation] // rotation matrix from a predefined dictionary
             };
 
             // set the tile
             tilemap.SetTile(tileChangeData, false);
 
-            // Set solid
-            currentTileArray.SetSolid(tilePos.x, tilePos.y, true);
-
-        }
-        
     }
 }
 
@@ -142,5 +159,6 @@ public class TileArray {
     public void SetSolid(int worldX , int worldY, bool solid) {
         solidArray[worldX + LevelEditorDataManager.instance.editorLevelData.levelSizeX, worldY + LevelEditorDataManager.instance.editorLevelData.levelSizeY] = solid;
     }
+
 
 }
