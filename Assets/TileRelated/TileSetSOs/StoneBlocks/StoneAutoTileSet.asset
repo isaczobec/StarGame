@@ -14,6 +14,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   autoTileSetName: Stone
   autoTileSOs:
-  - {fileID: 11400000, guid: 515e6a82fdeecc04b9d199f679165fa0, type: 2}
   - {fileID: 11400000, guid: ff9a45099b0493546af09e871d8d7f8f, type: 2}
-  defaultTile: {fileID: 11400000, guid: 40026507e15fc854a98aae97a782f088, type: 2}
+  - {fileID: 11400000, guid: 515e6a82fdeecc04b9d199f679165fa0, type: 2}
+  - {fileID: 11400000, guid: 3e4b31f96dd45f34ea3506d791b31119, type: 2}
+  - {fileID: 11400000, guid: 93d6e691275e2de488c59960aa19ba83, type: 2}
+  - {fileID: 11400000, guid: 093c09c87611781418619648a94067dd, type: 2}
+  - {fileID: 11400000, guid: 7eba809c2895bf44690a3c979b60bba5, type: 2}
+  - {fileID: 11400000, guid: ae931bde89db331459d3bd852146169a, type: 2}
+  - {fileID: 11400000, guid: b202601454cfd1646bf9af11a2bec5ff, type: 2}
+  - {fileID: 11400000, guid: 4baf61a7d77347c47ba79a07eaccc542, type: 2}
+  - {fileID: 11400000, guid: 6daa4293a93ea784487b928dfe800a14, type: 2}
+  - {fileID: 11400000, guid: 1018917f5659cd748939c042907aab1a, type: 2}
+  - {fileID: 11400000, guid: 149d05fd000e8864eb2a98371d61c34b, type: 2}
+  - {fileID: 11400000, guid: baa4e1111291ff542b9a5bbd4ca8de1d, type: 2}
+  - {fileID: 11400000, guid: c59b165d9113d554f9e74e687fb9a996, type: 2}
+  - {fileID: 11400000, guid: b9744b46dd80aec449016e8a6bcc4cdb, type: 2}
+  defaultTile: {fileID: 11400000, guid: eb5d939c1eb44c5478ebbaec648f7fee, type: 2}
