@@ -251,6 +251,54 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "Editor",
+            "id": "cdc5d5b9-32b4-4b54-bb82-faf17355ffa2",
+            "actions": [
+                {
+                    "name": "Place",
+                    "type": "Value",
+                    "id": "4f746a3c-09ed-47dc-9f6f-6a6bf64a7f1f",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "CameraMoveMode",
+                    "type": "Value",
+                    "id": "e0cc1202-725f-488e-a26c-470960b22ce3",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "0f197ef9-8554-4d67-9201-5d1b7f5e81ac",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Place",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "23ac95ab-ed79-45df-bfeb-19088a0dc43b",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "CameraMoveMode",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []

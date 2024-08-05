@@ -273,6 +273,54 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Editor"",
+            ""id"": ""cdc5d5b9-32b4-4b54-bb82-faf17355ffa2"",
+            ""actions"": [
+                {
+                    ""name"": ""Place"",
+                    ""type"": ""Value"",
+                    ""id"": ""4f746a3c-09ed-47dc-9f6f-6a6bf64a7f1f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""CameraMoveMode"",
+                    ""type"": ""Value"",
+                    ""id"": ""e0cc1202-725f-488e-a26c-470960b22ce3"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""0f197ef9-8554-4d67-9201-5d1b7f5e81ac"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Place"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""23ac95ab-ed79-45df-bfeb-19088a0dc43b"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CameraMoveMode"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -284,6 +332,10 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         m_Movement_Left = m_Movement.FindAction("Left", throwIfNotFound: true);
         m_Movement_Up = m_Movement.FindAction("Up", throwIfNotFound: true);
         m_Movement_Down = m_Movement.FindAction("Down", throwIfNotFound: true);
+        // Editor
+        m_Editor = asset.FindActionMap("Editor", throwIfNotFound: true);
+        m_Editor_Place = m_Editor.FindAction("Place", throwIfNotFound: true);
+        m_Editor_CameraMoveMode = m_Editor.FindAction("CameraMoveMode", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -419,6 +471,60 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         }
     }
     public MovementActions @Movement => new MovementActions(this);
+
+    // Editor
+    private readonly InputActionMap m_Editor;
+    private List<IEditorActions> m_EditorActionsCallbackInterfaces = new List<IEditorActions>();
+    private readonly InputAction m_Editor_Place;
+    private readonly InputAction m_Editor_CameraMoveMode;
+    public struct EditorActions
+    {
+        private @PlayerInput m_Wrapper;
+        public EditorActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Place => m_Wrapper.m_Editor_Place;
+        public InputAction @CameraMoveMode => m_Wrapper.m_Editor_CameraMoveMode;
+        public InputActionMap Get() { return m_Wrapper.m_Editor; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(EditorActions set) { return set.Get(); }
+        public void AddCallbacks(IEditorActions instance)
+        {
+            if (instance == null || m_Wrapper.m_EditorActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_EditorActionsCallbackInterfaces.Add(instance);
+            @Place.started += instance.OnPlace;
+            @Place.performed += instance.OnPlace;
+            @Place.canceled += instance.OnPlace;
+            @CameraMoveMode.started += instance.OnCameraMoveMode;
+            @CameraMoveMode.performed += instance.OnCameraMoveMode;
+            @CameraMoveMode.canceled += instance.OnCameraMoveMode;
+        }
+
+        private void UnregisterCallbacks(IEditorActions instance)
+        {
+            @Place.started -= instance.OnPlace;
+            @Place.performed -= instance.OnPlace;
+            @Place.canceled -= instance.OnPlace;
+            @CameraMoveMode.started -= instance.OnCameraMoveMode;
+            @CameraMoveMode.performed -= instance.OnCameraMoveMode;
+            @CameraMoveMode.canceled -= instance.OnCameraMoveMode;
+        }
+
+        public void RemoveCallbacks(IEditorActions instance)
+        {
+            if (m_Wrapper.m_EditorActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IEditorActions instance)
+        {
+            foreach (var item in m_Wrapper.m_EditorActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_EditorActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public EditorActions @Editor => new EditorActions(this);
     public interface IMovementActions
     {
         void OnMove(InputAction.CallbackContext context);
@@ -426,5 +532,10 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         void OnLeft(InputAction.CallbackContext context);
         void OnUp(InputAction.CallbackContext context);
         void OnDown(InputAction.CallbackContext context);
+    }
+    public interface IEditorActions
+    {
+        void OnPlace(InputAction.CallbackContext context);
+        void OnCameraMoveMode(InputAction.CallbackContext context);
     }
 }
