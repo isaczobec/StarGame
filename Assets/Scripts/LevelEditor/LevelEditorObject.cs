@@ -4,15 +4,20 @@ using UnityEngine;
 
 public class LevelEditorObject : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+    [SerializeField] private EditorObjectData editorObjectData;
+    public EditorObjectData UpdateAndGetEditorObjectData() {
+        editorObjectData.SetBaseSettings(this);
+        return editorObjectData;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+    /// <summary>
+    /// the sprite of this object.
+    /// </summary>
+    [SerializeField] private Sprite sprite;
+    public Sprite GetSprite() {
+        return sprite;
     }
+
+    [Header("Settings")]
+    [SerializeField] public Vector2 offsetWhenPlace;
 }

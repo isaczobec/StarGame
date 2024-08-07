@@ -16,6 +16,9 @@ public class EditorLevelData {
     /// </summary>
     public int levelSizeY = 500;
 
+
+    public List<EditorObjectData> editorObjectDatas = new List<EditorObjectData>();
+
     public List<TileArrayData> tileArrayDatas = new List<TileArrayData>();
 
 }

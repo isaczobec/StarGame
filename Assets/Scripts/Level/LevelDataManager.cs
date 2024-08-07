@@ -15,11 +15,12 @@ public class LevelDataManager {
     private const string LEVEL_DATA_SUB_PATH_DEFAULT = "LevelData";
     private const string DEFAULT_FILE_EXTENSION_DEFAULT = ".json";
 
+    private const string LEVEL_STATS_DATA_DEFAULT_SUFFIX = "STATS";
 
     /// <summary>
     /// The current level data that is being tracked.
     /// </summary>
-    private LevelData currentLevelData;
+    private LevelStatsData currentLevelData;
     private float timeSinceStartupWhenLevelStarted = 0;
 
     public LevelDataManager(string levelDataSubPath = LEVEL_DATA_SUB_PATH_DEFAULT, string defaultFileExtension = DEFAULT_FILE_EXTENSION_DEFAULT) {
@@ -72,7 +73,7 @@ public class LevelDataManager {
         timeSinceStartupWhenLevelStarted = timeSinceStartup; // reset time
 
         // Save level data
-        DataSerializer.Instance.SaveData(levelSO.levelData, levelDataSubPath, levelSO.levelID);
+        DataSerializer.Instance.SaveData(levelSO.levelData, levelDataSubPath, levelSO.levelID + LEVEL_STATS_DATA_DEFAULT_SUFFIX);
 
     }
 
@@ -85,12 +86,12 @@ public class LevelDataManager {
     public void LoadLevelData(LevelSO levelSO, bool createIfNotExists = true) {
 
         // try and load the data
-        LoadedData<LevelData> loadedLevelData = DataSerializer.Instance.LoadData<LevelData>(levelDataSubPath, levelSO.levelID);
+        LoadedData<LevelStatsData> loadedLevelData = DataSerializer.Instance.LoadData<LevelStatsData>(levelDataSubPath, levelSO.levelID + LEVEL_STATS_DATA_DEFAULT_SUFFIX);
 
         if (!loadedLevelData.didExist) {
             // did not exist, create new level data if it doesn't exist and save it to a file
             if (createIfNotExists) {
-                levelSO.levelData = new LevelData();
+                levelSO.levelData = new LevelStatsData();
                 DataSerializer.Instance.SaveData(levelSO.levelData, levelDataSubPath, levelSO.levelID);
             }
         } else {

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class LevelEditorInputManager : MonoBehaviour {
@@ -7,6 +8,10 @@ public class LevelEditorInputManager : MonoBehaviour {
 
 
     public static LevelEditorInputManager instance;    
+
+    public bool placePressedLastFrame = false;
+
+    public event EventHandler<EventArgs> OnPlacePressed;
 
     private void Awake() {
 
@@ -21,12 +26,36 @@ public class LevelEditorInputManager : MonoBehaviour {
 
     }
 
+
+    private void Update() {
+        if (GetPlayerIsPlacing()) {
+            if (!placePressedLastFrame) {
+                OnPlacePressed?.Invoke(this, EventArgs.Empty);
+            }
+            placePressedLastFrame = true;
+        } else {
+            placePressedLastFrame = false;
+        }
+    }
+
     /// <summary>
     /// Gets if the player is currently placing objects.
     /// </summary>
     /// <returns></returns>
     public bool GetPlayerIsPlacing() {
         return inputActions.Editor.Place.ReadValue<float>() > 0f;
+    }
+
+    public bool GetCameraControlModeEnabled() {
+        return inputActions.Editor.CameraMoveMode.ReadValue<float>() > 0f;
+    }
+
+    public Vector2 GetMouseDelta() {
+        return inputActions.Editor.MouseMovement.ReadValue<Vector2>();
+    }
+
+    public float GetZoomDelta() {
+        return inputActions.Editor.Scroll.ReadValue<float>();
     }
 
     

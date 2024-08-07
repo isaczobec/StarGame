@@ -10,6 +10,7 @@ public class LevelHandler : MonoBehaviour
 
     [SerializeField] private GameObject[] dontDestroyOnLoadObjects;
     [SerializeField] private GameObject menuSpawnPointPrefab;
+    [SerializeField] private string editorLevelLoadSceneName = "LevelEditor";
 
     public static LevelHandler Insance { get; private set; }    
 
@@ -35,6 +36,8 @@ public class LevelHandler : MonoBehaviour
 
     public event EventHandler OnLevelLoaded;
     public event EventHandler OnReturnToMenu;
+
+    public bool isLoadingLevel;
 
 
 
@@ -64,7 +67,13 @@ public class LevelHandler : MonoBehaviour
     public void LoadLevel(LevelSO levelSO)
     {
         Debug.Log("Loading level: " + levelSO.name);
-        SceneManager.LoadScene(levelSO.sceneToLoadRefString);
+
+        // load an editor level
+        if (levelSO.loadLevelIDInstead) {
+            SceneManager.LoadScene(editorLevelLoadSceneName);
+        } else { // load a normal scene
+            SceneManager.LoadScene(levelSO.sceneToLoadRefString);
+        }
         
     }
 
@@ -72,7 +81,7 @@ public class LevelHandler : MonoBehaviour
     {
         Debug.Log("Unloading level: " + levelSO.name);
         SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
-        SceneManager.UnloadSceneAsync(levelSO.sceneToLoadRefString);
+        SceneManager.UnloadSceneAsync(levelSO.loadLevelIDInstead? editorLevelLoadSceneName : levelSO.sceneToLoadRefString);
     }
 
     public void LoadLevelScreenCovered(LevelSO levelToLoad, float screenCoverTime, float screenUnCoverTime)
@@ -92,14 +101,20 @@ public class LevelHandler : MonoBehaviour
 
     }
 
-    private void OnCoverComplete(object sender, bool covered)
-    {
-        // LOADING A LEVEL
-        if (isCurrentlyLoadingLevel && covered) {
+    private IEnumerator OnCoverCompleteLoadLevel() {
 
+        isCurrentlyLoadingLevel = true;
 
-            // load level
+        // load level
             LoadLevel(levelToLoad);
+            yield return new WaitForSeconds(0.1f); // wait for scene to load
+
+            if (levelToLoad.loadLevelIDInstead) {
+                EditorLevelDataLoader.instance.LoadToPlayableLevel(levelToLoad.levelID);
+                yield return new WaitForSeconds(0.05f); // wait for scene to load
+            }
+
+        isCurrentlyLoadingLevel = false;
 
             // end cover
             ScreenCoverer.instance.EndCover(screenUnCoverTime);
@@ -118,7 +133,18 @@ public class LevelHandler : MonoBehaviour
 
             // invoke event
             OnLevelLoaded?.Invoke(this, EventArgs.Empty);
+
+            yield return null;
+    }
+
+    private void OnCoverComplete(object sender, bool covered)
+    {
+        // LOADING A LEVEL
+        if (isCurrentlyLoadingLevel && covered) {
+
+            StartCoroutine(OnCoverCompleteLoadLevel());
             return;
+            
         }
 
         // RETURNING TO MENU

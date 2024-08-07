@@ -99,9 +99,11 @@ public class TileArrayManager : MonoBehaviour
 
     public void TryPlaceTile(Vector3 pos) {
         Vector3Int tilePos = tilemap.WorldToCell(pos);
+        tilePos.z = 0;
 
         // only proceed if the tile is within the bounds of the level
-        if (!tilemap.HasTile(tilePos)) {
+        if (!tilemap.HasTile(tilePos))
+        {
 
             // Set solid
             currentTileArray.SetSolid(tilePos.x, tilePos.y, true);
@@ -110,13 +112,23 @@ public class TileArrayManager : MonoBehaviour
             UpdateAndPlaceTile(currentTileArray, tilePos.x, tilePos.y);
 
             // update the surrounding tiles
-            for (int i = 0; i < directions.Length; i++) {
-                Vector2Int direction = directions[i];
-                UpdateAndPlaceTile(currentTileArray, tilePos.x + direction.x, tilePos.y + direction.y, true);
-            }
+            UpdateSorroundingTiles(tilePos);
 
         }
-        
+
+    }
+
+    /// <summary>
+    /// Updates the sorrounding tiles of a tile.
+    /// </summary>
+    /// <param name="tilePos"></param>
+    private void UpdateSorroundingTiles(Vector3Int tilePos)
+    {
+        for (int i = 0; i < directions.Length; i++)
+        {
+            Vector2Int direction = directions[i];
+            UpdateAndPlaceTile(currentTileArray, tilePos.x + direction.x, tilePos.y + direction.y, true);
+        }
     }
 
     public void UpdateAndPlaceTile(TileArray tileArray, int xWorldPos, int yWorldPos, bool onlyUpdate = false) {
@@ -135,6 +147,25 @@ public class TileArrayManager : MonoBehaviour
 
             // set the tile
             tilemap.SetTile(tileChangeData, false);
+
+    }
+
+    public void TryDeleteTile(Vector3 pos) {
+        Vector3Int tilePos = tilemap.WorldToCell(pos);
+        tilePos.z = 0;
+        if (tilemap.HasTile(tilePos)) {
+
+            foreach (TileArray tileArray in tileArrays) {
+                if (tileArray.GetIsSolid(tilePos.x, tilePos.y)) {
+                    tileArray.SetSolid(tilePos.x, tilePos.y, false);
+                    tilemap.SetTile(tilePos, null);
+
+                    // update the surrounding tiles
+                    UpdateSorroundingTiles(tilePos);
+                }
+            }
+
+        }
 
     }
 
@@ -243,6 +274,10 @@ public class TileArray {
         }
     }
 
+    public bool GetIsSolid(int worldX, int worldY) {
+        return solidArray[worldX + LevelEditorDataManager.instance.editorLevelData.levelSizeX, worldY + LevelEditorDataManager.instance.editorLevelData.levelSizeY];
+    }
+
     /// <summary>
     /// Creates a serializable TileArrayData object from the solid array.
     /// </summary>
@@ -310,9 +345,9 @@ public class TileArray {
 
 [Serializable]
 public class TileArrayData {
-    public bool[] croppedSolidArray;
-    public Vector2 solidArrayDimensions;
     public string AutoTileSetID;
     public Vector2Int lowerLeftBound;
     public Vector2Int upperRightBound;
+    public Vector2 solidArrayDimensions;
+    public bool[] croppedSolidArray;
 }

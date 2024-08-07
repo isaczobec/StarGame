@@ -14,14 +14,17 @@ public class LevelSO : ScriptableObject
 
     public SongSO levelSong;
 
-    public LevelData levelData;
+    public LevelStatsData levelData;
 
 
     [Header("LevelID")]
     /// <summary>
-    /// The ID of the level, used for saving and loading level data
+    /// The ID of the level, used for saving and loading level stat data etc
     /// </summary>
     public string levelID;
-    [Header("Level Scene")]
+    [Header("For loading")]
     public string sceneToLoadRefString;
+
+    public bool loadLevelIDInstead; // if true, the sceneToLoadRefString will be ignored and the levelID will be used to load the editor level
+    
 }

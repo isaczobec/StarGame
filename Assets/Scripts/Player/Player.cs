@@ -416,7 +416,7 @@ public class Player : MonoBehaviour, IHitboxEntity
 
     public void OnHurtBoxHit(HitboxTriggeredInfo hitboxTriggeredInfo)
     {
-        if (playerIsInvulnerable || playerIsDead) { return; } // do not take damage if the player is invulnerable
+        if (playerIsInvulnerable || playerIsDead || LevelHandler.Insance.isCurrentlyLoadingLevel) { return; } // do not take damage if the player is invulnerable
         PlayerDied();
     }
 

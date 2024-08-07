@@ -13,6 +13,7 @@ public class DataSerializer : MonoBehaviour
         if (Instance == null) {
             Instance = this;
         } else {
+            Debug.LogWarning("Instance already exists, destroying this instance");
             Destroy(gameObject);
         }
     }

@@ -295,6 +295,24 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""MouseMovement"",
+                    ""type"": ""Value"",
+                    ""id"": ""5194c87a-777b-43d0-b086-7ac052e56343"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Scroll"",
+                    ""type"": ""Value"",
+                    ""id"": ""0d7680cc-788f-4940-b80e-aa5af3fa61d0"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -319,6 +337,50 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""action"": ""CameraMoveMode"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5cb88b02-436c-4821-8bc0-6928d6742ce9"",
+                    ""path"": ""<Mouse>/delta"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MouseMovement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""30c3d37c-703e-4d28-8b16-0f34c2ee9ac3"",
+                    ""path"": ""<Gamepad>/leftStick"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MouseMovement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a0cf11f6-c98d-4653-b5ab-abd05c488f09"",
+                    ""path"": ""<Mouse>/scroll/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Scroll"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2acc65ad-3457-442f-83d6-8ed23c4586e4"",
+                    ""path"": ""<Mouse>/scroll/down"",
+                    ""interactions"": """",
+                    ""processors"": ""Invert"",
+                    ""groups"": """",
+                    ""action"": ""Scroll"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -336,6 +398,8 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         m_Editor = asset.FindActionMap("Editor", throwIfNotFound: true);
         m_Editor_Place = m_Editor.FindAction("Place", throwIfNotFound: true);
         m_Editor_CameraMoveMode = m_Editor.FindAction("CameraMoveMode", throwIfNotFound: true);
+        m_Editor_MouseMovement = m_Editor.FindAction("MouseMovement", throwIfNotFound: true);
+        m_Editor_Scroll = m_Editor.FindAction("Scroll", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -477,12 +541,16 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     private List<IEditorActions> m_EditorActionsCallbackInterfaces = new List<IEditorActions>();
     private readonly InputAction m_Editor_Place;
     private readonly InputAction m_Editor_CameraMoveMode;
+    private readonly InputAction m_Editor_MouseMovement;
+    private readonly InputAction m_Editor_Scroll;
     public struct EditorActions
     {
         private @PlayerInput m_Wrapper;
         public EditorActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @Place => m_Wrapper.m_Editor_Place;
         public InputAction @CameraMoveMode => m_Wrapper.m_Editor_CameraMoveMode;
+        public InputAction @MouseMovement => m_Wrapper.m_Editor_MouseMovement;
+        public InputAction @Scroll => m_Wrapper.m_Editor_Scroll;
         public InputActionMap Get() { return m_Wrapper.m_Editor; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -498,6 +566,12 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @CameraMoveMode.started += instance.OnCameraMoveMode;
             @CameraMoveMode.performed += instance.OnCameraMoveMode;
             @CameraMoveMode.canceled += instance.OnCameraMoveMode;
+            @MouseMovement.started += instance.OnMouseMovement;
+            @MouseMovement.performed += instance.OnMouseMovement;
+            @MouseMovement.canceled += instance.OnMouseMovement;
+            @Scroll.started += instance.OnScroll;
+            @Scroll.performed += instance.OnScroll;
+            @Scroll.canceled += instance.OnScroll;
         }
 
         private void UnregisterCallbacks(IEditorActions instance)
@@ -508,6 +582,12 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @CameraMoveMode.started -= instance.OnCameraMoveMode;
             @CameraMoveMode.performed -= instance.OnCameraMoveMode;
             @CameraMoveMode.canceled -= instance.OnCameraMoveMode;
+            @MouseMovement.started -= instance.OnMouseMovement;
+            @MouseMovement.performed -= instance.OnMouseMovement;
+            @MouseMovement.canceled -= instance.OnMouseMovement;
+            @Scroll.started -= instance.OnScroll;
+            @Scroll.performed -= instance.OnScroll;
+            @Scroll.canceled -= instance.OnScroll;
         }
 
         public void RemoveCallbacks(IEditorActions instance)
@@ -537,5 +617,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     {
         void OnPlace(InputAction.CallbackContext context);
         void OnCameraMoveMode(InputAction.CallbackContext context);
+        void OnMouseMovement(InputAction.CallbackContext context);
+        void OnScroll(InputAction.CallbackContext context);
     }
 }

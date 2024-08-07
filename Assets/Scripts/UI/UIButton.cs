@@ -10,6 +10,7 @@ public class UIButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     [SerializeField] public Button button;
 
     [Header("Visuals")]
+    [SerializeField] public Image buttonImage;
     [Header("Sound")]
     [SerializeField] public SoundPlayer soundPlayer;
     [SerializeField] public string onClickSoundName = "buttonClick";
@@ -89,5 +90,9 @@ public class UIButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     public void InvokeOnHoverChangedEnterEvent(bool hovered)
     {
         OnUIButtonHoveredChanged?.Invoke(this, hovered);
+    }
+
+    public void SetColor(Color color) {
+        if (buttonImage != null) buttonImage.color = color;
     }
 }

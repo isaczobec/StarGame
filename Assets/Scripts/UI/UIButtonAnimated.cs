@@ -24,7 +24,6 @@ public class UIButtonAnimated : UIButton {
     
     [Header("Shader and sprite")]
     [SerializeField] private Shader buttonShader;
-    [SerializeField] private Image buttonImage;
 
     [Header("MoveToNewPosition")]
     [SerializeField] private AnimationCurve moveToNewPositionCurve;

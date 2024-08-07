@@ -22,7 +22,7 @@ public class LevelEditorDataManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        LoadData("TesteditorLevelID");
+        LoadDataToEditor("TesteditorLevelID");
     }
 
     // Update is called once per frame
@@ -42,6 +42,8 @@ public class LevelEditorDataManager : MonoBehaviour
         
         editorLevelData.tileArrayDatas = TileArrayManager.instance.GetTileArrayDatas();
 
+        editorLevelData.editorObjectDatas = LevelEditorObjectManager.instance.UpdateAndGetEditorObjectDatas();
+
         // Save the data to a file
         DataSerializer.Instance.SaveData(editorLevelData, defaultLevelDataSubPath, editorLevelData.editorLevelID);
     }
@@ -50,14 +52,29 @@ public class LevelEditorDataManager : MonoBehaviour
     /// Loads the editorLevelData from a file into the editor.
     /// </summary>
     /// <param name="levelID"></param>
-    public void LoadData(string levelID) {
-        LoadedData<EditorLevelData> loadedData = DataSerializer.Instance.LoadData<EditorLevelData>(defaultLevelDataSubPath, levelID);
+    public void LoadDataToEditor(string levelID) {
 
+        LoadEditorLevelData(levelID);
+
+        if (editorLevelData == null) {
+            Debug.LogError("No editor level data found for levelID: " + levelID);
+            return;
+        }
+        // Load the data into the tileArrayManager
+        TileArrayManager.instance.LoadTileArrayDatas(editorLevelData.tileArrayDatas);
+    }
+
+    /// <summary>
+    /// Loads and returns the editor level data from a file. also sets the editorLevelData field for this class.
+    /// </summary>
+    /// <param name="levelID"></param>
+    /// <returns></returns>
+    public EditorLevelData LoadEditorLevelData(string levelID) {
+        LoadedData<EditorLevelData> loadedData = DataSerializer.Instance.LoadData<EditorLevelData>(defaultLevelDataSubPath, levelID);
         if (loadedData.didExist) {
             editorLevelData = loadedData.data;
-
-            // Load the data into the tileArrayManager
-            TileArrayManager.instance.LoadTileArrayDatas(editorLevelData.tileArrayDatas);
+            return loadedData.data;
         }
+        return null;
     }
 }
