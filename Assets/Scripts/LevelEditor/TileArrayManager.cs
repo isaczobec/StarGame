@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.PackageManager;
@@ -53,20 +54,45 @@ public class TileArrayManager : MonoBehaviour
     void Start()
     {
         
-        // Create the tile arrays
-        foreach (AutoTileSetSO autoTileSet in autoTileSet) {
-            tileArrays.Add(new TileArray(autoTileSet, 
-            LevelEditorDataManager.instance.editorLevelData.levelSizeX * 2, 
-            LevelEditorDataManager.instance.editorLevelData.levelSizeY * 2));
-        }
+        // // Create the tile arrays
+        // foreach (AutoTileSetSO autoTileSet in autoTileSet) {
+        //     tileArrays.Add(new TileArray(autoTileSet, 
+        //     LevelEditorDataManager.instance.editorLevelData.levelSizeX * 2, 
+        //     LevelEditorDataManager.instance.editorLevelData.levelSizeY * 2));
+        // }
 
-        currentTileArray = tileArrays[0];
+        // currentTileArray = tileArrays[0];
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+
+    /// <summary>
+    /// loads in tilearray data to new tillearrays and spawns blocks in the world.
+    /// </summary>
+    /// <param name="datas"></param>
+    public void LoadTileArrayDatas(List<TileArrayData> datas, bool setCurrentTileArray = true) {
+        tileArrays.Clear(); // clear so new data can be set
+        for (int i = 0; i < datas.Count; i++) {
+            tileArrays.Add(new TileArray(null, LevelEditorDataManager.instance.editorLevelData.levelSizeX * 2, LevelEditorDataManager.instance.editorLevelData.levelSizeY * 2));
+            tileArrays[i].LoadTileArrayData(datas[i]);
+        }
+
+        // set the blocks
+        foreach (TileArray tileArray in tileArrays) {
+            for (int i = tileArray.LowerLeftBound.x; i <= tileArray.UpperRightBound.x; i++) {
+                for (int j = tileArray.LowerLeftBound.y; j <= tileArray.UpperRightBound.y; j++) {
+                    UpdateAndPlaceTile(tileArray, i, j, true);
+                }
+            }
+        }
+
+        if (setCurrentTileArray) {
+            currentTileArray = tileArrays[0];
+        }
     }
 
 
@@ -111,7 +137,42 @@ public class TileArrayManager : MonoBehaviour
             tilemap.SetTile(tileChangeData, false);
 
     }
+
+    /// <summary>
+    /// Returns a list of TileArrayDatas from the tileArrays.
+    /// </summary>
+    /// <returns></returns>
+    public List<TileArrayData> GetTileArrayDatas() {
+        List<TileArrayData> tileArrayDatas = new List<TileArrayData>();
+        foreach (TileArray tileArray in tileArrays) {
+            tileArrayDatas.Add(tileArray.GenerateTileArrayData());
+        }
+        return tileArrayDatas;
+    }
+
+
+    /// <summary>
+    /// returns an autotileset from an ID. Null if not found.
+    /// </summary>
+    /// <param name="autoTileSetID"></param>
+    /// <returns></returns>
+    public AutoTileSetSO GetAutoTileSetSOFromID(string autoTileSetID) {
+        foreach (AutoTileSetSO autoTileSet in autoTileSet) {
+            if (autoTileSet.autoTileSetID == autoTileSetID) {
+                return autoTileSet;
+            }
+        }
+        return null;
+    }
 }
+
+
+
+
+
+
+
+
 
 
 public class TileArray {
@@ -121,6 +182,19 @@ public class TileArray {
     /// </summary>
     public bool[,] solidArray;
     public AutoTileSetSO autoTileSet;
+
+
+    /// <summary>
+    /// The WORLD lower bound of the solid array.
+    /// </summary>
+    private Vector2Int lowerLeftBound;
+    public Vector2Int LowerLeftBound { get { return lowerLeftBound; } }
+
+    /// <summary>
+    /// The WORLD upper bound of the solid array.
+    /// </summary>
+    private Vector2Int upperRightBound;
+    public Vector2Int UpperRightBound { get { return upperRightBound; } }
 
     public TileArray(AutoTileSetSO autoTileSet, int xWidth, int yHeight) {
         this.autoTileSet = autoTileSet;
@@ -157,8 +231,88 @@ public class TileArray {
     }
 
     public void SetSolid(int worldX , int worldY, bool solid) {
-        solidArray[worldX + LevelEditorDataManager.instance.editorLevelData.levelSizeX, worldY + LevelEditorDataManager.instance.editorLevelData.levelSizeY] = solid;
+        Vector2Int pos = new Vector2Int(worldX + LevelEditorDataManager.instance.editorLevelData.levelSizeX, worldY + LevelEditorDataManager.instance.editorLevelData.levelSizeY);
+        solidArray[pos.x, pos.y] = solid;
+
+        // update bounds
+        if (solid) {
+            if (worldX < lowerLeftBound.x) lowerLeftBound.x = worldX;
+            if (worldY < lowerLeftBound.y) lowerLeftBound.y = worldY;
+            if (worldX > upperRightBound.x) upperRightBound.x = worldX;
+            if (worldY > upperRightBound.y) upperRightBound.y = worldY;
+        }
+    }
+
+    /// <summary>
+    /// Creates a serializable TileArrayData object from the solid array.
+    /// </summary>
+    /// <returns></returns>
+    public TileArrayData GenerateTileArrayData() {
+
+        Vector2Int arrayLowerLeftBound = new Vector2Int(lowerLeftBound.x + LevelEditorDataManager.instance.editorLevelData.levelSizeX, lowerLeftBound.y + LevelEditorDataManager.instance.editorLevelData.levelSizeY);
+        Vector2Int arrayUpperRightBound = new Vector2Int(upperRightBound.x + LevelEditorDataManager.instance.editorLevelData.levelSizeX, upperRightBound.y + LevelEditorDataManager.instance.editorLevelData.levelSizeY);
+
+        // crop the solid array
+        bool[,] croppedSolidArray = new bool[arrayUpperRightBound.x - arrayLowerLeftBound.x + 1, arrayUpperRightBound.y - arrayLowerLeftBound.y + 1];
+        for (int i = arrayLowerLeftBound.x; i <= arrayUpperRightBound.x; i++) {
+            for (int j = arrayLowerLeftBound.y; j <= arrayUpperRightBound.y; j++) {
+                croppedSolidArray[i - arrayLowerLeftBound.x, j - arrayLowerLeftBound.y] = solidArray[i, j];
+            }
+        }
+
+        // flatten the array
+        bool[] flatSolidArray = new bool[croppedSolidArray.GetLength(0) * croppedSolidArray.GetLength(1)];
+        for (int i = 0; i < croppedSolidArray.GetLength(0); i++) {
+            for (int j = 0; j < croppedSolidArray.GetLength(1); j++) {
+                flatSolidArray[i * croppedSolidArray.GetLength(1) + j] = croppedSolidArray[i, j];
+            }
+        }
+
+        // create tile array data
+        TileArrayData tileArrayData = new TileArrayData {
+            croppedSolidArray = flatSolidArray,
+            solidArrayDimensions = new Vector2(croppedSolidArray.GetLength(0), croppedSolidArray.GetLength(1)),
+            AutoTileSetID = autoTileSet.autoTileSetID,
+            lowerLeftBound = lowerLeftBound,
+            upperRightBound = upperRightBound
+        };
+        return tileArrayData;
+    }
+
+    public void LoadTileArrayData(TileArrayData data) {
+        // parse the solid array
+        bool[,] readSolidArray = new bool[(int)data.solidArrayDimensions.x, (int)data.solidArrayDimensions.y];
+        for (int i = 0; i < data.solidArrayDimensions.x; i++) {
+            for (int j = 0; j < data.solidArrayDimensions.y; j++) {
+                readSolidArray[i, j] = data.croppedSolidArray[i * (int)data.solidArrayDimensions.y + j];
+            }
+        }
+
+        // set this objects solid array
+        for (int i = 0; i < readSolidArray.GetLength(0); i++) {
+            for (int j = 0; j < readSolidArray.GetLength(1); j++) {
+                Vector2Int arrayOffset = new Vector2Int(data.lowerLeftBound.x + LevelEditorDataManager.instance.editorLevelData.levelSizeX, data.lowerLeftBound.y + LevelEditorDataManager.instance.editorLevelData.levelSizeY);
+                solidArray[i + arrayOffset.x, j + arrayOffset.y] = readSolidArray[i, j];
+            }
+        }
+
+        // get the auto tile set
+        autoTileSet = TileArrayManager.instance.GetAutoTileSetSOFromID(data.AutoTileSetID);
+
+        // set bounds
+        lowerLeftBound = data.lowerLeftBound;
+        upperRightBound = data.upperRightBound;
     }
 
 
+}
+
+
+[Serializable]
+public class TileArrayData {
+    public bool[] croppedSolidArray;
+    public Vector2 solidArrayDimensions;
+    public string AutoTileSetID;
+    public Vector2Int lowerLeftBound;
+    public Vector2Int upperRightBound;
 }

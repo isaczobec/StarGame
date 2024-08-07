@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: StoneAutoTileSet
   m_EditorClassIdentifier: 
   autoTileSetName: Stone
+  autoTileSetID: cnue2hdiue
   autoTileSOs:
   - {fileID: 11400000, guid: ff9a45099b0493546af09e871d8d7f8f, type: 2}
   - {fileID: 11400000, guid: 515e6a82fdeecc04b9d199f679165fa0, type: 2}

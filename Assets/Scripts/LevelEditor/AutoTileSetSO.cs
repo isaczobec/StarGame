@@ -6,6 +6,7 @@ using UnityEngine.Tilemaps;
 public class AutoTileSetSO : ScriptableObject
 {
     public string autoTileSetName;
+    public string autoTileSetID;
     public AutoTileSO[] autoTileSOs;
 
     [HideInInspector] private TileBitMaskAndRotation[] tileBitMaskAndRotations = new TileBitMaskAndRotation[256];
