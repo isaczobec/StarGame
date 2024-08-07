@@ -10,6 +10,14 @@ public class LevelEditorObject : MonoBehaviour
         return editorObjectData;
     }
 
+    public string GetObjectID() {
+        return editorObjectData.SpawnnableObjectID;
+    }
+
+    public void SetEditorObjectData(EditorObjectData editorObjectData) {
+        this.editorObjectData = editorObjectData;
+    }
+
     /// <summary>
     /// the sprite of this object.
     /// </summary>

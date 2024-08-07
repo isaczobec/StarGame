@@ -15,6 +15,8 @@ public class LevelEditorDataManager : MonoBehaviour
 
     public EditorLevelData editorLevelData {get; private set;} = new EditorLevelData();
 
+    [SerializeField] private bool isInEditorMode = true;
+
     private void Awake() {
         instance = this;
     }
@@ -22,7 +24,7 @@ public class LevelEditorDataManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        LoadDataToEditor("TesteditorLevelID");
+        if (isInEditorMode) LoadDataToEditor("TesteditorLevelID");
     }
 
     // Update is called once per frame
@@ -32,7 +34,7 @@ public class LevelEditorDataManager : MonoBehaviour
     }
 
     private void OnApplicationQuit() {
-        SaveData();
+        if (isInEditorMode) SaveData();
     }
 
     /// <summary>
@@ -62,6 +64,9 @@ public class LevelEditorDataManager : MonoBehaviour
         }
         // Load the data into the tileArrayManager
         TileArrayManager.instance.LoadTileArrayDatas(editorLevelData.tileArrayDatas);
+
+        // load the objects
+        LevelEditorObjectManager.instance.LoadLevelEditorObjectsIntoEditor(editorLevelData.editorObjectDatas);
     }
 
     /// <summary>

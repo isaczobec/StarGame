@@ -44,4 +44,29 @@ public class LevelEditorObjectManager : MonoBehaviour {
         return editorObjectDatas;
     }
 
+    public void LoadLevelEditorObjectsIntoEditor(List<EditorObjectData> objectDatas) {
+        foreach (EditorObjectData objectData in objectDatas) {
+            foreach (GameObject prefab in LevelEditorObjectPrefabs) {
+                LevelEditorObject levelEditorObject = prefab.GetComponent<LevelEditorObject>();
+                if (levelEditorObject != null && levelEditorObject.GetObjectID() == objectData.SpawnnableObjectID) {
+
+                    // spawn the object
+                    // set the base settings
+                    GameObject newObject = Instantiate(prefab, objectData.position, Quaternion.identity);
+                    newObject.transform.rotation = Quaternion.Euler(0f, 0f, objectData.rotation);
+                    newObject.transform.localScale = new Vector3(objectData.scale.x, objectData.scale.y, 1f);
+
+                    // set editorObject data and add to list
+                    LevelEditorObject newLevelEditorObject = newObject.GetComponent<LevelEditorObject>();
+                    if (newLevelEditorObject != null) {
+                        newLevelEditorObject.SetEditorObjectData(objectData);
+                        levelEditorObjects.Add(newLevelEditorObject);
+                    }
+
+                    
+                }
+            }
+        }
+    }
+
 }
