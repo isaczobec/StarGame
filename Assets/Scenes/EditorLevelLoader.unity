@@ -155,6 +155,7 @@ MonoBehaviour:
   testTile: {fileID: 11400000, guid: cfb3b1a240297294fb7a77cc609f8b28, type: 2}
   autoTileSet:
   - {fileID: 11400000, guid: 26eb52f55102d3040a3c5289fef0578d, type: 2}
+  isEditorVersion: 0
 --- !u!4 &298218214
 Transform:
   m_ObjectHideFlags: 0

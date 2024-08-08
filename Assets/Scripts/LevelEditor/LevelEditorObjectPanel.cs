@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
@@ -91,11 +92,12 @@ public class LevelEditorObjectPanel : MonoBehaviour {
 
         // set the first category active
         if (setDefaultActive) {
-            SetActiveCategory(editorObjectCategories[currentCategoryIndex]);
+            SetActiveCategory(editorObjectCategories[currentCategoryIndex],true);
             SetActiveGameObjectThroughButtonClick(objectButtonPrefabDictionary.Keys.ElementAt(0));
         }
 
     }
+
 
     public void SetActiveCategory(EditorObjectCategory category, bool SetAllOthersInactive = false) {
         if (categoryButtonParentsDictionary.ContainsKey(category)) {
@@ -103,11 +105,13 @@ public class LevelEditorObjectPanel : MonoBehaviour {
                 if (pair.Key == category) {
                     foreach (Transform child in pair.Value.transform) {
                         UIButtonAnimated button = child.GetComponent<UIButtonAnimated>();
+                        button.showByDefault = true;
                         button.ChangeVisible(true);
                     }
                     continue;
                 } 
                 if (pair.Key == activeCategory || (SetAllOthersInactive && pair.Key != category)) {
+                    Debug.Log("Setting inactive");
                     foreach (Transform child in pair.Value.transform) {
                         UIButtonAnimated button = child.GetComponent<UIButtonAnimated>();
                         button.ChangeVisible(false);

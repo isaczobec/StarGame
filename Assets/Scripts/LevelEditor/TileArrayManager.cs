@@ -18,6 +18,8 @@ public class TileArrayManager : MonoBehaviour
         currentTileArray = tileArray;
     }
 
+    [SerializeField] private bool isEditorVersion = true;
+
     public static TileArrayManager instance;
 
     // matricies
@@ -103,7 +105,7 @@ public class TileArrayManager : MonoBehaviour
             currentTileArray = tileArrays[0];
         }
 
-        if (initializeTilePanel) {
+        if (initializeTilePanel && isEditorVersion) {
             TilePanel.instance.InitializeButtons(tileArrays);
         }
     }

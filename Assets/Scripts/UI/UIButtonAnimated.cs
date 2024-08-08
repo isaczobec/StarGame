@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class UIButtonAnimated : UIButton {
 
     [Header("Setiings")]
-    [SerializeField] private bool showByDefault = false;
+    [SerializeField] public bool showByDefault = false;
 
     [SerializeField] private TMPro.TextMeshProUGUI buttonText;
 
