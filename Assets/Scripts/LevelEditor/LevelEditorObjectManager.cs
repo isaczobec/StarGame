@@ -1,10 +1,19 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class LevelEditorObjectManager : MonoBehaviour {
 
     [SerializeField] private List<EditorObjectCategory> editorObjectCategories;
+
+
+    // selected objects
+
+    private List<LevelEditorObject> selectedEditorObjects = new List<LevelEditorObject>();
+    private List<LevelEditorObject> hoveredEditorObjects = new List<LevelEditorObject>();
+    [SerializeField] private string levelEditorObjectTag = "levelEditorObject";
+
 
     public List<EditorObjectCategory> GetEditorObjectCategories() {
         return editorObjectCategories;
@@ -38,6 +47,10 @@ public class LevelEditorObjectManager : MonoBehaviour {
         }
     }
 
+    private void Update() {
+        HandleHoverObjects();
+    }
+
 
     public void TryPlaceEditorObject(Vector2 position) {
         if (currentlySelectedObjectToPlace != null) {
@@ -47,6 +60,7 @@ public class LevelEditorObjectManager : MonoBehaviour {
                 newObject.transform.position = new Vector3(position.x + levelEditorObject.offsetWhenPlace.x, position.y + levelEditorObject.offsetWhenPlace.y, 0f);
 
                 levelEditorObjects.Add(levelEditorObject); // start "tracking" this object
+                levelEditorObject.Initialize();
             }
         }
     }
@@ -82,6 +96,67 @@ public class LevelEditorObjectManager : MonoBehaviour {
                 }
             }
         }
+    }
+
+    /// <summary>
+    /// Update the hovered objects and handle the hovering of objects.
+    /// </summary>
+    private void HandleHoverObjects() {
+        List<LevelEditorObject> hoveredLevelEditorObjects = GetHoveredLevelEditorObjects();
+
+        // unhover unhovered objectsd
+        foreach (LevelEditorObject obj in hoveredEditorObjects) {
+            if (!hoveredLevelEditorObjects.Contains(obj)) {
+                obj.SetHovered(false);
+            }
+        }
+
+        // hover hovered objects
+        foreach (LevelEditorObject obj in hoveredLevelEditorObjects) {
+            obj.SetHovered(true);
+        }
+        hoveredEditorObjects = hoveredLevelEditorObjects;
+    }
+
+    /// <summary>
+    /// Gets all currently hovered level editor objects. Objects must have the tag leveleditorobject tag.
+    /// </summary>
+    /// <returns></returns>
+    private List<LevelEditorObject> GetHoveredLevelEditorObjects() {
+        List<LevelEditorObject> hoveredLevelEditorObjects = new List<LevelEditorObject>();
+        RaycastHit2D[] hits = Physics2D.RaycastAll(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
+        // Debug.Log(hits.Length);
+        foreach (RaycastHit2D hit in hits) {
+            if (hit.transform.CompareTag(levelEditorObjectTag)) {
+                LevelEditorObject levelEditorObject = hit.transform.GetComponent<LevelEditorObject>();
+                hoveredLevelEditorObjects.Add(levelEditorObject);
+            }
+        }
+        return hoveredLevelEditorObjects;
+    }
+
+    /// <summary>
+    /// Deletes, removes and destroys the object from the level editor.
+    /// </summary>
+    /// <param name="levelEditorObject"></param>
+    public void DeleteObject(LevelEditorObject levelEditorObject) {
+        levelEditorObjects.Remove(levelEditorObject);
+        Destroy(levelEditorObject.gameObject);
+    }
+
+    /// <summary>
+    /// Deletes all hovered objects.
+    /// </summary>
+    public void DeleteHoveredObjects() {
+        foreach (LevelEditorObject obj in hoveredEditorObjects) {
+            DeleteObject(obj);
+        }
+        hoveredEditorObjects.Clear();
+    }
+
+    public void DeSelectCurrentObjectToPlace() {
+        currentlySelectedObjectToPlace = null;
+        LevelEditorObjectPanel.instance.DeSelectObjectButton();
     }
 
 }

@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bf255bd716683c24aac6466695094dd0, type: 3}
-  m_Name: StoneAutoTileSet
+  m_Name: StoneAutoTileSet 1
   m_EditorClassIdentifier: 
   autoTileSetName: Stone
-  autoTileSetID: cnue2hdiue
+  autoTileSetID: urjhovhreuiovhu
   autoTileSOs:
   - {fileID: 11400000, guid: ff9a45099b0493546af09e871d8d7f8f, type: 2}
   - {fileID: 11400000, guid: 515e6a82fdeecc04b9d199f679165fa0, type: 2}
@@ -30,4 +30,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: baa4e1111291ff542b9a5bbd4ca8de1d, type: 2}
   - {fileID: 11400000, guid: c59b165d9113d554f9e74e687fb9a996, type: 2}
   - {fileID: 11400000, guid: b9744b46dd80aec449016e8a6bcc4cdb, type: 2}
-  defaultTile: {fileID: 11400000, guid: d9f632e69a692c949b50dd48f3c2bdee, type: 2}
+  defaultTile: {fileID: 11400000, guid: 2639d62dc3cc9314891c2d06fd162980, type: 2}

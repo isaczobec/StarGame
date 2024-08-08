@@ -7,8 +7,8 @@ using UnityEngine.EventSystems;
 
 public enum EditorMode
 {
-    BuildObjects,
-    BuildTiles,
+    PointerMode,
+    BuildMode,
     Delete,
 }
 
@@ -18,8 +18,7 @@ public enum EditorMode
 public class EditorBuildingManager : MonoBehaviour
 {
     [Header("UI Buttons")]
-    [SerializeField] private UIButton buildObjectsButton;
-    [SerializeField] private UIButton buildTilesButton;
+    [SerializeField] private UIButton pointerButton;
     [SerializeField] private UIButton deleteButton;
     [Header("Visuals")]
     [Header("Colors")]
@@ -27,14 +26,22 @@ public class EditorBuildingManager : MonoBehaviour
     [SerializeField] private Color buttonPressedColor = Color.magenta;
     [Header("Object button settings")]
     [SerializeField] private LevelEditorObjectPanel levelEditorObjectPanel;
+    [SerializeField] private TilePanel tilePanel;
 
 
 
     private List<UIButton> toolButtons = new List<UIButton>();
+    private EditorMode editorMode = EditorMode.PointerMode;
+    public void SetEditorMode(EditorMode mode) {
+        editorMode = mode;
 
-    private EditorMode editorMode = EditorMode.BuildTiles;
-
-
+        // deselect all buttons if entering build mode (not represented by one of theese buttons)
+        if (mode == EditorMode.BuildMode) {
+            foreach (UIButton button in toolButtons) {
+                button.SetColor(buttonUnpressedColor);
+            }
+        } 
+    }
     private List<UIButton> editorUIButtons = new List<UIButton>();
 
 
@@ -57,8 +64,7 @@ public class EditorBuildingManager : MonoBehaviour
         } else {
             Debug.LogError("There is already an instance of EditorBuildingManager in the scene.");
         }
-        toolButtons.Add(buildObjectsButton);
-        toolButtons.Add(buildTilesButton);
+        toolButtons.Add(pointerButton);
         toolButtons.Add(deleteButton);
 
         foreach (UIButton button in toolButtons) {
@@ -71,20 +77,20 @@ public class EditorBuildingManager : MonoBehaviour
     void Start()
     {
         // sub to events
-        buildObjectsButton.OnUIButtonClicked += OnBuildObjectsButtonClicked;
-        buildTilesButton.OnUIButtonClicked += OnBuildTilesButtonClicked;
+        pointerButton.OnUIButtonClicked += OnPointerButtonClicked;
         deleteButton.OnUIButtonClicked += OnDeleteButtonClicked;
 
         LevelEditorInputManager.instance.OnPlacePressed += OnPlacePressed;
 
         // initialize object buttons
         levelEditorObjectPanel.InitializeButtons(LevelEditorObjectManager.instance.GetEditorObjectCategories());
+
+        OnPointerButtonClicked(null, null); // set pointer button as default
     }
 
 
-    private void OnBuildObjectsButtonClicked(object sender, EventArgs e)    {editorMode = EditorMode.BuildObjects;SetTopButtonSelected(buildObjectsButton);}
-    private void OnBuildTilesButtonClicked(object sender, EventArgs e){editorMode = EditorMode.BuildTiles;SetTopButtonSelected(buildTilesButton);}
-    private void OnDeleteButtonClicked(object sender, EventArgs e){editorMode = EditorMode.Delete;SetTopButtonSelected(deleteButton);}
+    private void OnPointerButtonClicked(object sender, EventArgs e){editorMode = EditorMode.PointerMode;SetToolButtonSelected(pointerButton);}
+    private void OnDeleteButtonClicked(object sender, EventArgs e){editorMode = EditorMode.Delete;SetToolButtonSelected(deleteButton);}
 
     // Update is called once per frame
     void Update()
@@ -101,12 +107,7 @@ public class EditorBuildingManager : MonoBehaviour
         // if is placing, try to place or delete object
         if (LevelEditorInputManager.instance.GetPlayerIsPlacing())
         {
-            if (editorMode == EditorMode.BuildObjects)
-            {
-                // LevelEditorObjectManager.instance.TryPlaceEditorObject(GetMouseWorldPosition());
-
-            }
-            else if (editorMode == EditorMode.BuildTiles)
+            if (editorMode == EditorMode.BuildMode)
             {
                 TileArrayManager.instance.TryPlaceTile(GetMouseWorldPosition());
 
@@ -115,6 +116,7 @@ public class EditorBuildingManager : MonoBehaviour
             else if (editorMode == EditorMode.Delete)
             {
                 TileArrayManager.instance.TryDeleteTile(GetMouseWorldPosition());
+                LevelEditorObjectManager.instance.DeleteHoveredObjects();
 
             }
         }
@@ -126,12 +128,12 @@ public class EditorBuildingManager : MonoBehaviour
         // if hovering ui, return
         if (isHoveringUI) return;
 
-        if (editorMode == EditorMode.BuildObjects) {
+        if (editorMode == EditorMode.BuildMode) {
             LevelEditorObjectManager.instance.TryPlaceEditorObject(GetMouseWorldPosition());
         } 
     }
 
-    private void SetTopButtonSelected(UIButton button) {
+    private void SetToolButtonSelected(UIButton button) {
         foreach (UIButton b in toolButtons) {
             if (b == button) {
                 b.SetColor(buttonPressedColor);
@@ -139,6 +141,10 @@ public class EditorBuildingManager : MonoBehaviour
                 b.SetColor(buttonUnpressedColor);
             }
         }
+
+        // deselect other buttons
+        LevelEditorObjectManager.instance.DeSelectCurrentObjectToPlace();
+        TileArrayManager.instance.DeSelectTileArray();
     }
 
 
@@ -148,6 +154,10 @@ public class EditorBuildingManager : MonoBehaviour
         Vector3 vec = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         vec.z = 0;
         return vec;
+    }
+
+    public void EnableBuildingMode() {
+        SetEditorMode(EditorMode.BuildMode);
     }
 
     

@@ -14,6 +14,9 @@ public class TileArrayManager : MonoBehaviour
     [SerializeField] private List<AutoTileSetSO> autoTileSet;
     private List<TileArray> tileArrays = new List<TileArray>();
     private TileArray currentTileArray;
+    public void SetCurrentTileArray(TileArray tileArray) {
+        currentTileArray = tileArray;
+    }
 
     public static TileArrayManager instance;
 
@@ -69,7 +72,7 @@ public class TileArrayManager : MonoBehaviour
     /// loads in tilearray data to new tillearrays and spawns blocks in the world.
     /// </summary>
     /// <param name="datas"></param>
-    public void LoadTileArrayDatas(List<TileArrayData> datas, bool setCurrentTileArray = true) {
+    public void LoadTileArrayDatas(List<TileArrayData> datas, bool setCurrentTileArray = true, bool initializeTilePanel = true) {
 
         if (datas.Count != 0) { // only proceed if there is data
             tileArrays.Clear(); // clear so new data can be set
@@ -99,13 +102,23 @@ public class TileArrayManager : MonoBehaviour
         if (setCurrentTileArray) {
             currentTileArray = tileArrays[0];
         }
+
+        if (initializeTilePanel) {
+            TilePanel.instance.InitializeButtons(tileArrays);
+        }
     }
 
-
+    public void DeSelectTileArray() {
+        currentTileArray = null;
+        TilePanel.instance.DeSelectTileArray();
+    }
 
     public void TryPlaceTile(Vector3 pos) {
+        if (currentTileArray == null) return;
+
         Vector3Int tilePos = tilemap.WorldToCell(pos);
         tilePos.z = 0;
+
 
         // only proceed if the tile is within the bounds of the level
         if (!tilemap.HasTile(tilePos))
@@ -118,7 +131,7 @@ public class TileArrayManager : MonoBehaviour
             UpdateAndPlaceTile(currentTileArray, tilePos.x, tilePos.y);
 
             // update the surrounding tiles
-            UpdateSorroundingTiles(tilePos);
+            UpdateSorroundingTiles(tilePos, currentTileArray);
 
         }
 
@@ -128,12 +141,12 @@ public class TileArrayManager : MonoBehaviour
     /// Updates the sorrounding tiles of a tile.
     /// </summary>
     /// <param name="tilePos"></param>
-    private void UpdateSorroundingTiles(Vector3Int tilePos)
+    private void UpdateSorroundingTiles(Vector3Int tilePos, TileArray tileArray)
     {
         for (int i = 0; i < directions.Length; i++)
         {
             Vector2Int direction = directions[i];
-            UpdateAndPlaceTile(currentTileArray, tilePos.x + direction.x, tilePos.y + direction.y, true);
+            UpdateAndPlaceTile(tileArray, tilePos.x + direction.x, tilePos.y + direction.y, true);
         }
     }
 
@@ -167,7 +180,7 @@ public class TileArrayManager : MonoBehaviour
                     tilemap.SetTile(tilePos, null);
 
                     // update the surrounding tiles
-                    UpdateSorroundingTiles(tilePos);
+                    UpdateSorroundingTiles(tilePos, tileArray);
                 }
             }
 
