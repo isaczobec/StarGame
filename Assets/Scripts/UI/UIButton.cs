@@ -11,6 +11,7 @@ public class UIButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     [Header("Visuals")]
     [SerializeField] public Image buttonImage;
+    [SerializeField] public Image buttonIcon;
     [Header("Sound")]
     [SerializeField] public SoundPlayer soundPlayer;
     [SerializeField] public string onClickSoundName = "buttonClick";
@@ -94,5 +95,14 @@ public class UIButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     public void SetColor(Color color) {
         if (buttonImage != null) buttonImage.color = color;
+    }
+
+    /// <summary>
+    /// Sets the icon of the button and enables its image.
+    /// </summary>
+    /// <param name="sprite"></param>
+    public void SetIcon(Sprite sprite) {
+        buttonIcon.enabled = true;
+        if (buttonIcon != null) buttonIcon.sprite = sprite;
     }
 }

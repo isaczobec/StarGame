@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 
 public enum EditorMode
@@ -11,6 +12,9 @@ public enum EditorMode
     Delete,
 }
 
+/// <summary>
+/// class responsible for managing the building of objects and tiles in the editor. Also ui building buttons and such.
+/// </summary>
 public class EditorBuildingManager : MonoBehaviour
 {
     [Header("UI Buttons")]
@@ -21,27 +25,60 @@ public class EditorBuildingManager : MonoBehaviour
     [Header("Colors")]
     [SerializeField] private Color buttonUnpressedColor = Color.white;
     [SerializeField] private Color buttonPressedColor = Color.magenta;
+    [Header("Object button settings")]
+    [SerializeField] private LevelEditorObjectPanel levelEditorObjectPanel;
 
 
-    private List<UIButton> topUIButtons = new List<UIButton>();
+
+    private List<UIButton> toolButtons = new List<UIButton>();
 
     private EditorMode editorMode = EditorMode.BuildTiles;
 
+
+    private List<UIButton> editorUIButtons = new List<UIButton>();
+
+
+    public void AddEditorUIButton(UIButton button) {
+        editorUIButtons.Add(button);
+        button.OnUIButtonHoveredChanged += OnUIButtonHoveredChanged;
+    }
+
+    private void OnUIButtonHoveredChanged(object sender, bool e)
+    {
+        isHoveringUI = e;
+    }
+
+    private bool isHoveringUI = false;
+    public static EditorBuildingManager instance {get; private set;}
+
     private void Awake() {
-        topUIButtons.Add(buildObjectsButton);
-        topUIButtons.Add(buildTilesButton);
-        topUIButtons.Add(deleteButton);
+        if (instance == null) {
+            instance = this;
+        } else {
+            Debug.LogError("There is already an instance of EditorBuildingManager in the scene.");
+        }
+        toolButtons.Add(buildObjectsButton);
+        toolButtons.Add(buildTilesButton);
+        toolButtons.Add(deleteButton);
+
+        foreach (UIButton button in toolButtons) {
+            AddEditorUIButton(button);
+        }
+
     }
 
     // Start is called before the first frame update
     void Start()
     {
+        // sub to events
         buildObjectsButton.OnUIButtonClicked += OnBuildObjectsButtonClicked;
         buildTilesButton.OnUIButtonClicked += OnBuildTilesButtonClicked;
         deleteButton.OnUIButtonClicked += OnDeleteButtonClicked;
 
         LevelEditorInputManager.instance.OnPlacePressed += OnPlacePressed;
-        
+
+        // initialize object buttons
+        levelEditorObjectPanel.InitializeButtons(LevelEditorObjectManager.instance.GetEditorObjectCategories());
     }
 
 
@@ -52,16 +89,31 @@ public class EditorBuildingManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        HandleConstantPlacing();
+    }
+
+    private void HandleConstantPlacing()
+    {
+
+        // if hovering ui, return
+        if (isHoveringUI) return;
+
         // if is placing, try to place or delete object
-        if (LevelEditorInputManager.instance.GetPlayerIsPlacing()) {
-            if (editorMode == EditorMode.BuildObjects) {
+        if (LevelEditorInputManager.instance.GetPlayerIsPlacing())
+        {
+            if (editorMode == EditorMode.BuildObjects)
+            {
                 // LevelEditorObjectManager.instance.TryPlaceEditorObject(GetMouseWorldPosition());
 
-            } else if (editorMode == EditorMode.BuildTiles) {
+            }
+            else if (editorMode == EditorMode.BuildTiles)
+            {
                 TileArrayManager.instance.TryPlaceTile(GetMouseWorldPosition());
 
 
-            } else if (editorMode == EditorMode.Delete) {
+            }
+            else if (editorMode == EditorMode.Delete)
+            {
                 TileArrayManager.instance.TryDeleteTile(GetMouseWorldPosition());
 
             }
@@ -70,13 +122,17 @@ public class EditorBuildingManager : MonoBehaviour
 
     private void OnPlacePressed(object sender, EventArgs e)
     {
+
+        // if hovering ui, return
+        if (isHoveringUI) return;
+
         if (editorMode == EditorMode.BuildObjects) {
             LevelEditorObjectManager.instance.TryPlaceEditorObject(GetMouseWorldPosition());
         } 
     }
 
     private void SetTopButtonSelected(UIButton button) {
-        foreach (UIButton b in topUIButtons) {
+        foreach (UIButton b in toolButtons) {
             if (b == button) {
                 b.SetColor(buttonPressedColor);
             } else {
@@ -94,5 +150,8 @@ public class EditorBuildingManager : MonoBehaviour
         return vec;
     }
 
+    
+
 
 }
+

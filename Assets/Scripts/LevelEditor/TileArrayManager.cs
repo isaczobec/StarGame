@@ -54,12 +54,7 @@ public class TileArrayManager : MonoBehaviour
     void Start()
     {
         
-        // // Create the tile arrays
-        // foreach (AutoTileSetSO autoTileSet in autoTileSet) {
-        //     tileArrays.Add(new TileArray(autoTileSet, 
-        //     LevelEditorDataManager.instance.editorLevelData.levelSizeX * 2, 
-        //     LevelEditorDataManager.instance.editorLevelData.levelSizeY * 2));
-        // }
+        
 
         // currentTileArray = tileArrays[0];
     }
@@ -75,11 +70,22 @@ public class TileArrayManager : MonoBehaviour
     /// </summary>
     /// <param name="datas"></param>
     public void LoadTileArrayDatas(List<TileArrayData> datas, bool setCurrentTileArray = true) {
-        tileArrays.Clear(); // clear so new data can be set
-        for (int i = 0; i < datas.Count; i++) {
-            tileArrays.Add(new TileArray(null, LevelEditorDataManager.instance.editorLevelData.levelSizeX * 2, LevelEditorDataManager.instance.editorLevelData.levelSizeY * 2));
-            tileArrays[i].LoadTileArrayData(datas[i]);
+
+        if (datas.Count != 0) { // only proceed if there is data
+            tileArrays.Clear(); // clear so new data can be set
+            for (int i = 0; i < datas.Count; i++) {
+                tileArrays.Add(new TileArray(null, LevelEditorDataManager.instance.editorLevelData.levelSizeX * 2, LevelEditorDataManager.instance.editorLevelData.levelSizeY * 2));
+                tileArrays[i].LoadTileArrayData(datas[i]);
+            }
+        } else {
+            // Create the tile arrays if no data is stored
+            foreach (AutoTileSetSO autoTileSet in autoTileSet) {
+            tileArrays.Add(new TileArray(autoTileSet, 
+            LevelEditorDataManager.instance.editorLevelData.levelSizeX * 2, 
+            LevelEditorDataManager.instance.editorLevelData.levelSizeY * 2));
         }
+        }
+
 
         // set the blocks
         foreach (TileArray tileArray in tileArrays) {

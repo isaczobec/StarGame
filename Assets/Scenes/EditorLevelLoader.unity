@@ -273,6 +273,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnnableLevelObjectSOs:
   - {fileID: 11400000, guid: a451ed1312a343649a135df16c534bfd, type: 2}
+  - {fileID: 11400000, guid: 5035d0777c3133847bde4b12bf4fb3d7, type: 2}
 --- !u!1 &1091742426
 GameObject:
   m_ObjectHideFlags: 0

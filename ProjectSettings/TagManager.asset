@@ -8,6 +8,7 @@ TagManager:
   - hurtbox
   - hitbox
   - effector
+  - levelEditorObject
   layers:
   - Default
   - TransparentFX

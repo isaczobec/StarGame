@@ -1,10 +1,28 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class LevelEditorObjectManager : MonoBehaviour {
 
-    [SerializeField] private GameObject[] LevelEditorObjectPrefabs;
+    [SerializeField] private List<EditorObjectCategory> editorObjectCategories;
+
+    public List<EditorObjectCategory> GetEditorObjectCategories() {
+        return editorObjectCategories;
+    }
+    public GameObject[] GetLevelEditorObjectPrefabs() {
+        List<GameObject> prefabs = new List<GameObject>();
+        foreach (EditorObjectCategory category in editorObjectCategories) {
+            foreach (GameObject prefab in category.objectsInCategoryPrefabs) {
+                prefabs.Add(prefab);
+            }
+        }
+        return prefabs.ToArray();
+    }
     private GameObject currentlySelectedObjectToPlace;
+
+    public void SetCurrentlySelectedObjectToPlace(GameObject objectToPlace) {
+        currentlySelectedObjectToPlace = objectToPlace;
+    }
 
 
 
@@ -20,9 +38,6 @@ public class LevelEditorObjectManager : MonoBehaviour {
         }
     }
 
-    private void Start() {
-        currentlySelectedObjectToPlace = LevelEditorObjectPrefabs[0];
-    }
 
     public void TryPlaceEditorObject(Vector2 position) {
         if (currentlySelectedObjectToPlace != null) {
@@ -46,7 +61,7 @@ public class LevelEditorObjectManager : MonoBehaviour {
 
     public void LoadLevelEditorObjectsIntoEditor(List<EditorObjectData> objectDatas) {
         foreach (EditorObjectData objectData in objectDatas) {
-            foreach (GameObject prefab in LevelEditorObjectPrefabs) {
+            foreach (GameObject prefab in GetLevelEditorObjectPrefabs()) {
                 LevelEditorObject levelEditorObject = prefab.GetComponent<LevelEditorObject>();
                 if (levelEditorObject != null && levelEditorObject.GetObjectID() == objectData.SpawnnableObjectID) {
 
@@ -69,4 +84,11 @@ public class LevelEditorObjectManager : MonoBehaviour {
         }
     }
 
+}
+
+[Serializable]
+public class EditorObjectCategory
+{
+    public string categoryName;
+    public List<GameObject> objectsInCategoryPrefabs;
 }
