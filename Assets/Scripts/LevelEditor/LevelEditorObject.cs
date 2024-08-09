@@ -9,7 +9,7 @@ public class LevelEditorObject : MonoBehaviour
     [SerializeField] private SpriteRenderer[] spriteRenderers;
 
     [SerializeField] private Color hoveredColor = Color.cyan;
-    [SerializeField] private Color selectedColor = Color.green;
+    [SerializeField] private Color selectedColor = Color.magenta;
 
     public bool isHovered { get; private set; } = false;
     public bool isSelected { get; private set; } = false;
@@ -36,15 +36,19 @@ public class LevelEditorObject : MonoBehaviour
 
     public void SetHovered(bool hovered) {
         isHovered = hovered;
-        for (int i = 0; i < spriteRenderers.Length; i++) {
-            spriteRenderers[i].color = isHovered ? hoveredColor : originalColors[i];
+        // update colors
+        if (!isSelected) { // Do not change color if selected, selection is prioritized
+            for (int i = 0; i < spriteRenderers.Length; i++) {
+                spriteRenderers[i].color = isHovered ? hoveredColor : originalColors[i];
+            }
         }
     }
 
     public void SetSelected(bool selected) {
         isSelected = selected;
         for (int i = 0; i < spriteRenderers.Length; i++) {
-            spriteRenderers[i].color = isSelected ? selectedColor : originalColors[i];
+            Color color = isSelected ? selectedColor : isHovered ? hoveredColor : originalColors[i];
+            spriteRenderers[i].color = color;
         }
     }
     

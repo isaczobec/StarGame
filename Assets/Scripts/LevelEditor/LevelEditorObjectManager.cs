@@ -51,8 +51,13 @@ public class LevelEditorObjectManager : MonoBehaviour {
         HandleHoverObjects();
     }
 
-
-    public void TryPlaceEditorObject(Vector2 position) {
+    /// <summary>
+    /// Tries to place an editor object at the given position. Returns the object if it was placed, otherwise null.
+    /// </summary>
+    /// <param name="position"></param>
+    /// <param name="setSelectedByDefault"></param>
+    /// <returns></returns>
+    public LevelEditorObject TryPlaceEditorObject(Vector2 position, bool setSelectedByDefault = true, bool deselectOtherObjects = false) {
         if (currentlySelectedObjectToPlace != null) {
             GameObject newObject = Instantiate(currentlySelectedObjectToPlace, position, Quaternion.identity);
             LevelEditorObject levelEditorObject = newObject.GetComponent<LevelEditorObject>();
@@ -62,7 +67,17 @@ public class LevelEditorObjectManager : MonoBehaviour {
                 levelEditorObjects.Add(levelEditorObject); // start "tracking" this object
                 levelEditorObject.Initialize();
             }
+
+            if (deselectOtherObjects) DeSelectAllObjects();
+            if (setSelectedByDefault) {
+            // select object
+                selectedEditorObjects.Add(levelEditorObject);
+                levelEditorObject.SetSelected(true);
+            }
+
+            return levelEditorObject;
         }
+        return null;
     }
 
     public List<EditorObjectData> UpdateAndGetEditorObjectDatas() {
@@ -133,6 +148,38 @@ public class LevelEditorObjectManager : MonoBehaviour {
             }
         }
         return hoveredLevelEditorObjects;
+    }
+
+    /// <summary>
+    /// Adds the hovered objects to the selected objects.
+    /// </summary>
+    public void AddHoveredObjectsToSelected() {
+        foreach (LevelEditorObject obj in hoveredEditorObjects) {
+            Debug.Log("Adding object to selected");
+            if (!selectedEditorObjects.Contains(obj)) {
+                selectedEditorObjects.Add(obj);
+                obj.SetSelected(true);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Deselects an object from the selected objects.
+    /// </summary>
+    /// <param name="obj"></param>
+    public void DeSelectObject(LevelEditorObject obj) {
+        selectedEditorObjects.Remove(obj);
+        obj.SetSelected(false);
+    }
+
+    /// <summary>
+    /// Deselects all objects.
+    /// </summary>
+    public void DeSelectAllObjects() {
+        foreach (LevelEditorObject obj in selectedEditorObjects) {
+            obj.SetSelected(false);
+        }
+        selectedEditorObjects.Clear();
     }
 
     /// <summary>

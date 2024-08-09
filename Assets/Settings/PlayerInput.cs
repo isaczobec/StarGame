@@ -313,6 +313,24 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""ShiftButton"",
+                    ""type"": ""Value"",
+                    ""id"": ""52fb1fe8-ad7c-4c39-926a-b23ce1b73244"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""ControlButton"",
+                    ""type"": ""Button"",
+                    ""id"": ""20dd92fc-ac41-45b9-bcd8-481d07da9dd3"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -381,6 +399,28 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""action"": ""Scroll"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6609ee33-cea2-4324-bffd-ea7377e60aae"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ShiftButton"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""fabe0604-ca58-48bf-849b-168dbb6d2556"",
+                    ""path"": ""<Keyboard>/ctrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ControlButton"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -400,6 +440,8 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         m_Editor_CameraMoveMode = m_Editor.FindAction("CameraMoveMode", throwIfNotFound: true);
         m_Editor_MouseMovement = m_Editor.FindAction("MouseMovement", throwIfNotFound: true);
         m_Editor_Scroll = m_Editor.FindAction("Scroll", throwIfNotFound: true);
+        m_Editor_ShiftButton = m_Editor.FindAction("ShiftButton", throwIfNotFound: true);
+        m_Editor_ControlButton = m_Editor.FindAction("ControlButton", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -543,6 +585,8 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_Editor_CameraMoveMode;
     private readonly InputAction m_Editor_MouseMovement;
     private readonly InputAction m_Editor_Scroll;
+    private readonly InputAction m_Editor_ShiftButton;
+    private readonly InputAction m_Editor_ControlButton;
     public struct EditorActions
     {
         private @PlayerInput m_Wrapper;
@@ -551,6 +595,8 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         public InputAction @CameraMoveMode => m_Wrapper.m_Editor_CameraMoveMode;
         public InputAction @MouseMovement => m_Wrapper.m_Editor_MouseMovement;
         public InputAction @Scroll => m_Wrapper.m_Editor_Scroll;
+        public InputAction @ShiftButton => m_Wrapper.m_Editor_ShiftButton;
+        public InputAction @ControlButton => m_Wrapper.m_Editor_ControlButton;
         public InputActionMap Get() { return m_Wrapper.m_Editor; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -572,6 +618,12 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Scroll.started += instance.OnScroll;
             @Scroll.performed += instance.OnScroll;
             @Scroll.canceled += instance.OnScroll;
+            @ShiftButton.started += instance.OnShiftButton;
+            @ShiftButton.performed += instance.OnShiftButton;
+            @ShiftButton.canceled += instance.OnShiftButton;
+            @ControlButton.started += instance.OnControlButton;
+            @ControlButton.performed += instance.OnControlButton;
+            @ControlButton.canceled += instance.OnControlButton;
         }
 
         private void UnregisterCallbacks(IEditorActions instance)
@@ -588,6 +640,12 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Scroll.started -= instance.OnScroll;
             @Scroll.performed -= instance.OnScroll;
             @Scroll.canceled -= instance.OnScroll;
+            @ShiftButton.started -= instance.OnShiftButton;
+            @ShiftButton.performed -= instance.OnShiftButton;
+            @ShiftButton.canceled -= instance.OnShiftButton;
+            @ControlButton.started -= instance.OnControlButton;
+            @ControlButton.performed -= instance.OnControlButton;
+            @ControlButton.canceled -= instance.OnControlButton;
         }
 
         public void RemoveCallbacks(IEditorActions instance)
@@ -619,5 +677,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         void OnCameraMoveMode(InputAction.CallbackContext context);
         void OnMouseMovement(InputAction.CallbackContext context);
         void OnScroll(InputAction.CallbackContext context);
+        void OnShiftButton(InputAction.CallbackContext context);
+        void OnControlButton(InputAction.CallbackContext context);
     }
 }

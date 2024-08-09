@@ -109,14 +109,15 @@ public class EditorBuildingManager : MonoBehaviour
         {
             if (editorMode == EditorMode.BuildMode)
             {
-                TileArrayManager.instance.TryPlaceTile(GetMouseWorldPosition());
-
+                bool succeded = TileArrayManager.instance.TryPlaceTile(GetMouseWorldPosition());
+                if (succeded) {LevelEditorObjectManager.instance.DeSelectAllObjects();}
 
             }
             else if (editorMode == EditorMode.Delete)
             {
                 TileArrayManager.instance.TryDeleteTile(GetMouseWorldPosition());
                 LevelEditorObjectManager.instance.DeleteHoveredObjects();
+                LevelEditorObjectManager.instance.DeSelectAllObjects();
 
             }
         }
@@ -129,8 +130,15 @@ public class EditorBuildingManager : MonoBehaviour
         if (isHoveringUI) return;
 
         if (editorMode == EditorMode.BuildMode) {
-            LevelEditorObjectManager.instance.TryPlaceEditorObject(GetMouseWorldPosition());
+            LevelEditorObjectManager.instance.TryPlaceEditorObject(GetMouseWorldPosition(), setSelectedByDefault: true, deselectOtherObjects: !LevelEditorInputManager.instance.GetShiftButtonPressed());
         } 
+
+        // handle selecting objects
+
+        if (editorMode == EditorMode.PointerMode) {
+            if (!LevelEditorInputManager.instance.GetShiftButtonPressed()) {LevelEditorObjectManager.instance.DeSelectAllObjects();}
+            LevelEditorObjectManager.instance.AddHoveredObjectsToSelected();
+        }
     }
 
     private void SetToolButtonSelected(UIButton button) {

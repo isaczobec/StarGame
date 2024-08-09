@@ -58,6 +58,14 @@ public class LevelEditorInputManager : MonoBehaviour {
         return inputActions.Editor.Scroll.ReadValue<float>();
     }
 
+    public bool GetShiftButtonPressed() {
+        return inputActions.Editor.ShiftButton.ReadValue<float>() > 0f;
+    }
+
+    public bool GetControlButtonPressed() {
+        return inputActions.Editor.ControlButton.ReadValue<float>() > 0f;
+    }
+
     
 
 }

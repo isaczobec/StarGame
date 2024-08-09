@@ -115,8 +115,13 @@ public class TileArrayManager : MonoBehaviour
         TilePanel.instance.DeSelectTileArray();
     }
 
-    public void TryPlaceTile(Vector3 pos) {
-        if (currentTileArray == null) return;
+    /// <summary>
+    /// Tries to place a tile at the given position. Returns true if the tile was placed, false if not.
+    /// </summary>
+    /// <param name="pos"></param>
+    /// <returns></returns>
+    public bool TryPlaceTile(Vector3 pos) {
+        if (currentTileArray == null) return false;
 
         Vector3Int tilePos = tilemap.WorldToCell(pos);
         tilePos.z = 0;
@@ -135,7 +140,11 @@ public class TileArrayManager : MonoBehaviour
             // update the surrounding tiles
             UpdateSorroundingTiles(tilePos, currentTileArray);
 
+            return true;
+
         }
+
+        return false;
 
     }
 
