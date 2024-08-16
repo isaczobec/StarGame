@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.ExceptionServices;
 using UnityEngine;
 
 public class LevelEditorTransformHandler : MonoBehaviour
@@ -24,8 +25,13 @@ public class LevelEditorTransformHandler : MonoBehaviour
     }
 
     private void Start() {
+
+        // sub to events
         LevelEditorObjectManager.instance.OnLevelEditorObjectsSelected += OnLevelEditorObjectsSelected;
+        LevelEditorObjectManager.instance.OnLevelEditorObjectsDeselected += OnLevelEditorObjectsDeselected;
+        
     }
+
 
     private void Update() {
         // update all buttons
@@ -49,6 +55,21 @@ public class LevelEditorTransformHandler : MonoBehaviour
         for (int i = 0; i < newButtons.Count; i++)
         {
             newButtons[i].InitializeButton(transformButtonInfo, i);
+        }
+    }
+    private void OnLevelEditorObjectsDeselected(object sender, List<LevelEditorObject> deselectedObjects)
+    {
+
+        if (LevelEditorObjectManager.instance.GetSelectedEditorObjects().Count == 0)
+        { // if nothing remains selected, destroy buttons
+            DestroyTransformButtons();
+        } else {
+            // if something remains selected, reinitialize existing buttons
+            for (int i = 0; i < levelEditorTransformButtons.Count; i++)
+            {
+                TransformButtonInfo transformButtonInfo = CalculateTransformButtonInfo(LevelEditorObjectManager.instance.GetSelectedEditorObjects());
+                levelEditorTransformButtons[i].InitializeButton(CalculateTransformButtonInfo(LevelEditorObjectManager.instance.GetSelectedEditorObjects()), i);
+            }
         }
     }
 
@@ -83,6 +104,16 @@ public class LevelEditorTransformHandler : MonoBehaviour
 
         levelEditorTransformButtons.AddRange(transformButtons);
         return transformButtons;
+    }
+
+    /// <summary>
+    /// Destroys all transform buttons.
+    /// </summary>
+    private void DestroyTransformButtons() {
+        foreach (LevelEditorTransformButton button in levelEditorTransformButtons) {
+            Destroy(button.gameObject);
+        }
+        levelEditorTransformButtons.Clear();
     }
 
     private Vector2 CalculateAverageObjectPosition(List<LevelEditorObject> editorObjects) {

@@ -24,6 +24,11 @@ public class LevelEditorObjectManager : MonoBehaviour {
     /// </summary>
     public event EventHandler<List<LevelEditorObject>> OnLevelEditorObjectsSelected;
 
+    /// <summary>
+    /// Called when objects are deselected. The LevelEditorObjects are passed in a list.
+    /// </summary>
+    public event EventHandler<List<LevelEditorObject>> OnLevelEditorObjectsDeselected;
+
 
     public List<EditorObjectCategory> GetEditorObjectCategories() {
         return editorObjectCategories;
@@ -186,6 +191,11 @@ public class LevelEditorObjectManager : MonoBehaviour {
     public void DeSelectObject(LevelEditorObject obj) {
         selectedEditorObjects.Remove(obj);
         obj.SetSelected(false);
+
+        // invoke event
+        List<LevelEditorObject> deselectedObjects = new List<LevelEditorObject>();
+        deselectedObjects.Add(obj);
+        OnLevelEditorObjectsDeselected?.Invoke(this, deselectedObjects);
     }
 
     /// <summary>
@@ -195,6 +205,9 @@ public class LevelEditorObjectManager : MonoBehaviour {
         foreach (LevelEditorObject obj in selectedEditorObjects) {
             obj.SetSelected(false);
         }
+
+        OnLevelEditorObjectsDeselected?.Invoke(this, selectedEditorObjects); // invoke event
+
         selectedEditorObjects.Clear();
     }
 
