@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class UIButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class UIButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerUpHandler, IPointerDownHandler
 {
     [SerializeField] public Button button;
 
@@ -24,6 +24,14 @@ public class UIButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     public event EventHandler<EventArgs> OnUIButtonClicked;
 
     /// <summary>
+    /// Called when the button gets pressed (Initial click). Add your custom functionality to this event.
+    /// </summary>
+    public event EventHandler<EventArgs> OnUIButtonPressed;
+    /// <summary>
+    /// Called when the button gets released. Add your custom functionality to this event.
+    /// </summary>
+    public event EventHandler<EventArgs> OnUIButtonReleased;
+    /// <summary>
     /// Called when the button is hovered. Add your custom functionality to this event. THe bool parameter is true if the button is hovered, false if it is not.
     /// </summary>
     public event EventHandler<bool> OnUIButtonHoveredChanged;
@@ -31,6 +39,7 @@ public class UIButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     public void Start()
     {
         button.onClick.AddListener(OnClickEvent);
+
         InitButton();
     }
 
@@ -104,5 +113,16 @@ public class UIButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     public void SetIcon(Sprite sprite) {
         buttonIcon.enabled = true;
         if (buttonIcon != null) buttonIcon.sprite = sprite;
+    }
+
+    // called when mouse is released
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        OnUIButtonReleased?.Invoke(this, EventArgs.Empty);
+    }
+
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        OnUIButtonPressed?.Invoke(this, EventArgs.Empty);
     }
 }

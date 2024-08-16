@@ -11,8 +11,18 @@ public class LevelEditorObjectManager : MonoBehaviour {
     // selected objects
 
     private List<LevelEditorObject> selectedEditorObjects = new List<LevelEditorObject>();
+    public List<LevelEditorObject> GetSelectedEditorObjects() {
+        return selectedEditorObjects;
+    }
     private List<LevelEditorObject> hoveredEditorObjects = new List<LevelEditorObject>();
     [SerializeField] private string levelEditorObjectTag = "levelEditorObject";
+
+    // events
+
+    /// <summary>
+    /// Called when objects are selected. The LevelEditorObjects are passed in a list.
+    /// </summary>
+    public event EventHandler<List<LevelEditorObject>> OnLevelEditorObjectsSelected;
 
 
     public List<EditorObjectCategory> GetEditorObjectCategories() {
@@ -154,13 +164,19 @@ public class LevelEditorObjectManager : MonoBehaviour {
     /// Adds the hovered objects to the selected objects.
     /// </summary>
     public void AddHoveredObjectsToSelected() {
+        
+        List<LevelEditorObject> newSelectedObjects = new List<LevelEditorObject>(); // keep track of new objects
+
         foreach (LevelEditorObject obj in hoveredEditorObjects) {
             Debug.Log("Adding object to selected");
             if (!selectedEditorObjects.Contains(obj)) {
                 selectedEditorObjects.Add(obj);
                 obj.SetSelected(true);
+                newSelectedObjects.Add(obj);
             }
         }
+
+        if (newSelectedObjects.Count > 0) OnLevelEditorObjectsSelected?.Invoke(this, newSelectedObjects);
     }
 
     /// <summary>

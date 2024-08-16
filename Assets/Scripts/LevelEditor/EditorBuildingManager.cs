@@ -45,9 +45,22 @@ public class EditorBuildingManager : MonoBehaviour
     private List<UIButton> editorUIButtons = new List<UIButton>();
 
 
+    /// <summary>
+    /// Adds a button to the editorUIButtons list. The button will be considered when checking if the player is hovering ui.
+    /// </summary>
+    /// <param name="button"></param>
     public void AddEditorUIButton(UIButton button) {
         editorUIButtons.Add(button);
         button.OnUIButtonHoveredChanged += OnUIButtonHoveredChanged;
+    }
+
+    /// <summary>
+    /// Removes a button from the editorUIButtons list. The buitton will no longer be considered when checking if the player is hovering ui.
+    /// </summary>
+    /// <param name="button"></param>
+    public void RemoveEditorUIButton(UIButton button) {
+        editorUIButtons.Remove(button);
+        button.OnUIButtonHoveredChanged -= OnUIButtonHoveredChanged;
     }
 
     private void OnUIButtonHoveredChanged(object sender, bool e)
