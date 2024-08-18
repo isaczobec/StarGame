@@ -38,7 +38,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3794819688864263432, guid: 94e6a4a820fd1c149bba1e77048c5bff, type: 3}
       propertyPath: m_Name
-      value: LevelEditorTransformPositionButton
+      value: LevelEditorTransformRotationButton
       objectReference: {fileID: 0}
     - target: {fileID: 4293291101678250874, guid: 94e6a4a820fd1c149bba1e77048c5bff, type: 3}
       propertyPath: m_LocalScale.x
@@ -180,14 +180,14 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 3794819688864263432, guid: 94e6a4a820fd1c149bba1e77048c5bff, type: 3}
       insertIndex: 1
-      addedObject: {fileID: 1864636053775803944}
+      addedObject: {fileID: 5343893317262683751}
   m_SourcePrefab: {fileID: 100100000, guid: 94e6a4a820fd1c149bba1e77048c5bff, type: 3}
 --- !u!1 &3449159551881742262 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3794819688864263432, guid: 94e6a4a820fd1c149bba1e77048c5bff, type: 3}
   m_PrefabInstance: {fileID: 1978215139427953342}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1864636053775803944
+--- !u!114 &5343893317262683751
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -196,11 +196,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 3449159551881742262}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cd780b863a909bf40b9d973c1081645f, type: 3}
+  m_Script: {fileID: 11500000, guid: 43c88c3b05594ed489371fcf42a6c290, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   button: {fileID: 3483283295111787369}
-  positionOffset: {x: 0, y: -60}
+  maxBoundsRadiusMultiplier: 1.5
 --- !u!114 &3483283295111787369 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3108349623657798103, guid: 94e6a4a820fd1c149bba1e77048c5bff, type: 3}

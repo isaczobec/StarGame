@@ -2038,7 +2038,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   positionButtonPrefab: {fileID: 3449159551881742262, guid: 7ed56bae6506a194082f1436ba8782c7, type: 3}
-  rotationButtonPrefab: {fileID: 0}
+  rotationButtonPrefab: {fileID: 3449159551881742262, guid: f74f67abdeb9079419c1a750910184b5, type: 3}
   scaleButtonPrefab: {fileID: 3449159551881742262, guid: 17b5f89a47c8c80429e61a7c00aeebfe, type: 3}
   defaultObjectBoundsScale: 2
 --- !u!1 &1945085539

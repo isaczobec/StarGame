@@ -2,6 +2,7 @@
 
 
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class ScaleButton : LevelEditorTransformButton
@@ -54,6 +55,16 @@ public class ScaleButton : LevelEditorTransformButton
             // change scale
             float xScaleFactor = (newUpperRightCorner.x - newLowerLeftCorner.x) / (transformButtonInfo.upperRightCornerBounds.x - transformButtonInfo.lowerLeftCornerBounds.x);
             float yScaleFactor = (newUpperRightCorner.y - newLowerLeftCorner.y) / (transformButtonInfo.upperRightCornerBounds.y - transformButtonInfo.lowerLeftCornerBounds.y);
+
+            // account for object's rotation
+
+            // float angle = -selectedObject.transform.rotation.z * Mathf.Deg2Rad;
+            // Vector2 rotatedScale = new Vector2(
+            //     xScaleFactor * math.cos(angle) - yScaleFactor * math.sin(angle), 
+            //     xScaleFactor * math.sin(angle) + yScaleFactor * math.cos(angle)
+            // );
+            
+
             Vector2 newScale = new Vector2(selectedObject.transform.localScale.x * xScaleFactor, selectedObject.transform.localScale.y * yScaleFactor);
             Vector2 clampedScale = new Vector2(Mathf.Clamp(newScale.x, selectedObject.minScale.x, selectedObject.maxScale.x), Mathf.Clamp(newScale.y, selectedObject.minScale.y, selectedObject.maxScale.y));
             selectedObject.transform.localScale = new Vector3(clampedScale.x, clampedScale.y, selectedObject.transform.localScale.z);

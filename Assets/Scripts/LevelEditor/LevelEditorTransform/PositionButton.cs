@@ -15,10 +15,10 @@ public class PositionButton : LevelEditorTransformButton
     public override void FrameUpdateWhilePressed(TransformButtonInfo transformButtonInfo)
     {
         SetScreenPosition(positionOffset);
+        Vector2 deltaMousePosition = GetMouseDeltaWorldPosition();
         foreach (LevelEditorObject selectedObject in transformButtonInfo.selectedObjects)
         {
 
-            Vector2 deltaMousePosition = GetMouseDeltaWorldPosition();
 
             selectedObject.transform.position = selectedObject.transform.position + (Vector3)deltaMousePosition;
         }

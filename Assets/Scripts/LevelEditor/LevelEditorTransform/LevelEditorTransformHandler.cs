@@ -114,6 +114,11 @@ public class LevelEditorTransformHandler : MonoBehaviour
         transformButtons.Add(positionButton.GetComponent<LevelEditorTransformButton>());
         EditorBuildingManager.instance.AddEditorUIButton(positionButton.GetComponent<UIButton>());
 
+        // rotation button
+        GameObject rotationButton = Instantiate(rotationButtonPrefab, transform);
+        transformButtons.Add(rotationButton.GetComponent<LevelEditorTransformButton>());
+        EditorBuildingManager.instance.AddEditorUIButton(rotationButton.GetComponent<UIButton>());
+
 
         levelEditorTransformButtons.AddRange(transformButtons);
         return transformButtons;
@@ -141,6 +146,7 @@ public class LevelEditorTransformHandler : MonoBehaviour
     private Vector2 GetBounds(List<LevelEditorObject> editorObjects, bool upperRight) {
         Vector2 bounds = editorObjects[0].transform.position;
         foreach (LevelEditorObject editorObject in editorObjects) {
+            
             if (upperRight) {
                 bounds.x = Mathf.Max(bounds.x, editorObject.transform.position.x + defaultObjectBoundsScale * editorObject.transform.localScale.x);
                 bounds.y = Mathf.Max(bounds.y, editorObject.transform.position.y + defaultObjectBoundsScale * editorObject.transform.localScale.y);
@@ -164,4 +170,8 @@ public class TransformButtonInfo {
     public Vector2 averagePosition;
     public Vector2 upperRightCornerBounds;
     public Vector2 lowerLeftCornerBounds;
+
+    public float GetMaxBoundsRadius() {
+        return Vector2.Distance(averagePosition, upperRightCornerBounds);
+    }
 }
