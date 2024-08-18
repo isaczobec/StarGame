@@ -15,6 +15,11 @@ public class LevelEditorTransformHandler : MonoBehaviour
 
     private List<LevelEditorTransformButton> levelEditorTransformButtons = new List<LevelEditorTransformButton>();
 
+
+    [SerializeField] private float defaultObjectBoundsScale = 30f;
+
+    
+
     private void Awake() {
         if (instance == null) {
             instance = this;
@@ -34,6 +39,8 @@ public class LevelEditorTransformHandler : MonoBehaviour
 
 
     private void Update() {
+
+        if (LevelEditorObjectManager.instance.GetSelectedEditorObjects().Count == 0) return; // no buttons to update
         // update all buttons
         foreach (LevelEditorTransformButton button in levelEditorTransformButtons) {
             button.FrameUpdate(CalculateTransformButtonInfo(LevelEditorObjectManager.instance.GetSelectedEditorObjects()));
@@ -46,21 +53,21 @@ public class LevelEditorTransformHandler : MonoBehaviour
     private void OnLevelEditorObjectsSelected(object sender, List<LevelEditorObject> selectedObjects)
     {
         // create button objects
-        List<LevelEditorTransformButton> newButtons = CreateTransformButtons();
+        if (levelEditorTransformButtons.Count == 0) levelEditorTransformButtons = CreateTransformButtons(); // need to create buttons
 
         // calculate info
-        TransformButtonInfo transformButtonInfo = CalculateTransformButtonInfo(selectedObjects);
+        TransformButtonInfo transformButtonInfo = CalculateTransformButtonInfo(LevelEditorObjectManager.instance.GetSelectedEditorObjects());
 
         // initialize buttons
-        for (int i = 0; i < newButtons.Count; i++)
+        for (int i = 0; i < levelEditorTransformButtons.Count; i++)
         {
-            newButtons[i].InitializeButton(transformButtonInfo, i);
+            levelEditorTransformButtons[i].InitializeButton(transformButtonInfo, i);
         }
     }
     private void OnLevelEditorObjectsDeselected(object sender, List<LevelEditorObject> deselectedObjects)
     {
 
-        if (LevelEditorObjectManager.instance.GetSelectedEditorObjects().Count == 0)
+        if (LevelEditorObjectManager.instance.GetSelectedEditorObjects().Count == deselectedObjects.Count)
         { // if nothing remains selected, destroy buttons
             DestroyTransformButtons();
         } else {
@@ -68,7 +75,7 @@ public class LevelEditorTransformHandler : MonoBehaviour
             for (int i = 0; i < levelEditorTransformButtons.Count; i++)
             {
                 TransformButtonInfo transformButtonInfo = CalculateTransformButtonInfo(LevelEditorObjectManager.instance.GetSelectedEditorObjects());
-                levelEditorTransformButtons[i].InitializeButton(CalculateTransformButtonInfo(LevelEditorObjectManager.instance.GetSelectedEditorObjects()), i);
+                levelEditorTransformButtons[i].InitializeButton(transformButtonInfo, i);
             }
         }
     }
@@ -93,14 +100,20 @@ public class LevelEditorTransformHandler : MonoBehaviour
     /// </summary>
     private List<LevelEditorTransformButton> CreateTransformButtons() {
         List<LevelEditorTransformButton> transformButtons = new List<LevelEditorTransformButton>();
-        GameObject positionButton = Instantiate(positionButtonPrefab, transform);
-        // GameObject rotationButton = Instantiate(rotationButtonPrefab, transform);
-        // GameObject scaleButton = Instantiate(scaleButtonPrefab, transform);
-        transformButtons.Add(positionButton.GetComponent<LevelEditorTransformButton>());
-        // transformButtons.Add(rotationButton.GetComponent<LevelEditorTransformButton>());
-        // transformButtons.Add(scaleButton.GetComponent<LevelEditorTransformButton>());
 
+        // scale button, create 1 for each corner
+        for (int i = 0; i < 4; i++)
+        {
+            GameObject scaleButton = Instantiate(scaleButtonPrefab, transform);
+            transformButtons.Add(scaleButton.GetComponent<LevelEditorTransformButton>());
+            EditorBuildingManager.instance.AddEditorUIButton(scaleButton.GetComponent<UIButton>());
+        }
+
+        // position button
+        GameObject positionButton = Instantiate(positionButtonPrefab, transform);
+        transformButtons.Add(positionButton.GetComponent<LevelEditorTransformButton>());
         EditorBuildingManager.instance.AddEditorUIButton(positionButton.GetComponent<UIButton>());
+
 
         levelEditorTransformButtons.AddRange(transformButtons);
         return transformButtons;
@@ -126,16 +139,17 @@ public class LevelEditorTransformHandler : MonoBehaviour
     }
 
     private Vector2 GetBounds(List<LevelEditorObject> editorObjects, bool upperRight) {
-        Vector2 bounds = new Vector2(float.MinValue, float.MinValue);
+        Vector2 bounds = editorObjects[0].transform.position;
         foreach (LevelEditorObject editorObject in editorObjects) {
             if (upperRight) {
-                bounds.x = Mathf.Max(bounds.x, editorObject.transform.position.x);
-                bounds.y = Mathf.Max(bounds.y, editorObject.transform.position.y);
+                bounds.x = Mathf.Max(bounds.x, editorObject.transform.position.x + defaultObjectBoundsScale * editorObject.transform.localScale.x);
+                bounds.y = Mathf.Max(bounds.y, editorObject.transform.position.y + defaultObjectBoundsScale * editorObject.transform.localScale.y);
             } else {
-                bounds.x = Mathf.Min(bounds.x, editorObject.transform.position.x);
-                bounds.y = Mathf.Min(bounds.y, editorObject.transform.position.y);
+                bounds.x = Mathf.Min(bounds.x, editorObject.transform.position.x - defaultObjectBoundsScale * editorObject.transform.localScale.x);
+                bounds.y = Mathf.Min(bounds.y, editorObject.transform.position.y - defaultObjectBoundsScale * editorObject.transform.localScale.y);
             }
         }
+        Debug.Log("bounds: " + bounds);
         return bounds;
     }
 

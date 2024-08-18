@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class LevelEditorObjectManager : MonoBehaviour {
 
@@ -15,6 +16,9 @@ public class LevelEditorObjectManager : MonoBehaviour {
         return selectedEditorObjects;
     }
     private List<LevelEditorObject> hoveredEditorObjects = new List<LevelEditorObject>();
+    public int GetAmountOfHoveredObjects() {
+        return hoveredEditorObjects.Count;
+    }
     [SerializeField] private string levelEditorObjectTag = "levelEditorObject";
 
     // events
@@ -192,6 +196,8 @@ public class LevelEditorObjectManager : MonoBehaviour {
         selectedEditorObjects.Remove(obj);
         obj.SetSelected(false);
 
+        Debug.Log("Deselecting object");
+
         // invoke event
         List<LevelEditorObject> deselectedObjects = new List<LevelEditorObject>();
         deselectedObjects.Add(obj);
@@ -202,9 +208,14 @@ public class LevelEditorObjectManager : MonoBehaviour {
     /// Deselects all objects.
     /// </summary>
     public void DeSelectAllObjects() {
+
+        if (selectedEditorObjects.Count == 0) return; // if there are no objects selected, return
+
         foreach (LevelEditorObject obj in selectedEditorObjects) {
             obj.SetSelected(false);
         }
+
+        Debug.Log("Deselecting all objects");
 
         OnLevelEditorObjectsDeselected?.Invoke(this, selectedEditorObjects); // invoke event
 

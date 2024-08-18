@@ -149,8 +149,8 @@ public class EditorBuildingManager : MonoBehaviour
         // handle selecting objects
 
         if (editorMode == EditorMode.PointerMode) {
-            if (!LevelEditorInputManager.instance.GetShiftButtonPressed()) {LevelEditorObjectManager.instance.DeSelectAllObjects();}
-            LevelEditorObjectManager.instance.AddHoveredObjectsToSelected();
+            if (!LevelEditorInputManager.instance.GetShiftButtonPressed() || LevelEditorObjectManager.instance.GetAmountOfHoveredObjects() == 0) {LevelEditorObjectManager.instance.DeSelectAllObjects();}
+            if (LevelEditorObjectManager.instance.GetAmountOfHoveredObjects() > 0) LevelEditorObjectManager.instance.AddHoveredObjectsToSelected();
         }
     }
 

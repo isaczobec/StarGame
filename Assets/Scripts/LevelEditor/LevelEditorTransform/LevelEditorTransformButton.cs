@@ -78,7 +78,7 @@ public class LevelEditorTransformButton : MonoBehaviour {
     /// Makes the button set its world position to match the average position of the selected objects.
     /// </summary>
     /// <param name="offset"></param>
-    public void SetScreenPosition(Vector2 offset) {
+    public void SetScreenPosition(Vector2 offset = new Vector2()) {
         if (latestTransformButtonInfo != null) {
             Vector2 objectScreenPos = Camera.main.WorldToScreenPoint(latestTransformButtonInfo.averagePosition);
             transform.position = objectScreenPos + offset;

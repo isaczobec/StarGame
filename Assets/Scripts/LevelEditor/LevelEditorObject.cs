@@ -14,6 +14,10 @@ public class LevelEditorObject : MonoBehaviour
     public bool isHovered { get; private set; } = false;
     public bool isSelected { get; private set; } = false;
 
+    [Header("EditorSettings")]
+    public Vector2 minScale = new Vector2(0.1f, 0.1f);
+    public Vector2 maxScale = new Vector2(10f, 10f);
+
 
     private Color[] originalColors;
 
