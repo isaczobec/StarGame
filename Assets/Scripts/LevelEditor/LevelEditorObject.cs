@@ -18,6 +18,21 @@ public class LevelEditorObject : MonoBehaviour
     public Vector2 minScale = new Vector2(0.1f, 0.1f);
     public Vector2 maxScale = new Vector2(10f, 10f);
 
+    /// <summary>
+    /// What increments this object can be rotated by.
+    /// </summary>
+    public float minRotationIncrement = 0f;
+    private float currentSubRotation = 0f;
+    public float minPositionIncrement = 0f;
+    private Vector2 currentSubPosition = Vector2.zero;
+    public float minScaleIncrement = 0f;
+    private Vector2 currentSubScale = new Vector2(1, 1);
+    
+    [Header("Settings")]
+    [SerializeField] public Vector2 offsetWhenPlace;
+
+
+
 
     private Color[] originalColors;
 
@@ -30,6 +45,12 @@ public class LevelEditorObject : MonoBehaviour
             originalColors[i] = spriteRenderers[i].color;
         }
         initialized = true;
+
+        // set the current rotation scale and position
+
+        currentSubRotation = transform.rotation.eulerAngles.z;
+        currentSubPosition = transform.position;
+        currentSubScale = transform.localScale;
     }
 
     private void Start() {
@@ -63,6 +84,59 @@ public class LevelEditorObject : MonoBehaviour
 
     }
 
+
+    public void AddRotation(float angle) {
+        currentSubRotation += angle;
+
+        float rot = 0;
+
+        if (minRotationIncrement != 0) {
+            // clamp to closest increment of minRotationIncrement
+            float remainder = currentSubRotation % minRotationIncrement;
+            rot = currentSubRotation - remainder;
+        } else {
+            rot = currentSubRotation;
+        }
+
+        transform.rotation = Quaternion.Euler(0, 0, rot);
+    }
+
+    public void AddPosition(Vector2 position) {
+
+        currentSubPosition += position;
+
+        Vector2 pos;
+        if (minPositionIncrement != 0f) {
+            // clamp to closest increment of minPositionIncrement
+            float xRemainder = currentSubPosition.x % minPositionIncrement;
+            float yRemainder = currentSubPosition.y % minPositionIncrement;
+            pos = new Vector2(currentSubPosition.x - xRemainder, currentSubPosition.y - yRemainder);
+        } else {
+            pos = currentSubPosition;
+        }
+
+        transform.position = new Vector3(pos.x, pos.y, transform.position.z);
+
+    }
+
+    public void MultiplyScale(Vector2 scale) {
+        currentSubScale = new Vector2(currentSubScale.x * scale.x, currentSubScale.y * scale.y);
+
+        Vector2 newScale;
+        if (minScaleIncrement != 0f) {
+            // clamp to closest increment of minScaleIncrement
+            float xRemainder = currentSubScale.x % minScaleIncrement;
+            float yRemainder = currentSubScale.y % minScaleIncrement;
+            newScale = new Vector2(currentSubScale.x - xRemainder, currentSubScale.y - yRemainder);
+        } else {
+            newScale = currentSubScale;
+        }
+
+        Vector2 clampedScale = new Vector2(Mathf.Clamp(newScale.x, minScale.x, maxScale.x), Mathf.Clamp(newScale.y, minScale.y, maxScale.y));
+        transform.localScale = new Vector3(clampedScale.x, clampedScale.y, transform.localScale.z);
+    }
+
+
     public string GetObjectID() {
         return editorObjectData.SpawnnableObjectID;
     }
@@ -79,6 +153,4 @@ public class LevelEditorObject : MonoBehaviour
         return sprite;
     }
 
-    [Header("Settings")]
-    [SerializeField] public Vector2 offsetWhenPlace;
 }

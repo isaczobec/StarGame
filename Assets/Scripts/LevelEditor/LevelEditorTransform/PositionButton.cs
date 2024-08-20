@@ -20,7 +20,7 @@ public class PositionButton : LevelEditorTransformButton
         {
 
 
-            selectedObject.transform.position = selectedObject.transform.position + (Vector3)deltaMousePosition;
+            selectedObject.AddPosition(deltaMousePosition);
         }
 
         SetLastMousePosition();

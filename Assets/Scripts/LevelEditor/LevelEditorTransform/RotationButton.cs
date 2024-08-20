@@ -32,8 +32,14 @@ public class RotationButton : LevelEditorTransformButton
 
         foreach (LevelEditorObject selectedObject in transformButtonInfo.selectedObjects)
         {
+            // rotate object around the average position of the selected objects
+            Vector2 radius = (Vector2)selectedObject.transform.position - transformButtonInfo.averagePosition;
+            Vector2 rotatedRadius = Quaternion.Euler(0, 0, -angle) * radius;
+            Vector2 posDiff = rotatedRadius - radius;
+            selectedObject.AddPosition(posDiff);
 
-            selectedObject.transform.rotation = Quaternion.Euler(0, 0, selectedObject.transform.rotation.eulerAngles.z - angle);
+            // rotate the object around its own center
+            selectedObject.AddRotation(-angle);
 
         }
 

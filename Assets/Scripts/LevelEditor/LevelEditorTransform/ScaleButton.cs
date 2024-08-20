@@ -50,7 +50,9 @@ public class ScaleButton : LevelEditorTransformButton
             float newX = Mathf.Lerp(newLowerLeftCorner.x, newUpperRightCorner.x, xBoundsPercentage);
             float newY = Mathf.Lerp(newLowerLeftCorner.y, newUpperRightCorner.y, yBoundsPercentage);
 
-            selectedObject.transform.position = new Vector3(newX, newY, selectedObject.transform.position.z);
+            Vector2 posDiff = new Vector2(newX, newY) - objectPosition;
+
+            selectedObject.AddPosition(posDiff);
 
             // change scale
             float xScaleFactor = (newUpperRightCorner.x - newLowerLeftCorner.x) / (transformButtonInfo.upperRightCornerBounds.x - transformButtonInfo.lowerLeftCornerBounds.x);
@@ -63,11 +65,8 @@ public class ScaleButton : LevelEditorTransformButton
             //     xScaleFactor * math.cos(angle) - yScaleFactor * math.sin(angle), 
             //     xScaleFactor * math.sin(angle) + yScaleFactor * math.cos(angle)
             // );
-            
 
-            Vector2 newScale = new Vector2(selectedObject.transform.localScale.x * xScaleFactor, selectedObject.transform.localScale.y * yScaleFactor);
-            Vector2 clampedScale = new Vector2(Mathf.Clamp(newScale.x, selectedObject.minScale.x, selectedObject.maxScale.x), Mathf.Clamp(newScale.y, selectedObject.minScale.y, selectedObject.maxScale.y));
-            selectedObject.transform.localScale = new Vector3(clampedScale.x, clampedScale.y, selectedObject.transform.localScale.z);
+            selectedObject.MultiplyScale(new Vector2(xScaleFactor, yScaleFactor));
 
         }
 
