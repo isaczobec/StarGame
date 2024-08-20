@@ -1118,6 +1118,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   button: {fileID: 208840994}
   buttonImage: {fileID: 0}
+  buttonIcon: {fileID: 0}
   soundPlayer: {fileID: 0}
   onClickSoundName: buttonClick
   onHoverSoundName: buttonHover
@@ -1754,6 +1755,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   button: {fileID: 481828915}
   buttonImage: {fileID: 0}
+  buttonIcon: {fileID: 0}
   soundPlayer: {fileID: 0}
   onClickSoundName: buttonClick
   onHoverSoundName: buttonHover
@@ -2227,6 +2229,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   button: {fileID: 581276939}
   buttonImage: {fileID: 0}
+  buttonIcon: {fileID: 0}
   soundPlayer: {fileID: 0}
   onClickSoundName: buttonClick
   onHoverSoundName: buttonHover
@@ -2364,6 +2367,7 @@ MonoBehaviour:
   editorLevelLoadSceneName: EditorLevelLoader
   screenUnCoverTime: 0.3
   musicFadeOutTime: 0.8
+  isLoadingLevel: 0
 --- !u!4 &588224959
 Transform:
   m_ObjectHideFlags: 0
@@ -2653,6 +2657,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   button: {fileID: 704589163}
   buttonImage: {fileID: 0}
+  buttonIcon: {fileID: 0}
   soundPlayer: {fileID: 0}
   onClickSoundName: buttonClick
   onHoverSoundName: buttonHover
@@ -3306,6 +3311,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   button: {fileID: 1005800517}
   buttonImage: {fileID: 0}
+  buttonIcon: {fileID: 0}
   soundPlayer: {fileID: 0}
   onClickSoundName: buttonClick
   onHoverSoundName: buttonHover
@@ -3549,6 +3555,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   button: {fileID: 1074717254}
   buttonImage: {fileID: 0}
+  buttonIcon: {fileID: 0}
   soundPlayer: {fileID: 0}
   onClickSoundName: buttonClick
   onHoverSoundName: buttonHover
@@ -4078,6 +4085,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   button: {fileID: 1226420447}
   buttonImage: {fileID: 0}
+  buttonIcon: {fileID: 0}
   soundPlayer: {fileID: 0}
   onClickSoundName: buttonClick
   onHoverSoundName: buttonHover
@@ -4676,6 +4684,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   button: {fileID: 1473042516}
   buttonImage: {fileID: 0}
+  buttonIcon: {fileID: 0}
   soundPlayer: {fileID: 0}
   onClickSoundName: buttonClick
   onHoverSoundName: buttonHover
@@ -5251,6 +5260,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   button: {fileID: 1677986493}
   buttonImage: {fileID: 0}
+  buttonIcon: {fileID: 0}
   soundPlayer: {fileID: 0}
   onClickSoundName: buttonClick
   onHoverSoundName: buttonHover
@@ -5638,6 +5648,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   button: {fileID: 1889894491}
   buttonImage: {fileID: 0}
+  buttonIcon: {fileID: 0}
   soundPlayer: {fileID: 0}
   onClickSoundName: buttonClick
   onHoverSoundName: buttonHover
@@ -6227,6 +6238,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   button: {fileID: 1992146116}
   buttonImage: {fileID: 0}
+  buttonIcon: {fileID: 0}
   soundPlayer: {fileID: 0}
   onClickSoundName: buttonClick
   onHoverSoundName: buttonHover
@@ -6329,6 +6341,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   button: {fileID: 2014995934}
   buttonImage: {fileID: 0}
+  buttonIcon: {fileID: 0}
   soundPlayer: {fileID: 0}
   onClickSoundName: buttonClick
   onHoverSoundName: buttonHover

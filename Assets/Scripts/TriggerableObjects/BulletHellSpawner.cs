@@ -6,8 +6,8 @@ using UnityEngine;
 public class BulletHellSpawner : MonoBehaviour {
 
     [Header("TRANSFORM SCALE DECIDES WHERE THE BULLETS CAN SPAWN!")]
-    [SerializeField] private TriggerEffector startTrigger;
-    [SerializeField] private TriggerEffector endTrigger;
+    [SerializeField] private int startTriggerIndex;
+    [SerializeField] private int endTriggerIndex;
     [SerializeField] private GameObject bulletHellPrefab;
 
 
@@ -37,10 +37,18 @@ public class BulletHellSpawner : MonoBehaviour {
     }
 
     private void Start() {
-        if (startTrigger!= null) startTrigger.OnTriggered += OnStartTriggered;
-        if (endTrigger!= null) endTrigger.OnTriggered += OnEndTriggered;
+        TriggerEffector.OnEffectorTriggeredByPlayerIndexed += OnEffectorTriggeredByPlayer;
         Player.Instance.OnPlayerDeath += OnPlayerDeath;
 
+    }
+
+    private void OnEffectorTriggeredByPlayer(object sender, int triggerIndex)
+    {
+        if (triggerIndex == startTriggerIndex) {
+            StartEmittingBullets();
+        } else if (triggerIndex == endTriggerIndex) {
+            EndEmittingBullets();
+        }
     }
 
 

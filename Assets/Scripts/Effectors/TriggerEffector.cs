@@ -10,6 +10,13 @@ public class TriggerEffector : Effector
 {
     public event EventHandler<TriggerHitEventArgs> OnTriggered;
 
+    public static event EventHandler<int> OnEffectorTriggeredByPlayerIndexed;
+
+    /// <summary>
+    /// The index associated with this trigger effector. Can be used to identify the trigger effector
+    /// </summary>
+    public int index;
+
     public override void OnEffectorTriggered(IHitboxEntity hitboxEntity)
     {
         TriggerHitEventArgs args = new TriggerHitEventArgs
@@ -19,6 +26,8 @@ public class TriggerEffector : Effector
         };
 
         OnTriggered?.Invoke(this, args);
+
+        if (args.isPlayer) OnEffectorTriggeredByPlayerIndexed?.Invoke(this, index);
     }
 
 }

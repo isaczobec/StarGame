@@ -27,6 +27,10 @@ public class LevelEditorObject : MonoBehaviour
     private Vector2 currentSubPosition = Vector2.zero;
     public float minScaleIncrement = 0f;
     private Vector2 currentSubScale = new Vector2(1, 1);
+
+    [SerializeField] private float shiftAddedAngleIncrementing = 45f;
+    [SerializeField] private float shiftAddedPositionIncrementing = 1f;
+    [SerializeField] private float shiftAddedScaleIncrementing = 1f;
     
     [Header("Settings")]
     [SerializeField] public Vector2 offsetWhenPlace;
@@ -90,9 +94,11 @@ public class LevelEditorObject : MonoBehaviour
 
         float rot = 0;
 
-        if (minRotationIncrement != 0) {
+        float minIncrement = LevelEditorInputManager.instance.GetShiftButtonPressed() ? Mathf.Max(minRotationIncrement,shiftAddedAngleIncrementing) : minRotationIncrement;
+
+        if (minIncrement != 0) {
             // clamp to closest increment of minRotationIncrement
-            float remainder = currentSubRotation % minRotationIncrement;
+            float remainder = currentSubRotation % minIncrement;
             rot = currentSubRotation - remainder;
         } else {
             rot = currentSubRotation;
@@ -105,11 +111,13 @@ public class LevelEditorObject : MonoBehaviour
 
         currentSubPosition += position;
 
+        float minIncrement = LevelEditorInputManager.instance.GetShiftButtonPressed() ? Mathf.Max(minPositionIncrement,shiftAddedPositionIncrementing) : minPositionIncrement;
+
         Vector2 pos;
-        if (minPositionIncrement != 0f) {
+        if (minIncrement != 0f) {
             // clamp to closest increment of minPositionIncrement
-            float xRemainder = currentSubPosition.x % minPositionIncrement;
-            float yRemainder = currentSubPosition.y % minPositionIncrement;
+            float xRemainder = currentSubPosition.x % minIncrement;
+            float yRemainder = currentSubPosition.y % minIncrement;
             pos = new Vector2(currentSubPosition.x - xRemainder, currentSubPosition.y - yRemainder);
         } else {
             pos = currentSubPosition;
@@ -122,11 +130,13 @@ public class LevelEditorObject : MonoBehaviour
     public void MultiplyScale(Vector2 scale) {
         currentSubScale = new Vector2(currentSubScale.x * scale.x, currentSubScale.y * scale.y);
 
+        float minIncrement = LevelEditorInputManager.instance.GetShiftButtonPressed() ? Mathf.Max(minScaleIncrement,shiftAddedScaleIncrementing) : minScaleIncrement;
+
         Vector2 newScale;
-        if (minScaleIncrement != 0f) {
+        if (minIncrement != 0f) {
             // clamp to closest increment of minScaleIncrement
-            float xRemainder = currentSubScale.x % minScaleIncrement;
-            float yRemainder = currentSubScale.y % minScaleIncrement;
+            float xRemainder = currentSubScale.x % minIncrement;
+            float yRemainder = currentSubScale.y % minIncrement;
             newScale = new Vector2(currentSubScale.x - xRemainder, currentSubScale.y - yRemainder);
         } else {
             newScale = currentSubScale;
