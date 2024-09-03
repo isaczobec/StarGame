@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -37,6 +38,13 @@ public class LevelEditorObject : MonoBehaviour
 
 
 
+    // -------- events ------
+
+    /// <summary>
+    /// Called when the object is selected or deselected. The bool is true if the object is selected, false if it is deselected.
+    /// </summary>
+    public event EventHandler<bool> OnSelectedChanged;
+
 
     private Color[] originalColors;
 
@@ -74,11 +82,13 @@ public class LevelEditorObject : MonoBehaviour
     }
 
     public void SetSelected(bool selected) {
+        if (selected == isSelected) return; // do not do anything if the object is already selected
         isSelected = selected;
         for (int i = 0; i < spriteRenderers.Length; i++) {
             Color color = isSelected ? selectedColor : isHovered ? hoveredColor : originalColors[i];
             spriteRenderers[i].color = color;
         }
+        OnSelectedChanged?.Invoke(this, isSelected);
     }
     
     public EditorObjectData UpdateAndGetEditorObjectData() {
@@ -153,6 +163,10 @@ public class LevelEditorObject : MonoBehaviour
 
     public void SetEditorObjectData(EditorObjectData editorObjectData) {
         this.editorObjectData = editorObjectData;
+    }
+
+    public EditorObjectData GetEditorObjectData() {
+        return editorObjectData;
     }
 
     /// <summary>
