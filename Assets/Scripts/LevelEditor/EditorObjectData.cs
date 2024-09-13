@@ -29,6 +29,11 @@ public class EditorObjectData {
     public List<EditorObjectSetting> settings = new List<EditorObjectSetting>();
 
     /// <summary>
+    /// A list of all the editor object nodes that this object has.
+    /// </summary>
+    public List<EditorObjectNodeData> editorObjectNodes = new List<EditorObjectNodeData>();
+
+    /// <summary>
     /// Sets a setting value for this object.
     /// </summary>
     /// <typeparam name="T"></typeparam>
@@ -58,6 +63,20 @@ public class EditorObjectData {
     }
 
     /// <summary>
+    /// Returns the [min, max, increment] for a setting.
+    /// </summary>
+    /// <param name="settingName"></param>
+    /// <returns></returns>
+    public float[] GetChangeSettings(string settingName) {
+        foreach (EditorObjectSetting setting in settings) {
+            if (setting.settingName == settingName) {
+                return new float[] { setting.min, setting.max, setting.increment };
+        }
+    }
+    return new float[] { 0, 0 , 0};
+    }
+
+    /// <summary>
     /// Sets the position, rotation and scale of this object.
     /// </summary>
     /// <param name="levelEditorObject"></param>
@@ -73,6 +92,12 @@ public class EditorObjectData {
 public class EditorObjectSetting {
     public string settingName;
     public string value;
+    /// <summary>
+    /// The amount this setting can be increased or decreased by, given that it is a float, int ocr vector.
+    /// </summary>
+    public float increment = 1;
+    public float min = 0;
+    public float max = 100;
     public SettingValueType valueType;
 }
 

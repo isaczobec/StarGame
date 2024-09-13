@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting.Dependencies.Sqlite;
 using UnityEngine;
 
 public class LevelEditorObject : MonoBehaviour
@@ -32,7 +33,14 @@ public class LevelEditorObject : MonoBehaviour
     [SerializeField] private float shiftAddedAngleIncrementing = 45f;
     [SerializeField] private float shiftAddedPositionIncrementing = 1f;
     [SerializeField] private float shiftAddedScaleIncrementing = 1f;
-    
+
+    /// <summary>
+    /// if this object can have nodes.
+    /// </summary>
+    [SerializeField] private bool canHaveNodes = false;
+    [SerializeField] private int defaultNodeAmount = 4;
+    [SerializeField] private int maxNodeAmount = 8;
+    private List<EditorObjectNode> nodes = new List<EditorObjectNode>();
     [Header("Settings")]
     [SerializeField] public Vector2 offsetWhenPlace;
 
@@ -50,6 +58,8 @@ public class LevelEditorObject : MonoBehaviour
 
     private bool initialized = false;
 
+    private bool nodesLoaded = false;
+
     public void Initialize() {
         // save the original colors of the sprite renderers
         originalColors = new Color[spriteRenderers.Length];
@@ -63,6 +73,16 @@ public class LevelEditorObject : MonoBehaviour
         currentSubRotation = transform.rotation.eulerAngles.z;
         currentSubPosition = transform.position;
         currentSubScale = transform.localScale;
+
+        // initialize nodes
+        if (canHaveNodes && !nodesLoaded) { // if the object can have nodes
+            // create nodes
+            for (int i = 0; i < defaultNodeAmount; i++) {
+                CreateNode(Vector2.up * i);
+            }
+            nodesLoaded = true;
+        }
+
     }
 
     private void Start() {
@@ -88,11 +108,17 @@ public class LevelEditorObject : MonoBehaviour
             Color color = isSelected ? selectedColor : isHovered ? hoveredColor : originalColors[i];
             spriteRenderers[i].color = color;
         }
+        if(selected) {
+            ShowNodes();
+        } else {
+            HideNodes();
+        }
         OnSelectedChanged?.Invoke(this, isSelected);
     }
     
     public EditorObjectData UpdateAndGetEditorObjectData() {
         editorObjectData.SetBaseSettings(this);
+        editorObjectData.editorObjectNodes = GetEditorObjectNodeDatas();
         
         return editorObjectData;
 
@@ -156,6 +182,60 @@ public class LevelEditorObject : MonoBehaviour
         transform.localScale = new Vector3(clampedScale.x, clampedScale.y, transform.localScale.z);
     }
 
+    /// <summary>
+    /// Shows the nodes of this object. Called when the object is selected.
+    /// </summary>
+    private void ShowNodes() {
+        foreach (EditorObjectNode node in nodes) {
+            node.SetVisualsEnabled(true);
+        }
+    }
+
+    /// <summary>
+    /// Hides the nodes of this object. Called when the object is deselected.
+    /// </summary>
+    private void HideNodes() {
+        foreach (EditorObjectNode node in nodes) {
+            node.SetVisualsEnabled(false);
+        }
+    }
+
+    /// <summary>
+    /// Deletes all nodes of this object.
+    /// </summary>
+    public void DeleteNodes() {
+        foreach (EditorObjectNode node in nodes) {
+            Destroy(node.gameObject);
+        }
+        nodes.Clear();
+    }
+
+    private void CreateNode(Vector2 position) {
+        GameObject nodeObject = Instantiate(GeneralEditorPrefabs.instance.GetEditorObjectNodePrefab(), position, Quaternion.identity, EditorObjectNodeParent.instance.transform);
+        EditorObjectNode node = nodeObject.GetComponent<EditorObjectNode>();
+        nodes.Add(node);
+        node.Setup(gameObject, position);
+        nodesLoaded = true;
+    }
+
+    private List<EditorObjectNodeData> GetEditorObjectNodeDatas() {
+        List<EditorObjectNodeData> nodeDatas = new List<EditorObjectNodeData>();
+        foreach (EditorObjectNode node in nodes) {
+            nodeDatas.Add(node.GetNodeData());
+        }
+        return nodeDatas;
+    }
+
+    /// <summary>
+    /// Loads the node data into the object.
+    /// </summary>
+    /// <param name="nodeDatas"></param>
+    private void LoadEditorObjectNodeData(List<EditorObjectNodeData> nodeDatas) {
+        foreach (EditorObjectNodeData nodeData in nodeDatas) {
+            CreateNode(nodeData.relativePosition);
+        }
+    }
+
 
     public string GetObjectID() {
         return editorObjectData.SpawnnableObjectID;
@@ -163,6 +243,7 @@ public class LevelEditorObject : MonoBehaviour
 
     public void SetEditorObjectData(EditorObjectData editorObjectData) {
         this.editorObjectData = editorObjectData;
+        LoadEditorObjectNodeData(editorObjectData.editorObjectNodes);
     }
 
     public EditorObjectData GetEditorObjectData() {

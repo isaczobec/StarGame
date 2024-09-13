@@ -43,12 +43,17 @@ public class EditorLevelDataLoader : MonoBehaviour
     private void LoadSpawnableLevelObjects(EditorLevelData editorLevelData) {
         foreach (EditorObjectData editorObjectData in editorLevelData.editorObjectDatas) {
 
-            foreach (SpawnnableLevelObjectSO spawnnableLevelObjectSO in spawnnableLevelObjectSOs) {
+            foreach (SpawnnableLevelObjectSO spawnnableLevelObjectSO in spawnnableLevelObjectSOs) { // ganska ineffektivt att loopa igenom alla spawnable objects varje gång
                 if (spawnnableLevelObjectSO.SpawnnableObjectID == editorObjectData.SpawnnableObjectID) {
                     GameObject newObject = Instantiate(spawnnableLevelObjectSO.prefab, editorObjectData.position, Quaternion.identity);
                     ISpawnFromEditorObjectData iSpawnFromEditorObjectData = newObject.GetComponent<ISpawnFromEditorObjectData>();
                     if (iSpawnFromEditorObjectData != null) {
                         iSpawnFromEditorObjectData.CopyEditorObjectData(editorObjectData);
+                    } else {
+                        // if the object does not implement the interface, just set the position and rotation
+                        newObject.transform.position = editorObjectData.position;
+                        newObject.transform.rotation = Quaternion.Euler(0, 0, editorObjectData.rotation);
+                        newObject.transform.localScale = new Vector3(editorObjectData.scale.x * newObject.transform.localScale.x, editorObjectData.scale.y * newObject.transform.localScale.y, 1); // multiply with the current scale
                     }
                 }
             }

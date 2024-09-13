@@ -45,6 +45,10 @@ public class EditorObjectSettingButton : MonoBehaviour {
         return levelEditorObject.GetEditorObjectData().GetSetting<T>(setting);
     }
 
+    protected float[] GetChangeSettings(string setting) {
+        return levelEditorObject.GetEditorObjectData().GetChangeSettings(setting);
+    }
+
     /// <summary>
     /// Overridable method that returns a list of UIButtons that this setting button uses.
     /// </summary>

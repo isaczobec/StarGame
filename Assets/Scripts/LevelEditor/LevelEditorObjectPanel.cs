@@ -26,7 +26,7 @@ public class LevelEditorObjectPanel : MonoBehaviour {
     private EditorObjectCategory activeCategory;
     private GameObject activeObject;
 
-    private int maxColumns = 7;
+    private int maxColumns = 5;
 
     private List<EditorObjectCategory> editorObjectCategories;
     private int currentCategoryIndex = 0;

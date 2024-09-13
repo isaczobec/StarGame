@@ -276,7 +276,7 @@ public class SplineCurve {
     
 
 }
-public class CurveSpikeGenerator : MonoBehaviour
+public class CurveSpikeGenerator : MonoBehaviour, ISpawnFromEditorObjectData
 {
 
     [SerializeField] private GameObject testPrefab;
@@ -305,19 +305,27 @@ public class CurveSpikeGenerator : MonoBehaviour
 
     private List<SplineCurve> splineCurves = new List<SplineCurve>();
 
+    /// <summary>
+    /// If the spikes have been generated.
+    /// </summary>
+    private bool generated = false;
+
 
 
     private void Start()
     {
+        
+        if (!generated) { // only generate the spikes once
 
-        splinePoint1 = new SplinePoint(P1.position, P1Hanlde1.position, P1Hanlde2.position);
-        splinePoint2 = new SplinePoint(P2.position, P2Hanlde1.position, P2Hanlde2.position);
-        splinePoint3 = new SplinePoint(P3.position, P3Hanlde1.position, P3Hanlde2.position);
+            splinePoint1 = new SplinePoint(P1.position, P1Hanlde1.position, P1Hanlde2.position);
+            splinePoint2 = new SplinePoint(P2.position, P2Hanlde1.position, P2Hanlde2.position);
+            splinePoint3 = new SplinePoint(P3.position, P3Hanlde1.position, P3Hanlde2.position);
 
-        AddSplineCurve(new SplinePoint[] { splinePoint1, splinePoint2, splinePoint3 });
+            AddSplineCurve(new SplinePoint[] { splinePoint1, splinePoint2, splinePoint3 });
 
-        if (tunnel) GenerateTunnelSpikes();
-        else GenerateStrandSpikes();
+            if (tunnel) GenerateTunnelSpikes();
+            else GenerateStrandSpikes();
+        } 
 
         // for (int i = 0; i < amountOfSpikes; i++) { 
 
@@ -355,6 +363,7 @@ public class CurveSpikeGenerator : MonoBehaviour
             }
             si++;
         }
+        generated = true;
     }
 
     private void GenerateStrandSpikes()
@@ -370,6 +379,7 @@ public class CurveSpikeGenerator : MonoBehaviour
                 Instantiate(testPrefab, splinePointsInfo.positions[i], Quaternion.LookRotation(Vector3.forward, -curveNormal));
 
             }
+        generated = true;
     }
 
     // private void Start() {
@@ -406,5 +416,29 @@ public class CurveSpikeGenerator : MonoBehaviour
     private void AddSplineCurve(SplinePoint[] splinePoints) {
         splineCurves.Add(new SplineCurve(splinePoints));
     }
-    
+
+    public void CopyEditorObjectData(EditorObjectData editorObjectData)
+    {
+
+        // copy spacing
+        spikeGap = editorObjectData.GetSetting<float>("Tunnel gap");
+        spikeDistance = editorObjectData.GetSetting<float>("Spike spacing");
+
+
+        // get positions and create spline points
+        Vector2 rootPosition = editorObjectData.position;
+        List<SplinePoint> splinePoints = new List<SplinePoint>();
+        for (int i = 0; i < editorObjectData.editorObjectNodes.Count/3; i++)
+        {
+            Vector2 p1 = editorObjectData.editorObjectNodes[i*3].relativePosition + rootPosition;
+            Vector2 p2 = editorObjectData.editorObjectNodes[i*3+1].relativePosition + rootPosition;
+            Vector2 p3 = editorObjectData.editorObjectNodes[i*3+2].relativePosition + rootPosition;
+            splinePoints.Add(new SplinePoint(p1, p2, p3));
+        }
+
+        // add the spline points to the spline curves
+        AddSplineCurve(splinePoints.ToArray());
+        GenerateTunnelSpikes();
+        
+    }
 }

@@ -200,6 +200,11 @@ MonoBehaviour:
   - categoryName: Effectors
     objectsInCategoryPrefabs:
     - {fileID: 4367747660681718687, guid: 936945256d32cb24f8327cdcee04a2a1, type: 3}
+    - {fileID: 4367747660681718687, guid: 4c5d0bc8cd131b64a95d41b977d6218e, type: 3}
+    - {fileID: 4367747660681718687, guid: 7105f29cfc6cfc041b158157a1dce2c7, type: 3}
+    - {fileID: 4367747660681718687, guid: 9faaea3b4507814458a02859099488e2, type: 3}
+    - {fileID: 4367747660681718687, guid: 0b0112eb8cc13d946a96eac81ab37b91, type: 3}
+    - {fileID: 4367747660681718687, guid: 11813cff5a45afa4c89c436bf52b1c74, type: 3}
   - categoryName: EffectorsCool
     objectsInCategoryPrefabs:
     - {fileID: 4367747660681718687, guid: ecd2316318a78dc4086fd9ecae7897f3, type: 3}
@@ -832,7 +837,7 @@ MonoBehaviour:
   floatSettingButtonPrefab: {fileID: 6525645121491202422, guid: a1b81ecf5c0a42140a3f9308cbe59c8d, type: 3}
   intSettingButtonPrefab: {fileID: 0}
   vector2SettingButtonPrefab: {fileID: 0}
-  boolSettingButtonPrefab: {fileID: 0}
+  boolSettingButtonPrefab: {fileID: 6525645121491202422, guid: bbdd5e59577ef8e4a84c11e653d29c2d, type: 3}
   baseOffsetFromObject: {x: 200, y: 0}
   offsetBetweenButtons: {x: 0, y: -50}
 --- !u!1001 &384861238
@@ -1238,6 +1243,54 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ba456c92a468f7c4bb28e3ff4a4bc8ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &798367187
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 798367188}
+  - component: {fileID: 798367189}
+  m_Layer: 5
+  m_Name: EditorObjectNodeParent
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &798367188
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 798367187}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1518401486}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &798367189
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 798367187}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e399c6d5a0005aa43868967ce78d4c08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &833487270 stripped
@@ -1866,6 +1919,7 @@ RectTransform:
   - {fileID: 239583499}
   - {fileID: 1929800780}
   - {fileID: 358272744}
+  - {fileID: 798367188}
   m_Father: {fileID: 646890040}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -1873,6 +1927,51 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: -1692, y: -870}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1656891577
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1656891579}
+  - component: {fileID: 1656891578}
+  m_Layer: 0
+  m_Name: GeneralEditorPrefabs
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1656891578
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1656891577}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61d1f2a6264247240af04cc895ddf99e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  editorObjectNodePrefab: {fileID: 1666997727470021388, guid: 6c64f9323f5bfc145b5cd20fe345e72e, type: 3}
+--- !u!4 &1656891579
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1656891577}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 813.5, y: 485, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1660498494
 GameObject:
   m_ObjectHideFlags: 0
@@ -2168,3 +2267,4 @@ SceneRoots:
   - {fileID: 187251540}
   - {fileID: 1945085541}
   - {fileID: 73735242}
+  - {fileID: 1656891579}

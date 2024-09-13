@@ -118,6 +118,7 @@ public class LevelEditorObjectManager : MonoBehaviour {
                     GameObject newObject = Instantiate(prefab, objectData.position, Quaternion.identity);
                     newObject.transform.rotation = Quaternion.Euler(0f, 0f, objectData.rotation);
                     newObject.transform.localScale = new Vector3(objectData.scale.x, objectData.scale.y, 1f);
+                    
 
                     // set editorObject data and add to list
                     LevelEditorObject newLevelEditorObject = newObject.GetComponent<LevelEditorObject>();
@@ -228,6 +229,7 @@ public class LevelEditorObjectManager : MonoBehaviour {
     /// <param name="levelEditorObject"></param>
     public void DeleteObject(LevelEditorObject levelEditorObject) {
         levelEditorObjects.Remove(levelEditorObject);
+        levelEditorObject.DeleteNodes();
         Destroy(levelEditorObject.gameObject);
     }
 

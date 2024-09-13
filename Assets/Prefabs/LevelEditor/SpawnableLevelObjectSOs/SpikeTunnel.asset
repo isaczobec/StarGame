@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4226e315777a15b4493f2fadcdd40dab, type: 3}
+  m_Name: SpikeTunnel
+  m_EditorClassIdentifier: 
+  SpawnnableObjectID: SpikeTunnel
+  prefab: {fileID: 7161629931030588129, guid: 98f079a01a8fd35438c35921f3e3a7f3, type: 3}
