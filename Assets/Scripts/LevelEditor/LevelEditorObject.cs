@@ -1,12 +1,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using Unity.VisualScripting.Dependencies.Sqlite;
 using UnityEngine;
 
 public class LevelEditorObject : MonoBehaviour
 {
-    [SerializeField] private EditorObjectData editorObjectData;
+    [SerializeField] protected EditorObjectData editorObjectData;
     [Header("Visuals")]
     [SerializeField] private SpriteRenderer[] spriteRenderers;
 
@@ -40,7 +41,11 @@ public class LevelEditorObject : MonoBehaviour
     [SerializeField] private bool canHaveNodes = false;
     [SerializeField] private int defaultNodeAmount = 4;
     [SerializeField] private int maxNodeAmount = 8;
-    private List<EditorObjectNode> nodes = new List<EditorObjectNode>();
+    protected List<EditorObjectNode> nodes = new List<EditorObjectNode>();
+    private bool nodesVisible = false;
+
+    [SerializeField] private LineRenderer nodeLineRenderer;
+
     [Header("Settings")]
     [SerializeField] public Vector2 offsetWhenPlace;
 
@@ -53,6 +58,25 @@ public class LevelEditorObject : MonoBehaviour
     /// </summary>
     public event EventHandler<bool> OnSelectedChanged;
 
+
+    // -------- overridable methods ------
+
+    /// <summary>
+    /// Called every frame when a node is being dragged.
+    /// </summary>
+    public virtual void OnNodeMoved(EditorObjectNode node) {
+    }
+    protected virtual void OnObjectMoved() {
+    }
+    protected virtual void OnObjectRotated() {
+    }
+    protected virtual void OnObjectScaled() {
+    }
+    protected virtual void OnObjectSetup() {
+    }
+    public virtual void OnSettingChanged<T>(string settingName, T value) {
+
+    }
 
     private Color[] originalColors;
 
@@ -78,10 +102,12 @@ public class LevelEditorObject : MonoBehaviour
         if (canHaveNodes && !nodesLoaded) { // if the object can have nodes
             // create nodes
             for (int i = 0; i < defaultNodeAmount; i++) {
-                CreateNode(Vector2.up * i);
+                CreateNode(Vector2.up * i,i);
             }
             nodesLoaded = true;
         }
+
+        OnObjectSetup(); // call the on object setup function
 
     }
 
@@ -141,6 +167,10 @@ public class LevelEditorObject : MonoBehaviour
         }
 
         transform.rotation = Quaternion.Euler(0, 0, rot);
+
+        
+        if (angle != 0) OnObjectRotated(); // call the on object rotated function
+        if (nodesVisible) UpdateLineRenderer(); // update the line renderer if the nodes are visible
     }
 
     public void AddPosition(Vector2 position) {
@@ -161,6 +191,9 @@ public class LevelEditorObject : MonoBehaviour
 
         transform.position = new Vector3(pos.x, pos.y, transform.position.z);
 
+        if (position != Vector2.zero) OnObjectMoved(); // call the on object moved function
+        if (nodesVisible) UpdateLineRenderer(); // update the line renderer if the nodes are visible
+
     }
 
     public void MultiplyScale(Vector2 scale) {
@@ -180,6 +213,10 @@ public class LevelEditorObject : MonoBehaviour
 
         Vector2 clampedScale = new Vector2(Mathf.Clamp(newScale.x, minScale.x, maxScale.x), Mathf.Clamp(newScale.y, minScale.y, maxScale.y));
         transform.localScale = new Vector3(clampedScale.x, clampedScale.y, transform.localScale.z);
+
+        if (scale != Vector2.one) OnObjectScaled(); // call the on object scaled function
+        if (nodesVisible) UpdateLineRenderer(); // update the line renderer if the nodes are visible
+
     }
 
     /// <summary>
@@ -189,6 +226,8 @@ public class LevelEditorObject : MonoBehaviour
         foreach (EditorObjectNode node in nodes) {
             node.SetVisualsEnabled(true);
         }
+        UpdateLineRenderer(); // show the line renderer
+        nodesVisible = true;
     }
 
     /// <summary>
@@ -198,6 +237,8 @@ public class LevelEditorObject : MonoBehaviour
         foreach (EditorObjectNode node in nodes) {
             node.SetVisualsEnabled(false);
         }
+        HideLineRenderer(); // hide the line renderer
+        nodesVisible = false;
     }
 
     /// <summary>
@@ -210,13 +251,15 @@ public class LevelEditorObject : MonoBehaviour
         nodes.Clear();
     }
 
-    private void CreateNode(Vector2 position) {
+    private void CreateNode(Vector2 position, int index) {
         GameObject nodeObject = Instantiate(GeneralEditorPrefabs.instance.GetEditorObjectNodePrefab(), position, Quaternion.identity, EditorObjectNodeParent.instance.transform);
         EditorObjectNode node = nodeObject.GetComponent<EditorObjectNode>();
         nodes.Add(node);
-        node.Setup(gameObject, position);
+        EditorObjectNode previousNode  = index > 1 ? nodes[index - 2] : null;
+        node.Setup(gameObject, position,index,previousNode);
         nodesLoaded = true;
     }
+
 
     private List<EditorObjectNodeData> GetEditorObjectNodeDatas() {
         List<EditorObjectNodeData> nodeDatas = new List<EditorObjectNodeData>();
@@ -231,10 +274,34 @@ public class LevelEditorObject : MonoBehaviour
     /// </summary>
     /// <param name="nodeDatas"></param>
     private void LoadEditorObjectNodeData(List<EditorObjectNodeData> nodeDatas) {
-        foreach (EditorObjectNodeData nodeData in nodeDatas) {
-            CreateNode(nodeData.relativePosition);
+        for (int i = 0; i < nodeDatas.Count; i++) {
+            EditorObjectNodeData nodeData = nodeDatas[i];
+            CreateNode(nodeData.relativePosition,i);
         }
     }
+
+    public EditorObjectNode GetNodeAtIndex(int index) {
+        if (index < 0 || index >= nodes.Count) return null;
+        return nodes[index];
+    }
+
+    public void UpdateLineRenderer() {
+        if (nodeLineRenderer == null) return;
+        if (nodes.Count == 0) return;
+        Vector3[] positions = new Vector3[nodes.Count];
+        for (int i = 0; i < nodes.Count; i++) {
+            positions[i] = nodes[i].relativePosition + (Vector2)transform.position;
+        }
+        nodeLineRenderer.positionCount = nodes.Count;
+        nodeLineRenderer.SetPositions(positions);
+    }
+
+    public void HideLineRenderer() {
+        if (nodeLineRenderer == null) return;
+        nodeLineRenderer.positionCount = 0;
+    }
+
+    
 
 
     public string GetObjectID() {

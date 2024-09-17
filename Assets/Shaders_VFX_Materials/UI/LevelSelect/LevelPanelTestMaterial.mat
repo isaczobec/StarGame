@@ -41,13 +41,15 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _Completed: 0
     - _IsHovered: 1
     - _QueueControl: 0
     - _QueueOffset: 0
     m_Colors:
     - _BorderColor: {r: 0.40066934, g: 1, b: 0, a: 1}
-    - _MainColor: {r: 1, g: 1, b: 1, a: 1}
-    - _SocketColor: {r: 1, g: 1, b: 1, a: 1}
+    - _CompletedColor: {r: 0.43407243, g: 1, b: 0, a: 1}
+    - _MainColor: {r: 0.9842892, g: 0.8915094, b: 1, a: 1}
+    - _SocketColor: {r: 0.5111291, g: 0.46996263, b: 0.5566038, a: 1}
   m_BuildTextureStacks: []
 --- !u!114 &3572293910679127840
 MonoBehaviour:

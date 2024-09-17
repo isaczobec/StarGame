@@ -155,7 +155,6 @@ public class LevelEditorTransformHandler : MonoBehaviour
                 bounds.y = Mathf.Min(bounds.y, editorObject.transform.position.y - defaultObjectBoundsScale * editorObject.transform.localScale.y);
             }
         }
-        Debug.Log("bounds: " + bounds);
         return bounds;
     }
 

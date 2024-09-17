@@ -39,6 +39,7 @@ public class EditorObjectSettingButton : MonoBehaviour {
 
     protected void SetValue<T>(string setting, T value) {
         levelEditorObject.GetEditorObjectData().SetSetting(setting, settingValueType, value);
+        levelEditorObject.OnSettingChanged(setting, value);
     }
 
     protected T GetValue<T>(string setting) {

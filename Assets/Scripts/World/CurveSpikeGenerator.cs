@@ -317,14 +317,14 @@ public class CurveSpikeGenerator : MonoBehaviour, ISpawnFromEditorObjectData
         
         if (!generated) { // only generate the spikes once
 
-            splinePoint1 = new SplinePoint(P1.position, P1Hanlde1.position, P1Hanlde2.position);
-            splinePoint2 = new SplinePoint(P2.position, P2Hanlde1.position, P2Hanlde2.position);
-            splinePoint3 = new SplinePoint(P3.position, P3Hanlde1.position, P3Hanlde2.position);
+            // splinePoint1 = new SplinePoint(P1.position, P1Hanlde1.position, P1Hanlde2.position);
+            // splinePoint2 = new SplinePoint(P2.position, P2Hanlde1.position, P2Hanlde2.position);
+            // splinePoint3 = new SplinePoint(P3.position, P3Hanlde1.position, P3Hanlde2.position);
 
-            AddSplineCurve(new SplinePoint[] { splinePoint1, splinePoint2, splinePoint3 });
+            // AddSplineCurve(new SplinePoint[] { splinePoint1, splinePoint2, splinePoint3 });
 
-            if (tunnel) GenerateTunnelSpikes();
-            else GenerateStrandSpikes();
+            // GenerateAppropriateSpikes();
+            
         } 
 
         // for (int i = 0; i < amountOfSpikes; i++) { 
@@ -335,19 +335,22 @@ public class CurveSpikeGenerator : MonoBehaviour, ISpawnFromEditorObjectData
         // }
 
 
-
-
-
-
-
-
     }
 
-    private void GenerateTunnelSpikes()
+    /// <summary>
+    /// Generates a spike tunnel based on the current settings.
+    /// </summary>
+    public void GenerateAppropriateSpikes(bool destroyOld = false) {
+        if (destroyOld) DestroyChildren();
+        if (tunnel) GenerateTunnelSpikes();
+            else GenerateStrandSpikes();
+    }
+
+    private void GenerateTunnelSpikes(int curveIndex = 0)
     {
         float time = Time.realtimeSinceStartup;
-        SplinePointsInfo splinePointsInfoL = splineCurves[0].StepSplineSideEvenlySpaced(true, spikeGap, spikeDistance);
-        SplinePointsInfo splinePointsInfoR = splineCurves[0].StepSplineSideEvenlySpaced(false, spikeGap, spikeDistance);
+        SplinePointsInfo splinePointsInfoL = splineCurves[curveIndex].StepSplineSideEvenlySpaced(true, spikeGap, spikeDistance);
+        SplinePointsInfo splinePointsInfoR = splineCurves[curveIndex].StepSplineSideEvenlySpaced(false, spikeGap, spikeDistance);
         Debug.Log("Time to generate bezier: " + (Time.realtimeSinceStartup - time));
 
         int si = 0;
@@ -358,7 +361,7 @@ public class CurveSpikeGenerator : MonoBehaviour, ISpawnFromEditorObjectData
 
                 Vector2 curveNormal = flipSpikes ? new Vector2(info.tangentials[i].y, -info.tangentials[i].x) : new Vector2(-info.tangentials[i].y, info.tangentials[i].x);
                 curveNormal = si == 0 ? curveNormal : -curveNormal;
-                Instantiate(testPrefab, info.positions[i], Quaternion.LookRotation(Vector3.forward, -curveNormal));
+                Instantiate(testPrefab, info.positions[i], Quaternion.LookRotation(Vector3.forward, -curveNormal), transform);
 
             }
             si++;
@@ -366,10 +369,10 @@ public class CurveSpikeGenerator : MonoBehaviour, ISpawnFromEditorObjectData
         generated = true;
     }
 
-    private void GenerateStrandSpikes()
+    private void GenerateStrandSpikes(int curveIndex = 0)
     {
         float time = Time.realtimeSinceStartup;
-        SplinePointsInfo splinePointsInfo = splineCurves[0].StepSplineEvenlySpaced(spikeDistance);
+        SplinePointsInfo splinePointsInfo = splineCurves[curveIndex].StepSplineEvenlySpaced(spikeDistance);
         Debug.Log("Time to generate bezier: " + (Time.realtimeSinceStartup - time));
 
             for (int i = 0; i < splinePointsInfo.positions.Count - 1; i++)
@@ -380,6 +383,15 @@ public class CurveSpikeGenerator : MonoBehaviour, ISpawnFromEditorObjectData
 
             }
         generated = true;
+    }
+
+    /// <summary>
+    /// Destroys all children of the object, in this case the spikes.s
+    /// </summary>
+    private void DestroyChildren() {
+        foreach (Transform child in transform) {
+            Destroy(child.gameObject);
+        }
     }
 
     // private void Start() {
@@ -426,19 +438,50 @@ public class CurveSpikeGenerator : MonoBehaviour, ISpawnFromEditorObjectData
 
 
         // get positions and create spline points
-        Vector2 rootPosition = editorObjectData.position;
-        List<SplinePoint> splinePoints = new List<SplinePoint>();
-        for (int i = 0; i < editorObjectData.editorObjectNodes.Count/3; i++)
+        Vector2[] nodePositions = new Vector2[editorObjectData.editorObjectNodes.Count];
+        for (int i = 0; i < editorObjectData.editorObjectNodes.Count; i++)
         {
-            Vector2 p1 = editorObjectData.editorObjectNodes[i*3].relativePosition + rootPosition;
-            Vector2 p2 = editorObjectData.editorObjectNodes[i*3+1].relativePosition + rootPosition;
-            Vector2 p3 = editorObjectData.editorObjectNodes[i*3+2].relativePosition + rootPosition;
-            splinePoints.Add(new SplinePoint(p1, p2, p3));
+            nodePositions[i] = editorObjectData.editorObjectNodes[i].relativePosition;
         }
+        Vector2 rootPosition = editorObjectData.position; // get the root position of the object
 
+        CreateSplineCurveFromNodePositions(nodePositions, rootPosition);
+
+        GenerateAppropriateSpikes();
+
+    }
+
+    /// <summary>
+    /// Creates a spline curve from the node positions and the root position and adds it to the spline curves list.
+    /// </summary>
+    /// <param name="nodePositions"></param>
+    /// <param name="rootPosition"></param>
+    public void CreateSplineCurveFromNodePositions(Vector2[] nodePositions, Vector2 rootPosition)
+    {
+
+        SplinePoint[] splinePoints = new SplinePoint[nodePositions.Length / 3];
+        for (int i = 0; i < nodePositions.Length / 3; i++)
+        {
+            Vector2 handle1 = nodePositions[i * 3] + rootPosition;
+            Vector2 point = nodePositions[i * 3 + 1] + rootPosition;
+            Vector2 handle2 = nodePositions[i * 3 + 2] + rootPosition;
+            splinePoints[i] = new SplinePoint(point, handle1, handle2);
+        }
         // add the spline points to the spline curves
-        AddSplineCurve(splinePoints.ToArray());
-        GenerateTunnelSpikes();
-        
+        AddSplineCurve(splinePoints);
+    }
+
+    /// <summary>
+    /// Clears all the spline curves.
+    /// </summary>
+    public void ClearSplines() {
+        splineCurves.Clear();
+    }
+
+    public void SetSpikeGap(float gap) {
+        spikeGap = gap;
+    }
+    public void SetSpikeDistance(float distance) {
+        spikeDistance = distance;
     }
 }

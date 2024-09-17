@@ -1,4 +1,5 @@
 using System;
+using System.Data.Common;
 using UnityEditor;
 using UnityEngine;
 
@@ -9,13 +10,26 @@ public class EditorObjectNode : MonoBehaviour {
 
     [SerializeField] private GameObject visualObject;
     [SerializeField] private UIButton nodeButton; // the button that is used to click and drag this node
-
+    [SerializeField] private TMPro.TextMeshProUGUI indexText; // the text that displays the index of the node
     private GameObject parentEditorObject;
+    private LevelEditorObject levelEditorObject; // the object that this node belongs to
+    private EditorObjectNode previousNode; // the previous node in the list
 
-    private Vector2 relativePosition = Vector2.zero;
+    public Vector2 relativePosition = Vector2.zero;
 
     private bool isDragging = false;
     private bool isVisible = false;
+    private int index;
+
+    public void Setup(GameObject parentEditorObject, Vector2 relativePosition, int index, EditorObjectNode previousNode = null) {
+        this.parentEditorObject = parentEditorObject;
+        levelEditorObject = parentEditorObject.GetComponent<LevelEditorObject>();
+        this.relativePosition = relativePosition;
+        this.index = index + 1; // add 1 to the index to make it 1-indexed
+        this.previousNode = previousNode;
+        SetTextVisuals();
+        SetVisualsEnabled(false);
+    }
 
     public void SetVisualsEnabled(bool enabled) {
         isVisible = enabled;
@@ -31,17 +45,18 @@ public class EditorObjectNode : MonoBehaviour {
         visualObject.SetActive(enabled);
     }    
 
-    public void Setup(GameObject parentEditorObject, Vector2 relativePosition) {
-        this.parentEditorObject = parentEditorObject;
-        this.relativePosition = relativePosition;
-        SetVisualsEnabled(false);
+    private void SetTextVisuals() {
+        indexText.text = index.ToString();
     }
+
 
     private void Update() {
         if (isVisible) {
             if (isDragging) { // set the position of the node to the mouse position relative to the parent object
                 Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 relativePosition = mousePos - (Vector2)parentEditorObject.transform.position;
+                levelEditorObject.UpdateLineRenderer(); // update the line renderer
+                levelEditorObject.OnNodeMoved(this); // call on node moved function
             }
             transform.position = Camera.main.WorldToScreenPoint(relativePosition + (Vector2)parentEditorObject.transform.position);
         }
@@ -56,6 +71,8 @@ public class EditorObjectNode : MonoBehaviour {
     {
         isDragging = false;
     }
+
+
 
     /// <summary>
     /// Returns the data of this node for saving.
