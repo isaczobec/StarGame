@@ -11,6 +11,7 @@ public class LevelEditorObjectPanel : MonoBehaviour {
 
     [SerializeField] private float buttonOffsetWidth = 2f;
     [SerializeField] private float buttonOffsetHeight = 2f;
+    [SerializeField] private Vector2 buttonOffset = new Vector2(-50f, 50f);
 
     [SerializeField] private GameObject objectButtonPrefab;
     [SerializeField] private TextMeshProUGUI text;
@@ -26,7 +27,7 @@ public class LevelEditorObjectPanel : MonoBehaviour {
     private EditorObjectCategory activeCategory;
     private GameObject activeObject;
 
-    private int maxColumns = 5;
+    private int maxColumns = 8;
 
     private List<EditorObjectCategory> editorObjectCategories;
     private int currentCategoryIndex = 0;
@@ -64,7 +65,7 @@ public class LevelEditorObjectPanel : MonoBehaviour {
             // create a new parent for the category
             GameObject newCategoryButtonParent = new GameObject();
             newCategoryButtonParent.transform.SetParent(transform);
-            newCategoryButtonParent.transform.localPosition = Vector3.zero;
+            newCategoryButtonParent.transform.localPosition = buttonOffset;
             categoryButtonParentsDictionary.Add(editorObjectCategories[i], newCategoryButtonParent);
             
             for (int j = 0; j < editorObjectCategories[i].objectsInCategoryPrefabs.Count; j++) {

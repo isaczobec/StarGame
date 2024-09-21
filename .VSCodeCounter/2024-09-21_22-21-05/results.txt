@@ -1,0 +1,176 @@
+Date : 2024-09-21 22:21:05
+Directory : d:\UNITYPROJECTS\Star
+Total : 118 files,  9029 codes, 947 comments, 2605 blanks, all 12581 lines
+
+Languages
++-------------+------------+------------+------------+------------+------------+
+| language    | files      | code       | comment    | blank      | total      |
++-------------+------------+------------+------------+------------+------------+
+| C#          |         94 |      5,702 |        853 |      1,887 |      8,442 |
+| UnityShader |         19 |      2,574 |         94 |        714 |      3,382 |
+| JSON        |          5 |        753 |          0 |          4 |        757 |
++-------------+------------+------------+------------+------------+------------+
+
+Directories
++-----------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                                      | files      | code       | comment    | blank      | total      |
++-----------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                                         |        118 |      9,029 |        947 |      2,605 |     12,581 |
+| Assets                                                                                                    |        114 |      8,431 |        947 |      2,603 |     11,981 |
+| Assets (Files)                                                                                            |          1 |         27 |          6 |         11 |         44 |
+| Assets\Scripts                                                                                            |         92 |      5,028 |        833 |      1,853 |      7,714 |
+| Assets\Scripts\Background                                                                                 |          3 |         64 |         21 |         21 |        106 |
+| Assets\Scripts\Cameras                                                                                    |          3 |        159 |          6 |         48 |        213 |
+| Assets\Scripts\Debug                                                                                      |          1 |         11 |          1 |          4 |         16 |
+| Assets\Scripts\Effectors                                                                                  |          9 |        220 |         16 |         76 |        312 |
+| Assets\Scripts\FileHandling                                                                               |          1 |         58 |          7 |         21 |         86 |
+| Assets\Scripts\Interfaces                                                                                 |          1 |          8 |          3 |          2 |         13 |
+| Assets\Scripts\Level                                                                                      |          8 |        412 |         82 |        198 |        692 |
+| Assets\Scripts\LevelEditor                                                                                |         30 |      1,959 |        383 |        693 |      3,035 |
+| Assets\Scripts\LevelEditor (Files)                                                                        |         19 |      1,413 |        302 |        476 |      2,191 |
+| Assets\Scripts\LevelEditor\EditorObjectSettingButtons                                                     |          5 |        188 |         23 |         58 |        269 |
+| Assets\Scripts\LevelEditor\LevelEditorObjectScripts                                                       |          1 |         30 |          3 |          9 |         42 |
+| Assets\Scripts\LevelEditor\LevelEditorTransform                                                           |          5 |        328 |         55 |        150 |        533 |
+| Assets\Scripts\Other                                                                                      |          5 |        146 |         25 |         51 |        222 |
+| Assets\Scripts\Player                                                                                     |          6 |        643 |         83 |        239 |        965 |
+| Assets\Scripts\Projectiles                                                                                |          1 |         18 |          0 |          7 |         25 |
+| Assets\Scripts\Screen                                                                                     |          2 |         28 |          2 |         11 |         41 |
+| Assets\Scripts\Sound                                                                                      |          5 |        300 |         12 |         85 |        397 |
+| Assets\Scripts\TriggerableObjects                                                                         |          2 |         96 |          1 |         28 |        125 |
+| Assets\Scripts\UI                                                                                         |         10 |        508 |         71 |        172 |        751 |
+| Assets\Scripts\UI (Files)                                                                                 |          5 |        421 |         71 |        142 |        634 |
+| Assets\Scripts\UI\PracticeMode                                                                            |          5 |         87 |          0 |         30 |        117 |
+| Assets\Scripts\VFX                                                                                        |          4 |        142 |         27 |         59 |        228 |
+| Assets\Scripts\World                                                                                      |          1 |        256 |         93 |        138 |        487 |
+| Assets\Settings                                                                                           |          1 |        647 |         14 |         23 |        684 |
+| Assets\TextMesh Pro                                                                                       |         20 |      2,729 |         94 |        716 |      3,539 |
+| Assets\TextMesh Pro\Shaders                                                                               |         19 |      2,574 |         94 |        714 |      3,382 |
+| Assets\TextMesh Pro\Sprites                                                                               |          1 |        155 |          0 |          2 |        157 |
+| LevelData                                                                                                 |          2 |         10 |          0 |          0 |         10 |
+| Packages                                                                                                  |          2 |        588 |          0 |          2 |        590 |
++-----------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++-----------------------------------------------------------------------------------------------------------+-------------+------------+------------+------------+------------+
+| filename                                                                                                  | language    | code       | comment    | blank      | total      |
++-----------------------------------------------------------------------------------------------------------+-------------+------------+------------+------------+------------+
+| d:\UNITYPROJECTS\Star\Assets\Scripts\Background\BackgroundParallax.cs                                     | C#          |         31 |          9 |          7 |         47 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\Background\BackgroundSprite.cs                                       | C#          |         12 |          2 |          5 |         19 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\Background\ParallaxMovement.cs                                       | C#          |         21 |         10 |          9 |         40 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\Cameras\CopyCameraSettings.cs                                        | C#          |         21 |          3 |          9 |         33 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\Cameras\PlayerCameraHandler.cs                                       | C#          |         91 |          2 |         26 |        119 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\Cameras\PlayerCameraZoomEffect.cs                                    | C#          |         47 |          1 |         13 |         61 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\Debug\Speedometer.cs                                                 | C#          |         11 |          1 |          4 |         16 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\Effectors\Effector.cs                                                | C#          |         10 |          7 |          8 |         25 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\Effectors\GamemodeEffector.cs                                        | C#          |         20 |          0 |         13 |         33 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\Effectors\GamemodeEffectorAudio.cs                                   | C#          |         21 |          0 |          6 |         27 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\Effectors\GamemodeEffectorVisual.cs                                  | C#          |         27 |          1 |          6 |         34 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\Effectors\LevelFinishEffector.cs                                     | C#          |         16 |          0 |          3 |         19 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\Effectors\SpeedArrowAudio.cs                                         | C#          |         23 |          0 |          6 |         29 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\Effectors\SpeedArrowEffector.cs                                      | C#          |         34 |          0 |         12 |         46 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\Effectors\SpeedArrowVisual.cs                                        | C#          |         38 |          1 |         13 |         52 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\Effectors\TriggerEffector.cs                                         | C#          |         31 |          7 |          9 |         47 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\FileHandling\DataSerializer.cs                                       | C#          |         58 |          7 |         21 |         86 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\Interfaces\IHitboxEntity.cs                                          | C#          |          8 |          3 |          2 |         13 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\LevelEditor\AutoTileSO.cs                                            | C#          |         92 |         24 |         22 |        138 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\LevelEditor\AutoTileSetSO.cs                                         | C#          |         30 |          3 |          5 |         38 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\LevelEditor\EditorBuildingManager.cs                                 | C#          |        124 |         21 |         44 |        189 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\LevelEditor\EditorCamera.cs                                          | C#          |         23 |          1 |          9 |         33 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\LevelEditor\EditorLevelData.cs                                       | C#          |         10 |          6 |          8 |         24 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\LevelEditor\EditorLevelDataLoader.cs                                 | C#          |         37 |         12 |         16 |         65 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\LevelEditor\EditorObjectData.cs                                      | C#          |         65 |         40 |         16 |        121 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\LevelEditor\EditorObjectNode.cs                                      | C#          |         71 |          7 |         15 |         93 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\LevelEditor\EditorObjectNodeParent.cs                                | C#          |         16 |          0 |          4 |         20 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\LevelEditor\EditorObjectSettingButtons\BoolSettingButton.cs          | C#          |         24 |          0 |          9 |         33 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\LevelEditor\EditorObjectSettingButtons\EditorObjectSettingButton.cs  | C#          |         45 |         16 |         19 |         80 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\LevelEditor\EditorObjectSettingButtons\EditorObjectSettingChanger.cs | C#          |         48 |          7 |         14 |         69 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\LevelEditor\EditorObjectSettingButtons\FloatSettingButton.cs         | C#          |         34 |          0 |          9 |         43 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\LevelEditor\EditorObjectSettingButtons\IntSettingButton.cs           | C#          |         37 |          0 |          7 |         44 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\LevelEditor\GeneralEditorPrefabs.cs                                  | C#          |         21 |          0 |          6 |         27 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\LevelEditor\ISpawnFromEditorObjectData.cs                            | C#          |          4 |          0 |          0 |          4 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\LevelEditor\LevelEditorDataManager.cs                                | C#          |         45 |         20 |         21 |         86 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\LevelEditor\LevelEditorInputManager.cs                               | C#          |         45 |          4 |         22 |         71 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\LevelEditor\LevelEditorObject.cs                                     | C#          |        219 |         38 |         72 |        329 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\LevelEditor\LevelEditorObjectManager.cs                              | C#          |        162 |         46 |         50 |        258 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\LevelEditor\LevelEditorObjectPanel.cs                                | C#          |        130 |         10 |         41 |        181 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\LevelEditor\LevelEditorObjectScripts\SpikeTunnelEditorObject.cs      | C#          |         30 |          3 |          9 |         42 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\LevelEditor\LevelEditorTransform\LevelEditorTransformButton.cs       | C#          |         62 |         19 |         24 |        105 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\LevelEditor\LevelEditorTransform\LevelEditorTransformHandler.cs      | C#          |        121 |         19 |         36 |        176 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\LevelEditor\LevelEditorTransform\PositionButton.cs                   | C#          |         26 |          0 |         22 |         48 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\LevelEditor\LevelEditorTransform\RotationButton.cs                   | C#          |         44 |          5 |         35 |         84 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\LevelEditor\LevelEditorTransform\ScaleButton.cs                      | C#          |         75 |         12 |         33 |        120 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\LevelEditor\SpawnableLevelObjectSO.cs                                | C#          |          7 |          0 |          1 |          8 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\LevelEditor\TileArrayManager.cs                                      | C#          |        237 |         59 |         87 |        383 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\LevelEditor\TilePanel.cs                                             | C#          |         75 |         11 |         37 |        123 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\Level\LevelButtonHandler.cs                                          | C#          |        113 |         12 |         49 |        174 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\Level\LevelCompletedSequence.cs                                      | C#          |         47 |          4 |         27 |         78 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\Level\LevelData.cs                                                   | C#          |          7 |          3 |          5 |         15 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\Level\LevelDataManager.cs                                            | C#          |         51 |         27 |         25 |        103 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\Level\LevelHandler.cs                                                | C#          |        132 |         30 |         68 |        230 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\Level\LevelSO.cs                                                     | C#          |         18 |          3 |         10 |         31 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\Level\LevelWorldObjectsHandler.cs                                    | C#          |          9 |          3 |          3 |         15 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\Level\SpawnPoint.cs                                                  | C#          |         35 |          0 |         11 |         46 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\Other\CopyTransform.cs                                               | C#          |         20 |          1 |          6 |         27 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\Other\DefaultTagNames.cs                                             | C#          |          9 |          0 |          2 |         11 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\Other\DeleteGameObject.cs                                            | C#          |         35 |          7 |         13 |         55 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\Other\Hitbox.cs                                                      | C#          |         55 |         17 |         19 |         91 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\Other\TimeStop.cs                                                    | C#          |         27 |          0 |         11 |         38 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\Player\DefaultPlayerColors.cs                                        | C#          |         23 |          0 |          9 |         32 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\Player\Player.cs                                                     | C#          |        438 |         61 |        145 |        644 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\Player\PlayerAudio.cs                                                | C#          |         19 |          0 |          5 |         24 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\Player\PlayerInputManager.cs                                         | C#          |         25 |          2 |         14 |         41 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\Player\PlayerRingVFX.cs                                              | C#          |         15 |          0 |          9 |         24 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\Player\PlayerVisuals.cs                                              | C#          |        123 |         20 |         57 |        200 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\Projectiles\BulletHellBullet.cs                                      | C#          |         18 |          0 |          7 |         25 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\Screen\GameRawImage.cs                                               | C#          |         18 |          2 |          7 |         27 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\Screen\MainCanvasHandler.cs                                          | C#          |         10 |          0 |          4 |         14 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\Sound\MainMixer.cs                                                   | C#          |         54 |          1 |         11 |         66 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\Sound\MusicEffects.cs                                                | C#          |         51 |          1 |         13 |         65 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\Sound\MusicManager.cs                                                | C#          |        114 |          5 |         32 |        151 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\Sound\SongSO.cs                                                      | C#          |          7 |          0 |          3 |         10 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\Sound\SoundPlayer.cs                                                 | C#          |         74 |          5 |         26 |        105 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\TriggerableObjects\BulletHellSpawner.cs                              | C#          |         80 |          1 |         23 |        104 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\TriggerableObjects\BulletHellSpawnerVisual.cs                        | C#          |         16 |          0 |          5 |         21 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\UI\LevelSelectButton.cs                                              | C#          |        137 |         20 |         46 |        203 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\UI\PracticeMode\CheckPointButton.cs                                  | C#          |         19 |          0 |          7 |         26 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\UI\PracticeMode\DirectionButton.cs                                   | C#          |         12 |          0 |          7 |         19 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\UI\PracticeMode\GameModeButton.cs                                    | C#          |         18 |          0 |          4 |         22 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\UI\PracticeMode\KillPlayer.cs                                        | C#          |         11 |          0 |          3 |         14 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\UI\PracticeMode\PracticeModeButton.cs                                | C#          |         27 |          0 |          9 |         36 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\UI\ScreenCoverer.cs                                                  | C#          |         71 |          9 |         23 |        103 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\UI\TestButton.cs                                                     | C#          |         19 |          0 |          8 |         27 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\UI\UIButton.cs                                                       | C#          |         77 |         30 |         22 |        129 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\UI\UIButtonAnimated.cs                                               | C#          |        117 |         12 |         43 |        172 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\VFX\CameraShake.cs                                                   | C#          |         60 |          2 |         20 |         82 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\VFX\ShockWave.cs                                                     | C#          |         43 |         18 |         24 |         85 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\VFX\ShockWaveHandler.cs                                              | C#          |         16 |          7 |          8 |         31 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\VFX\SpeedLines.cs                                                    | C#          |         23 |          0 |          7 |         30 |
+| d:\UNITYPROJECTS\Star\Assets\Scripts\World\CurveSpikeGenerator.cs                                         | C#          |        256 |         93 |        138 |        487 |
+| d:\UNITYPROJECTS\Star\Assets\Settings\PlayerInput.cs                                                      | C#          |        647 |         14 |         23 |        684 |
+| d:\UNITYPROJECTS\Star\Assets\TextMesh Pro\Shaders\TMP_Bitmap-Custom-Atlas.shader                          | UnityShader |        109 |          2 |         33 |        144 |
+| d:\UNITYPROJECTS\Star\Assets\TextMesh Pro\Shaders\TMP_Bitmap-Mobile.shader                                | UnityShader |        112 |          3 |         31 |        146 |
+| d:\UNITYPROJECTS\Star\Assets\TextMesh Pro\Shaders\TMP_Bitmap.shader                                       | UnityShader |        109 |          2 |         33 |        144 |
+| d:\UNITYPROJECTS\Star\Assets\TextMesh Pro\Shaders\TMP_SDF Overlay.shader                                  | UnityShader |        243 |          4 |         71 |        318 |
+| d:\UNITYPROJECTS\Star\Assets\TextMesh Pro\Shaders\TMP_SDF SSD.shader                                      | UnityShader |        241 |          4 |         66 |        311 |
+| d:\UNITYPROJECTS\Star\Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Masking.shader                           | UnityShader |        188 |         10 |         50 |        248 |
+| d:\UNITYPROJECTS\Star\Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader                           | UnityShader |        183 |          8 |         50 |        241 |
+| d:\UNITYPROJECTS\Star\Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile SSD.shader                               | UnityShader |         82 |          4 |         21 |        107 |
+| d:\UNITYPROJECTS\Star\Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile.shader                                   | UnityShader |        183 |          8 |         50 |        241 |
+| d:\UNITYPROJECTS\Star\Assets\TextMesh Pro\Shaders\TMP_SDF-Surface-Mobile.shader                           | UnityShader |        103 |          8 |         28 |        139 |
+| d:\UNITYPROJECTS\Star\Assets\TextMesh Pro\Shaders\TMP_SDF-Surface.shader                                  | UnityShader |        122 |          4 |         33 |        159 |
+| d:\UNITYPROJECTS\Star\Assets\TextMesh Pro\Shaders\TMP_SDF.shader                                          | UnityShader |        243 |          4 |         71 |        318 |
+| d:\UNITYPROJECTS\Star\Assets\TextMesh Pro\Shaders\TMP_Sprite.shader                                       | UnityShader |         97 |          0 |         20 |        117 |
+| d:\UNITYPROJECTS\Star\Assets\TextMesh Pro\Shaders\TMP_TextMeshProBitmapWithOutline.shader                 | UnityShader |        119 |          6 |         34 |        159 |
+| d:\UNITYPROJECTS\Star\Assets\TextMesh Pro\Shaders\TMP_TextMeshProBitmapWithShadow.shader                  | UnityShader |        117 |          6 |         36 |        159 |
+| d:\UNITYPROJECTS\Star\Assets\TextMesh Pro\Shaders\TMPro.cginc                                             | UnityShader |         63 |          2 |         20 |         85 |
+| d:\UNITYPROJECTS\Star\Assets\TextMesh Pro\Shaders\TMPro_Mobile.cginc                                      | UnityShader |        122 |          2 |         34 |        158 |
+| d:\UNITYPROJECTS\Star\Assets\TextMesh Pro\Shaders\TMPro_Properties.cginc                                  | UnityShader |         62 |         10 |         14 |         86 |
+| d:\UNITYPROJECTS\Star\Assets\TextMesh Pro\Shaders\TMPro_Surface.cginc                                     | UnityShader |         76 |          7 |         19 |        102 |
+| d:\UNITYPROJECTS\Star\Assets\TextMesh Pro\Sprites\EmojiOne.json                                           | JSON        |        155 |          0 |          2 |        157 |
+| d:\UNITYPROJECTS\Star\Assets\TriggerEffectorEditorObject.cs                                               | C#          |         27 |          6 |         11 |         44 |
+| d:\UNITYPROJECTS\Star\LevelData\823xn9q37qt4b6.json                                                       | JSON        |          5 |          0 |          0 |          5 |
+| d:\UNITYPROJECTS\Star\LevelData\jce3cuei3cdw.json                                                         | JSON        |          5 |          0 |          0 |          5 |
+| d:\UNITYPROJECTS\Star\Packages\manifest.json                                                              | JSON        |         48 |          0 |          1 |         49 |
+| d:\UNITYPROJECTS\Star\Packages\packages-lock.json                                                         | JSON        |        540 |          0 |          1 |        541 |
+| Total                                                                                                     |             |      9,029 |        947 |      2,605 |     12,581 |
++-----------------------------------------------------------------------------------------------------------+-------------+------------+------------+------------+------------+

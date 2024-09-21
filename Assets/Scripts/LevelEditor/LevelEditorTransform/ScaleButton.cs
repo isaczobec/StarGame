@@ -14,6 +14,8 @@ public class ScaleButton : LevelEditorTransformButton
     /// The index of the corner of this scalebutton. 0 = lower left, 1 = upper right, 2 = lower right, 3 = upper left
     /// </summary>
     private int cornerIndex = 0;
+
+    [SerializeField] private float offsetFromBounds = 0.4f;
     
 
     public override void FrameUpdateWhilePressed(TransformButtonInfo transformButtonInfo)
@@ -84,32 +86,35 @@ public class ScaleButton : LevelEditorTransformButton
     public override void InitializeButtonInSubClass(TransformButtonInfo transformButtonInfo, int index)
     {
         cornerIndex = index % 4;
+        float rotation = (cornerIndex == 1 || cornerIndex ==  0) ? 0f : 90f;
+        transform.rotation = Quaternion.Euler(0, 0, rotation);
         SetScreenPositionFromCornerIndex(transformButtonInfo);
 
         SetLastMousePosition();
 
-    }
-
-    private void SetScreenPositionFromCornerIndex(TransformButtonInfo transformButtonInfo) {
-        Vector2 cornerPosition = new Vector2(0, 0);
-        if (cornerIndex == 0) {
-            cornerPosition = (Vector2)Camera.main.WorldToScreenPoint(transformButtonInfo.lowerLeftCornerBounds);
-        } else if (cornerIndex == 1) {
-            cornerPosition = (Vector2)Camera.main.WorldToScreenPoint(transformButtonInfo.upperRightCornerBounds);
-        } else if (cornerIndex == 2) {
-            cornerPosition = (Vector2)Camera.main.WorldToScreenPoint(new Vector2(transformButtonInfo.upperRightCornerBounds.x, transformButtonInfo.lowerLeftCornerBounds.y));
-        } else if (cornerIndex == 3) {
-            cornerPosition = (Vector2)Camera.main.WorldToScreenPoint(new Vector2(transformButtonInfo.lowerLeftCornerBounds.x, transformButtonInfo.upperRightCornerBounds.y));
         }
 
+        private void SetScreenPositionFromCornerIndex(TransformButtonInfo transformButtonInfo) {
+            Vector2 cornerPosition = new Vector2(0, 0);
+            switch (cornerIndex)
+            {
+                case 0:
+                    cornerPosition = (Vector2)Camera.main.WorldToScreenPoint(transformButtonInfo.lowerLeftCornerBounds) + new Vector2(-offsetFromBounds, -offsetFromBounds);
+                    break;
+                case 1:
+                    cornerPosition = (Vector2)Camera.main.WorldToScreenPoint(transformButtonInfo.upperRightCornerBounds) + new Vector2(offsetFromBounds, offsetFromBounds);
+                    break;
+                case 2:
+                    cornerPosition = (Vector2)Camera.main.WorldToScreenPoint(new Vector2(transformButtonInfo.upperRightCornerBounds.x, transformButtonInfo.lowerLeftCornerBounds.y)) + new Vector2(offsetFromBounds, -offsetFromBounds);
+                    break;
+                case 3:
+                    cornerPosition = (Vector2)Camera.main.WorldToScreenPoint(new Vector2(transformButtonInfo.lowerLeftCornerBounds.x, transformButtonInfo.upperRightCornerBounds.y)) + new Vector2(-offsetFromBounds, offsetFromBounds);
+                    break;
+            }
+            Vector2 positionOffset = cornerPosition - (Vector2)Camera.main.WorldToScreenPoint(transformButtonInfo.averagePosition);
 
-        Vector2 positionOffset = cornerPosition - (Vector2)Camera.main.WorldToScreenPoint(transformButtonInfo.averagePosition);
-        Debug.Log("positionOffset: " +positionOffset);
-
-        SetScreenPosition(positionOffset);
-    }
-
-    
+            SetScreenPosition(positionOffset);
+        }
 
     
 }

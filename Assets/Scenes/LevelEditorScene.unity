@@ -199,12 +199,14 @@ MonoBehaviour:
   editorObjectCategories:
   - categoryName: Effectors
     objectsInCategoryPrefabs:
+    - {fileID: 2591074933963408455, guid: 1ef08be8f7bbee1428ab2a3f1cc9bcc2, type: 3}
     - {fileID: 4367747660681718687, guid: 936945256d32cb24f8327cdcee04a2a1, type: 3}
     - {fileID: 4367747660681718687, guid: 4c5d0bc8cd131b64a95d41b977d6218e, type: 3}
     - {fileID: 4367747660681718687, guid: 7105f29cfc6cfc041b158157a1dce2c7, type: 3}
     - {fileID: 4367747660681718687, guid: 9faaea3b4507814458a02859099488e2, type: 3}
     - {fileID: 4367747660681718687, guid: 0b0112eb8cc13d946a96eac81ab37b91, type: 3}
     - {fileID: 4367747660681718687, guid: 11813cff5a45afa4c89c436bf52b1c74, type: 3}
+    - {fileID: 3895829853608035045, guid: b8bcb07de270b564dbcdf81e8324f5e4, type: 3}
   - categoryName: EffectorsCool
     objectsInCategoryPrefabs:
     - {fileID: 4367747660681718687, guid: ecd2316318a78dc4086fd9ecae7897f3, type: 3}
@@ -262,7 +264,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.015471228, g: 0, b: 0.05660379, a: 1}
+  m_BackGroundColor: {r: 0.018920906, g: 0, b: 0.066037714, a: 1}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -587,11 +589,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4549054709943663122, guid: 94e6a4a820fd1c149bba1e77048c5bff, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 121.847595
+      value: 532
       objectReference: {fileID: 0}
     - target: {fileID: 4549054709943663122, guid: 94e6a4a820fd1c149bba1e77048c5bff, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 109.10889
+      value: 122.5
       objectReference: {fileID: 0}
     - target: {fileID: 4549054709943663122, guid: 94e6a4a820fd1c149bba1e77048c5bff, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -835,7 +837,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   floatSettingButtonPrefab: {fileID: 6525645121491202422, guid: a1b81ecf5c0a42140a3f9308cbe59c8d, type: 3}
-  intSettingButtonPrefab: {fileID: 0}
+  intSettingButtonPrefab: {fileID: 6525645121491202422, guid: b0975b31b13aa9d4998016655e7f4489, type: 3}
   vector2SettingButtonPrefab: {fileID: 0}
   boolSettingButtonPrefab: {fileID: 6525645121491202422, guid: bbdd5e59577ef8e4a84c11e653d29c2d, type: 3}
   baseOffsetFromObject: {x: 200, y: 0}
@@ -930,11 +932,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4549054709943663122, guid: 94e6a4a820fd1c149bba1e77048c5bff, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 73.847595
+      value: 484
       objectReference: {fileID: 0}
     - target: {fileID: 4549054709943663122, guid: 94e6a4a820fd1c149bba1e77048c5bff, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 109.10889
+      value: 122.5
       objectReference: {fileID: 0}
     - target: {fileID: 4549054709943663122, guid: 94e6a4a820fd1c149bba1e77048c5bff, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1699,8 +1701,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e66788721d9e074ab12ee610272b9b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonOffsetWidth: 130
-  buttonOffsetHeight: 130
+  buttonOffsetWidth: 80
+  buttonOffsetHeight: -80
+  buttonOffset: {x: -40, y: 40}
   objectButtonPrefab: {fileID: 3449159551881742262, guid: e1787fc5e512eb34492b6264f5d94123, type: 3}
   text: {fileID: 1218312346}
   switchCategoryLeftButton: {fileID: 833487270}
@@ -1741,7 +1744,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -193.1524, y: 103.6089}
+  m_AnchoredPosition: {x: 217, y: 117}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1218312346
@@ -1766,8 +1769,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Category
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f74ffd3f4a87a243bda0e68335e461e, type: 2}
-  m_sharedMaterial: {fileID: -1366340435559175836, guid: 8f74ffd3f4a87a243bda0e68335e461e, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: aedd8f2706d49a74da564e59159c8aa8, type: 2}
+  m_sharedMaterial: {fileID: 4241607054253271811, guid: aedd8f2706d49a74da564e59159c8aa8, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1791,8 +1794,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 14.49
-  m_fontSizeBase: 14.49
+  m_fontSize: 26.36
+  m_fontSizeBase: 26.36
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -2078,6 +2081,7 @@ GameObject:
   - component: {fileID: 1863205404}
   - component: {fileID: 1863205406}
   - component: {fileID: 1863205405}
+  - component: {fileID: 1863205407}
   m_Layer: 5
   m_Name: PanelBG
   m_TagString: Untagged
@@ -2094,14 +2098,14 @@ RectTransform:
   m_GameObject: {fileID: 1863205403}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1.475, z: 1}
+  m_LocalScale: {x: 1, y: 1.71, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1116762690}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 247.3476, y: -6.3911247}
+  m_AnchoredPosition: {x: 247.3476, y: -9.3}
   m_SizeDelta: {x: 679.6096, y: 109.5902}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1863205405
@@ -2117,14 +2121,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 1, b: 0.5623832, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: a2b154c06c6fb154aa3a4f26c13be4d7, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 041f911a51cf5654491570719eb604b7, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2142,6 +2146,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1863205403}
   m_CullTransparentMesh: 1
+--- !u!114 &1863205407
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1863205403}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 1, g: 1, b: 1, a: 1}
+  m_EffectDistance: {x: 6, y: 3.54}
+  m_UseGraphicAlpha: 1
 --- !u!1 &1929800779
 GameObject:
   m_ObjectHideFlags: 0
@@ -2193,7 +2212,7 @@ MonoBehaviour:
   positionButtonPrefab: {fileID: 3449159551881742262, guid: 7ed56bae6506a194082f1436ba8782c7, type: 3}
   rotationButtonPrefab: {fileID: 3449159551881742262, guid: f74f67abdeb9079419c1a750910184b5, type: 3}
   scaleButtonPrefab: {fileID: 3449159551881742262, guid: 17b5f89a47c8c80429e61a7c00aeebfe, type: 3}
-  defaultObjectBoundsScale: 2
+  defaultObjectBoundsScale: 0.5
 --- !u!1 &1945085539
 GameObject:
   m_ObjectHideFlags: 0

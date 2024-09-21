@@ -351,7 +351,6 @@ public class CurveSpikeGenerator : MonoBehaviour, ISpawnFromEditorObjectData
         float time = Time.realtimeSinceStartup;
         SplinePointsInfo splinePointsInfoL = splineCurves[curveIndex].StepSplineSideEvenlySpaced(true, spikeGap, spikeDistance);
         SplinePointsInfo splinePointsInfoR = splineCurves[curveIndex].StepSplineSideEvenlySpaced(false, spikeGap, spikeDistance);
-        Debug.Log("Time to generate bezier: " + (Time.realtimeSinceStartup - time));
 
         int si = 0;
         foreach (SplinePointsInfo info in new SplinePointsInfo[] { splinePointsInfoL, splinePointsInfoR })

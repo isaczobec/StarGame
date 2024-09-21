@@ -86,6 +86,17 @@ public class EditorObjectData {
         scale = levelEditorObject.transform.localScale;
     }
 
+
+    /// <summary>
+    /// Copies the transform settings of this object to a game object.
+    /// </summary>
+    /// <param name="gameObject"></param>
+    public void CopyTransformSettingsToGameObject(GameObject gameObject) {
+        gameObject.transform.position = position;
+        gameObject.transform.rotation = Quaternion.Euler(0, 0, rotation);
+        gameObject.transform.localScale = scale;
+    }
+
 }
 
 [Serializable]

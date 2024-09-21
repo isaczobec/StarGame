@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEditor.Timeline;
 using UnityEngine;
 
-public class BulletHellSpawner : MonoBehaviour {
+public class BulletHellSpawner : MonoBehaviour, ISpawnFromEditorObjectData {
 
     [Header("TRANSFORM SCALE DECIDES WHERE THE BULLETS CAN SPAWN!")]
     [SerializeField] private int startTriggerIndex;
@@ -90,5 +90,15 @@ public class BulletHellSpawner : MonoBehaviour {
         GameObject bullet = Instantiate(bulletHellPrefab, spawnPos, Quaternion.identity);
         BulletHellBullet bulletHellBullet = bullet.GetComponent<BulletHellBullet>();
         bulletHellBullet.SetSettings(bulletSpeed, bulletDirection,bulletLifeTime);
+    }
+
+    public void CopyEditorObjectData(EditorObjectData editorObjectData)
+    {
+        editorObjectData.CopyTransformSettingsToGameObject(gameObject); // set transform
+        startTriggerIndex = editorObjectData.GetSetting<int>("Start Trigger Index"); // set the start trigger index
+        endTriggerIndex = editorObjectData.GetSetting<int>("End Trigger Index"); // set the start trigger index
+        // copy bullet settings
+        bulletDirection.x = editorObjectData.GetSetting<float>("Bullet Speed X"); // set the start trigger index
+        bulletDirection.y = editorObjectData.GetSetting<float>("Bullet Speed Y"); // set the start trigger index
     }
 }

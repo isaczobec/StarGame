@@ -59,7 +59,7 @@ public class RotationButton : LevelEditorTransformButton
 
     public override void InitializeButtonInSubClass(TransformButtonInfo transformButtonInfo, int index)
     {
-        currentRotation = 0;
+        currentRotation = 180; // start on  left of object
 
         SetScreenPosition(GetPositionOffset(transformButtonInfo), true);
 

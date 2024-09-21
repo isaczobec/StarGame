@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: BackgroundMaterial1
-  m_Shader: {fileID: -6465566751694194690, guid: 235389361daa7b444b15acdf9cc5b1b8, type: 3}
+  m_Name: TriggerEffectorEditorMaterial
+  m_Shader: {fileID: -6465566751694194690, guid: 1ead94d01b8c633448ec2cd86f1e08f3, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -37,13 +37,18 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _BackgroundMovementMultiplier: 0.003
+    - _BorderThickness: 0.06
+    - _distScale: 3
+    - _distStren: 0.1
+    - _distTime: 0.5
+    - _noiseScale: 2
+    - _noiseSpeed: 0.9
     m_Colors:
-    - _CameraLocation: {r: -13.936595, g: -3.0839877, b: -12, a: 0}
-    - _Color1: {r: 0.1269957, g: 0, b: 0.23584908, a: 1}
-    - _Color2: {r: 0.02525932, g: 0, b: 0.14150941, a: 1}
+    - _BorderColor: {r: 1, g: 1, b: 1, a: 1}
+    - _DetailColor: {r: 1, g: 0.004716992, b: 0.6379606, a: 1}
+    - _MainColor: {r: 1, g: 0, b: 0.009791374, a: 1}
   m_BuildTextureStacks: []
---- !u!114 &7384383010744436609
+--- !u!114 &6988788569117328814
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
