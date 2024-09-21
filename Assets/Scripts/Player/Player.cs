@@ -506,7 +506,6 @@ public class Player : MonoBehaviour, IHitboxEntity
         switch (currentPlayerGameModeState) {
             case PlayerGameModeState.Glide:
                 glideModeMaxMovementSpeed = baseSpeed;
-                velocity = velocity.normalized * speed / velocity.magnitude;
                 break;
             case PlayerGameModeState.Hook:
                 velocity = velocity.normalized * speed;

@@ -169,6 +169,7 @@ MonoBehaviour:
   maxScale: {x: 20, y: 20}
   minRotationIncrement: 90
   minPositionIncrement: 0
+  halfStepGridOffset: 1
   minScaleIncrement: 1
   shiftAddedAngleIncrementing: 90
   shiftAddedPositionIncrementing: 1

@@ -52,6 +52,7 @@ MonoBehaviour:
     rotation: 0
     scale: {x: 0, y: 0}
     settings: []
+    editorObjectNodes: []
   spriteRenderers:
   - {fileID: 7189271232062663336}
   hoveredColor: {r: 0, g: 1, b: 1, a: 1}
@@ -60,10 +61,15 @@ MonoBehaviour:
   maxScale: {x: 10, y: 10}
   minRotationIncrement: 90
   minPositionIncrement: 0
+  halfStepGridOffset: 1
   minScaleIncrement: 0
   shiftAddedAngleIncrementing: 45
   shiftAddedPositionIncrementing: 1
   shiftAddedScaleIncrementing: 1
+  canHaveNodes: 0
+  defaultNodeAmount: 4
+  maxNodeAmount: 8
+  nodeLineRenderer: {fileID: 0}
   offsetWhenPlace: {x: 0, y: -1.1}
   sprite: {fileID: 21300000, guid: ec36fccfac785624ca76a4776ec5a3c4, type: 3}
 --- !u!61 &290618701402807438

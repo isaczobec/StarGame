@@ -199,6 +199,8 @@ MonoBehaviour:
   editorObjectCategories:
   - categoryName: Effectors
     objectsInCategoryPrefabs:
+    - {fileID: 2591074933963408455, guid: e01fe2943c0e3ce48bbe999ce02e6b34, type: 3}
+    - {fileID: 1831071045297809778, guid: 97fd6afed251bb34392c9dd146002ae2, type: 3}
     - {fileID: 2591074933963408455, guid: 1ef08be8f7bbee1428ab2a3f1cc9bcc2, type: 3}
     - {fileID: 4367747660681718687, guid: 936945256d32cb24f8327cdcee04a2a1, type: 3}
     - {fileID: 4367747660681718687, guid: 4c5d0bc8cd131b64a95d41b977d6218e, type: 3}

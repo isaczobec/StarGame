@@ -152,6 +152,7 @@ MonoBehaviour:
   maxScale: {x: 10, y: 10}
   minRotationIncrement: 360
   minPositionIncrement: 0
+  halfStepGridOffset: 1
   minScaleIncrement: 0
   shiftAddedAngleIncrementing: 360
   shiftAddedPositionIncrementing: 1
@@ -163,8 +164,6 @@ MonoBehaviour:
   offsetWhenPlace: {x: 0, y: 0}
   sprite: {fileID: 21300000, guid: d4c96ac110c52794889357e5ba5f637a, type: 3}
   triggerEffectorIndexText: {fileID: 1445689101084310017}
-  textAlpha: 0.4
-  triggerEffectorSpriteRenderer: {fileID: 5432093589760704563}
 --- !u!61 &8264050856953350116
 BoxCollider2D:
   m_ObjectHideFlags: 0

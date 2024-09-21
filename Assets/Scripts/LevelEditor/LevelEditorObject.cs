@@ -27,6 +27,7 @@ public class LevelEditorObject : MonoBehaviour
     public float minRotationIncrement = 0f;
     private float currentSubRotation = 0f;
     public float minPositionIncrement = 0f;
+    public bool halfStepGridOffset = false; // if the object should be offset by half a grid step when snapping. Usefull for block objects.
     private Vector2 currentSubPosition = Vector2.zero;
     public float minScaleIncrement = 0f;
     private Vector2 currentSubScale = new Vector2(1, 1);
@@ -184,7 +185,7 @@ public class LevelEditorObject : MonoBehaviour
             // clamp to closest increment of minPositionIncrement
             float xRemainder = currentSubPosition.x % minIncrement;
             float yRemainder = currentSubPosition.y % minIncrement;
-            pos = new Vector2(currentSubPosition.x - xRemainder, currentSubPosition.y - yRemainder);
+            pos = new Vector2(currentSubPosition.x - xRemainder, currentSubPosition.y - yRemainder) + (halfStepGridOffset ? new Vector2(-0.5f, -0.5f) : Vector2.zero);
         } else {
             pos = currentSubPosition;
         }
