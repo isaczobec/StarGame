@@ -19,6 +19,9 @@ public class LevelButtonHandler : MonoBehaviour
     [SerializeField] private float timeBetweenButtonAppearances = 0.1f;    
     [SerializeField] private Vector3 choosenLevelPositionOffset = new Vector3(0, 150f, 0);
 
+    [Header("Return to menu settings")]
+    [SerializeField] private UIButtonAnimated returnToMenuButton;
+
     [Header("Level load settings")]
     [SerializeField] private float timeBetweenButtonDisappearances = 0.03f;
     [SerializeField] private float timeForButtonToMoveToCenter = 0.6f;
@@ -33,11 +36,15 @@ public class LevelButtonHandler : MonoBehaviour
 
 
 
+
+    private bool levelSelectActive = false;
     private List<LevelSelectButton> levelButtons = new List<LevelSelectButton>();
     private LevelSO levelToLoad;
 
     private Coroutine loadLevelSequenceCoroutine;
     private bool currentlyStartingLevel = false; // if were currently starting a level from this script
+
+    private Coroutine hideAndDestroyButtonsCoroutine;
 
 
     public static LevelButtonHandler Instance { get; private set; }
@@ -50,11 +57,12 @@ public class LevelButtonHandler : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        SpawnLevelButtons(levelsToDisplay);
+        // SpawnLevelButtons(levelsToDisplay);
 
+        // sub to events
         ScreenCoverer.instance.OnCoverComplete += OnCoverComplete;
-
         LevelHandler.Insance.OnReturnToMenu += OnReturnToMenu;
+        returnToMenuButton.OnUIButtonClicked += OnReturnToMenuButtonClicked;
     }
 
 
@@ -67,6 +75,32 @@ public class LevelButtonHandler : MonoBehaviour
         lButton.ChangeVisible(true,timeToAppear);
     }
 
+
+    /// <summary>
+    /// Creates and shows the level buttons. Sets the levelSelectActive to true.
+    /// </summary>
+    public void DisplayLevelButtons() {
+        returnToMenuButton.ChangeVisible(true);
+        levelSelectActive = true;
+        SpawnLevelButtons(levelsToDisplay);
+    }
+
+    /// <summary>
+    /// Hides the level buttons. Sets the levelSelectActive to false.
+    /// </summary>
+    public void HideLevelButtons() {
+        returnToMenuButton.ChangeVisible(false);
+        levelSelectActive = false;
+        DestroyCurrentButtons();
+    }
+
+
+    /// <summary>
+    /// Hides and destroys the current buttons. Used when returning to the main menu or switching pages.
+    /// </summary>
+    private void DestroyCurrentButtons(){
+        hideAndDestroyButtonsCoroutine = StartCoroutine(HideAndDestroyButtons());
+    }
 
     private void SpawnLevelButtons(LevelSO[] levelSOs) {
 
@@ -113,8 +147,9 @@ public class LevelButtonHandler : MonoBehaviour
     }
 
 
-    private void DestroyAllLevelButtons() {
+    private void DestroyAllLevelButtons(List<LevelSelectButton> buttonsToSpare = null) {
         foreach (LevelSelectButton button in levelButtons) {
+            if (buttonsToSpare != null && buttonsToSpare.Contains(button)) { continue; }
             Destroy(button.gameObject);
         }
         levelButtons.Clear();
@@ -137,6 +172,7 @@ public class LevelButtonHandler : MonoBehaviour
         currentlyStartingLevel = true;
         levelButton.MoveToNewPosition(transform.position + choosenLevelPositionOffset, timeForButtonToMoveToCenter);
         DisappearButtons(timeBetweenButtonDisappearances, new List<LevelSelectButton> {levelButton});
+        returnToMenuButton.ChangeVisible(false);
         levelButton.ChangeVisible(false, timeUntilClickedButtonDisappears); // Make the clicked button disappear after a certain time
 
         yield return new WaitForSeconds(timeUntilClickedButtonDisappears);
@@ -166,8 +202,25 @@ public class LevelButtonHandler : MonoBehaviour
 
     private void OnReturnToMenu(object sender, EventArgs e)
     {
-        SpawnLevelButtons(levelsToDisplay);
+        DisplayLevelButtons();
     }
     
 
+
+    /// <summary>
+    /// Coroutine Hide and destroy all buttons after a certain time.
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator HideAndDestroyButtons(float disappearTime = 0.5f, float timeBetweenButtonDisappearances = 0.05f, List<LevelSelectButton> buttonsToSpare = null) {
+        DisappearButtons(timeBetweenButtonDisappearances,buttonsToSpare);
+        yield return new WaitForSeconds(timeBetweenButtonDisappearances + disappearTime);
+        DestroyAllLevelButtons(buttonsToSpare);
+        hideAndDestroyButtonsCoroutine = null;
+    }
+
+    private void OnReturnToMenuButtonClicked(object sender, EventArgs e)
+    {
+        HideLevelButtons();
+        InitialMenuButtonsHandler.Instance.ShowInitialButtons();
+    }
 }
