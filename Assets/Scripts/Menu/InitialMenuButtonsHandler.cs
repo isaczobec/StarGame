@@ -40,6 +40,8 @@ public class InitialMenuButtonsHandler : MonoBehaviour {
 
     private void OnLevelEditorButtonClicked(object sender, EventArgs e)
     {
+        HideInitialButtons();
+        LevelEditorMenuHandler.Instance.ShowMenu();
     }
 
     private void OnPlayButtonClicked(object sender, EventArgs e)

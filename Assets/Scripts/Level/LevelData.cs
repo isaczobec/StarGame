@@ -9,8 +9,15 @@ using System;
 public class LevelStatsData {
     public string levelID;
     public string levelName;
-    public int secondsPlayed;
-    public int timesDied;
-    public bool completed;
+    public int secondsPlayed = 0;
+    public int timesDied = 0;
+    public bool completed = false;
+    public string difficulty = "Normal";
+    public string author = "John Doe";
+
+    public LevelStatsData(string levelName) {
+        this.levelName = levelName;
+        this.levelID = Guid.NewGuid().ToString();
+    }
 
 }

@@ -9,6 +9,10 @@ public class LevelButtonHandler : MonoBehaviour
     [SerializeField] private GameObject levelButtonPrefab;
 
     [SerializeField] private LevelSO[] levelsToDisplay;
+    /// <summary>
+    /// A list of all the level stats data to display. Is generated when the DisplayLevelsButton method is called.
+    /// </summary>
+    private List<LevelStatsData> levelStatDatasToDisplay;
 
     [Header("Level button display settings")]
     [SerializeField] private int maxLevelColumns = 2;
@@ -40,6 +44,7 @@ public class LevelButtonHandler : MonoBehaviour
     private bool levelSelectActive = false;
     private List<LevelSelectButton> levelButtons = new List<LevelSelectButton>();
     private LevelSO levelToLoad;
+    private LevelStatsData levelDataToLoad;
 
     private Coroutine loadLevelSequenceCoroutine;
     private bool currentlyStartingLevel = false; // if were currently starting a level from this script
@@ -74,6 +79,18 @@ public class LevelButtonHandler : MonoBehaviour
         lButton.SetupButton(levelSO);
         lButton.ChangeVisible(true,timeToAppear);
     }
+    private void SpawnSingleLevelButtonFromLevelStatsData(LevelStatsData levelStatsData, Vector3 position, float timeToAppear = 0) {
+        GameObject levelButton = Instantiate(levelButtonPrefab, transform);
+        levelButton.transform.localPosition = position;
+        LevelSelectButton lButton = levelButton.GetComponent<LevelSelectButton>();
+        levelButtons.Add(lButton);
+        lButton.SetupButtonFromLevelStatsData(levelStatsData);
+        lButton.ChangeVisible(true,timeToAppear);
+    }
+
+
+
+
 
 
     /// <summary>
@@ -82,7 +99,8 @@ public class LevelButtonHandler : MonoBehaviour
     public void DisplayLevelButtons() {
         returnToMenuButton.ChangeVisible(true);
         levelSelectActive = true;
-        SpawnLevelButtons(levelsToDisplay);
+        levelStatDatasToDisplay = LevelHandler.Insance.levelDataManager.GetLevelDataList();
+        SpawnLevelButtons(levelStatDatasToDisplay);
     }
 
     /// <summary>
@@ -102,15 +120,14 @@ public class LevelButtonHandler : MonoBehaviour
         hideAndDestroyButtonsCoroutine = StartCoroutine(HideAndDestroyButtons());
     }
 
-    private void SpawnLevelButtons(LevelSO[] levelSOs) {
+    private void SpawnLevelButtons(List<LevelStatsData> levelStatsDatas) {
+
 
         int currentColumn = 0;
         int currentRow = 0;
         int buttonIndex = 0;
-        foreach (LevelSO levelSO in levelSOs) {
-
-            // load the level data
-            LevelHandler.Insance.levelDataManager.LoadLevelData(levelSO);
+        foreach (LevelStatsData levelStatsData in levelStatsDatas) {
+        // foreach (LevelSO levelSO in levelSOs) {
 
             // increase row and column if needed
             if (currentColumn >= maxLevelColumns) {
@@ -121,7 +138,7 @@ public class LevelButtonHandler : MonoBehaviour
             // calculate position and offset spawn time
             Vector3 pos = new Vector3(((float)currentColumn - ((maxLevelColumns-1)/2f)) * columnSpacing, (currentRow-defaultRowBeginOffset) * -rowSpacing, 0);
             float timeUntilAppear = buttonIndex * timeBetweenButtonAppearances;
-            SpawnSingleLevelButton(levelSO,pos,timeUntilAppear);
+            SpawnSingleLevelButtonFromLevelStatsData(levelStatsData,pos,timeUntilAppear);
 
             // increment column and button index
             currentColumn++;
@@ -161,6 +178,7 @@ public class LevelButtonHandler : MonoBehaviour
 
     public void StartLoadLevelSequenceFromButton(LevelSelectButton levelButton) {
         levelToLoad = levelButton.levelSO;
+        levelDataToLoad = levelButton.levelStatsData;
         if (loadLevelSequenceCoroutine != null) {
             StopCoroutine(loadLevelSequenceCoroutine);
         }
@@ -184,7 +202,7 @@ public class LevelButtonHandler : MonoBehaviour
 
         // loading level
 
-        LevelHandler.Insance.LoadLevelScreenCovered(levelToLoad, screenCoverTime, screenUnCoverTime);
+        LevelHandler.Insance.LoadLevelScreenCovered(levelDataToLoad, screenCoverTime, screenUnCoverTime);
 
         loadLevelSequenceCoroutine = null;
 

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
@@ -19,10 +20,10 @@ public class DataSerializer : MonoBehaviour
     }
 
 
-    public void SaveData<T>(T data, string subPath, string fileName, string defaultExpression = defaultFileExtension) {
+    public void SaveData<T>(T data, string subPath, string fileName, string defaultExtension = defaultFileExtension) {
 
         // get full path and create directory if it doesn't exist
-        string fullPath = Path.Combine(Application.persistentDataPath, subPath, fileName + defaultExpression);
+        string fullPath = Path.Combine(Application.persistentDataPath, subPath, fileName + defaultExtension);
         Directory.CreateDirectory(Path.GetDirectoryName(fullPath));
 
         try {
@@ -42,10 +43,10 @@ public class DataSerializer : MonoBehaviour
     }
 
 
-    public LoadedData<T> LoadData<T>(string subPath, string fileName, string defaultExpression = defaultFileExtension) {
+    public LoadedData<T> LoadData<T>(string subPath, string fileName, string defaultExtension = defaultFileExtension) {
 
         // create full path on any os
-        string fullPath = Path.Combine(Application.persistentDataPath, subPath, fileName + defaultExpression);
+        string fullPath = Path.Combine(Application.persistentDataPath, subPath, fileName + defaultExtension);
 
         if (File.Exists(fullPath)) {
             try {
@@ -76,6 +77,24 @@ public class DataSerializer : MonoBehaviour
 
     }
 
+    public List<T> LoadDatasInDirectory<T>(string path, string requiredSuffix = "", string defaultExtension = defaultFileExtension) {
+        List<T> loadedDatas = new List<T>();
+
+        DirectoryInfo directoryInfo = new DirectoryInfo(Path.Combine(Application.persistentDataPath, path));
+        FileInfo[] files = directoryInfo.GetFiles("*" + requiredSuffix + defaultExtension);
+
+        foreach (FileInfo file in files) {
+            LoadedData<T> loadedData = LoadData<T>(path, file.Name.Replace(defaultExtension, ""));
+            if (loadedData.loadedSuccessfully) loadedDatas.Add(loadedData.data);
+        }
+
+        return loadedDatas;
+    }
+
+    public FileInfo[] GetFilesInDirectory(string path, string requiredSuffix = "", string defaultExtension = defaultFileExtension) {
+        DirectoryInfo directoryInfo = new DirectoryInfo(Path.Combine(Application.persistentDataPath, path));
+        return directoryInfo.GetFiles("*" + requiredSuffix + defaultExtension);
+    }
 }
 
 

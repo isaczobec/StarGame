@@ -8,6 +8,7 @@ public class LevelSelectButton : UIButton
 {
 
     public LevelSO levelSO {get; private set;}
+    public LevelStatsData levelStatsData {get; private set;}
 
 
     [SerializeField] private TMPro.TextMeshProUGUI levelNameText;
@@ -83,6 +84,28 @@ public class LevelSelectButton : UIButton
         // set the cycle offset
         buttonAnimator.SetFloat(cycleOffsetRef, Random.Range(0f, cycleOffsetRandomMax));
         
+    }
+
+    public void SetupButtonFromLevelStatsData(LevelStatsData levelStatsData) {
+
+        this.levelStatsData = levelStatsData;
+
+        // Instantiate material
+        buttonImage.material = new Material(buttonShader);
+        buttonImage.material.SetFloat(completedRef, levelStatsData.completed ? 1f : 0f);
+
+        // set the star color
+        if (levelStatsData.completed) {starImage.color = completedStarColor;}
+
+        // set the text
+        levelNameText.text = levelStatsData.levelName;
+        levelDifficultyText.text = levelStatsData.difficulty; // placeholder
+        authorText.text = levelStatsData.author; // placeholder
+        secondsPlayedText.text = ParseSeconds(levelStatsData.secondsPlayed);
+        timesDiedText.text = levelStatsData.timesDied.ToString();
+
+        // set the cycle offset
+        buttonAnimator.SetFloat(cycleOffsetRef, Random.Range(0f, cycleOffsetRandomMax));
     }
 
     /// <summary>

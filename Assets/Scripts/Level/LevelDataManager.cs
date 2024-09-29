@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
@@ -12,10 +13,11 @@ public class LevelDataManager {
     private string levelDataSubPath = "";
     private string defaultFileExtension = ".json";
 
-    private const string LEVEL_DATA_SUB_PATH_DEFAULT = "LevelData";
-    private const string DEFAULT_FILE_EXTENSION_DEFAULT = ".json";
+    public const string LEVEL_DATA_SUB_PATH_DEFAULT = "LevelData";
+    public const string EDITOR_LEVEL_DATA_SUB_PATH_DEFAULT = "LevelEditorData";
+    public const string DEFAULT_FILE_EXTENSION_DEFAULT = ".json";
 
-    private const string LEVEL_STATS_DATA_DEFAULT_SUFFIX = "STATS";
+    public const string LEVEL_STATS_DATA_DEFAULT_SUFFIX = "STATS";
 
     /// <summary>
     /// The current level data that is being tracked.
@@ -38,10 +40,10 @@ public class LevelDataManager {
     /// Starts tracking the players stats to the levelData.
     /// </summary>
     /// <param name="levelData"></param>
-    public void StartTrackingLevelData(LevelSO levelSO, float timeSinceStartup) {
-        Debug.Log("levelSO : " + levelSO);
-        Debug.Log("levelSO.levelData : " + levelSO.levelData);
-        currentLevelData = levelSO.levelData;
+    public void StartTrackingLevelData(LevelStatsData levelStatsData, float timeSinceStartup) {
+        Debug.Log("level : " + levelStatsData.levelName);
+        Debug.Log("levelSO.levelData : " + levelStatsData);
+        currentLevelData = levelStatsData;
         timeSinceStartupWhenLevelStarted = timeSinceStartup;
     }
 
@@ -73,7 +75,7 @@ public class LevelDataManager {
         timeSinceStartupWhenLevelStarted = timeSinceStartup; // reset time
 
         // Save level data
-        DataSerializer.Instance.SaveData(levelSO.levelData, levelDataSubPath, levelSO.levelID + LEVEL_STATS_DATA_DEFAULT_SUFFIX);
+        DataSerializer.Instance.SaveData(currentLevelData, levelDataSubPath, currentLevelData.levelID + LEVEL_STATS_DATA_DEFAULT_SUFFIX);
 
     }
 
@@ -91,13 +93,39 @@ public class LevelDataManager {
         if (!loadedLevelData.didExist) {
             // did not exist, create new level data if it doesn't exist and save it to a file
             if (createIfNotExists) {
-                levelSO.levelData = new LevelStatsData();
+                levelSO.levelData = new LevelStatsData(levelSO.levelName);
                 DataSerializer.Instance.SaveData(levelSO.levelData, levelDataSubPath, levelSO.levelID);
             }
         } else {
             levelSO.levelData = loadedLevelData.data; // succesful, set the levelData to the levelSO
         }
 
+    }
+
+    /// <summary>
+    /// gets a list of all LevelStatsData from files in the levelDataSubPath directory.
+    /// </summary>
+    public List<LevelStatsData> GetLevelDataList(bool compareToLevelEditorData = true) {
+
+        List<LevelStatsData> levelStatsDatas =  DataSerializer.Instance.LoadDatasInDirectory<LevelStatsData>(levelDataSubPath, LEVEL_STATS_DATA_DEFAULT_SUFFIX, defaultFileExtension);
+        if (compareToLevelEditorData) {
+
+            FileInfo[] editorLevelDataFiles = DataSerializer.Instance.GetFilesInDirectory(EDITOR_LEVEL_DATA_SUB_PATH_DEFAULT, "", defaultFileExtension);
+            
+            foreach (LevelStatsData statsData in levelStatsDatas) {
+                bool found = false;
+                foreach (FileInfo fileInfo in editorLevelDataFiles) {
+                    if (fileInfo.Name.Contains(statsData.levelID)) {
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    levelStatsDatas.Remove(statsData);
+                }
+            }
+        }
+        return levelStatsDatas;
     }
 
 }

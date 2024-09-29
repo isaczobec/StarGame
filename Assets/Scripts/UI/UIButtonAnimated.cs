@@ -116,6 +116,7 @@ public class UIButtonAnimated : UIButton {
     /// </summary>
     private void ChangeButtonVisualsVisible(bool visible, float speedMultiplier = 1f) {
         buttonAnimator.SetFloat(appearSpeedRef, speedMultiplier);
+        
         if (visible) {
             buttonAnimator.SetTrigger(appearRef);
         } else {
@@ -136,6 +137,7 @@ public class UIButtonAnimated : UIButton {
     /// </summary>
     /// <param name="timeUntilAppearStart"></param>
     public void ChangeVisible(bool visible, float timeUntilStart = 0f, float speedMultiplier = 1f) {
+        if (buttonShader != null) buttonImage.material.SetFloat(isHoveredRef, 0f); // always reset the hover shader
         if (isVisible == visible) return;
         if (appearCoroutine != null) {
             StopCoroutine(appearCoroutine);

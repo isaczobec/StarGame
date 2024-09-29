@@ -22,7 +22,9 @@ public class LevelHandler : MonoBehaviour
     public bool isCurrentlyLoadingLevel { get; private set; } = false;
     public bool isCurrentlyReturningToMenu { get; private set; } = false;
     public LevelSO levelToLoad { get; private set; }
+    public LevelStatsData levelDataToLoad { get; private set; }
     public LevelSO currentLevel { get; private set; }
+    public LevelStatsData currentLevelData { get; private set; }
     [Header("Settings")]
     [SerializeField] private float screenUnCoverTime = 0.3f;
     [SerializeField] private float musicFadeOutTime = 0.5f;
@@ -77,14 +79,23 @@ public class LevelHandler : MonoBehaviour
         
     }
 
-    public void UnloadLevel(LevelSO levelSO)
+    public void DestroyDontDestroyOnLoadObjects()
     {
-        Debug.Log("Unloading level: " + levelSO.name);
-        SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
-        SceneManager.UnloadSceneAsync(levelSO.loadLevelIDInstead? editorLevelLoadSceneName : levelSO.sceneToLoadRefString);
+        foreach (GameObject obj in dontDestroyOnLoadObjects)
+        {
+            Destroy(obj);
+        }
     }
 
-    public void LoadLevelScreenCovered(LevelSO levelToLoad, float screenCoverTime, float screenUnCoverTime)
+
+    public void UnloadLevel()
+    {
+        Debug.Log("Unloading level: " + currentLevelData.levelName);
+        SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
+        SceneManager.UnloadSceneAsync(editorLevelLoadSceneName);
+    }
+
+    public void LoadLevelScreenCovered(LevelStatsData levelDataToLoad, float screenCoverTime, float screenUnCoverTime)
     {
         if (isCurrentlyLoadingLevel)
         {
@@ -92,7 +103,7 @@ public class LevelHandler : MonoBehaviour
             return;
         }
 
-        this.levelToLoad = levelToLoad;
+        this.levelDataToLoad = levelDataToLoad;
         isCurrentlyLoadingLevel = true;
         this.screenUnCoverTime = screenUnCoverTime;
 
@@ -105,14 +116,11 @@ public class LevelHandler : MonoBehaviour
 
         isCurrentlyLoadingLevel = true;
 
-        // load level
-            LoadLevel(levelToLoad);
-            yield return new WaitForSeconds(0.1f); // wait for scene to load
-
-            if (levelToLoad.loadLevelIDInstead) {
-                EditorLevelDataLoader.instance.LoadToPlayableLevel(levelToLoad.levelID);
-                yield return new WaitForSeconds(0.05f); // wait for scene to load
-            }
+        // load level loader scene and the level
+        SceneManager.LoadScene(editorLevelLoadSceneName);
+        yield return new WaitForSeconds(0.05f); // wait for scene to load
+        EditorLevelDataLoader.instance.LoadToPlayableLevel(levelDataToLoad.levelID);
+        yield return new WaitForSeconds(0.05f); // wait for scene to load
 
         isCurrentlyLoadingLevel = false;
 
@@ -121,14 +129,16 @@ public class LevelHandler : MonoBehaviour
 
             // set variables
             isCurrentlyLoadingLevel = false;
+            currentLevelData = levelDataToLoad;
             currentLevel = levelToLoad;
+            levelDataToLoad = null;
             levelToLoad = null;
 
             // start tracking the level Data
-            levelDataManager.StartTrackingLevelData(currentLevel, Time.time);
+            levelDataManager.StartTrackingLevelData(currentLevelData, Time.time);
 
             // play music
-            MusicManager.insance.PlaySong(currentLevel.levelSong);
+            // MusicManager.insance.PlaySong(currentLevel.levelSong);
 
 
             // invoke event
@@ -160,8 +170,9 @@ public class LevelHandler : MonoBehaviour
 
 
             // unload level
-            UnloadLevel(currentLevel);
+            UnloadLevel();
             currentLevel = null;
+            currentLevelData = null;
 
             // create a new spawn point for the menu
             Instantiate(menuSpawnPointPrefab, Vector3.zero, Quaternion.identity, transform); // create a new spawn point for the menu
@@ -197,7 +208,7 @@ public class LevelHandler : MonoBehaviour
             return;
         }
     
-        if (currentLevel == null) {
+        if (currentLevelData == null) {
             Debug.LogWarning("No current level to return from");
             return;
         }

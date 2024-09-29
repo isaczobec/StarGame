@@ -24,7 +24,7 @@ public class LevelEditorDataManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (isInEditorMode) LoadDataToEditor("TesteditorLevelID");
+        if (isInEditorMode) LoadDataToEditor(LevelEditorMenuHandler.Instance.levelStatsDataToEdit.levelID);
     }
 
     // Update is called once per frame
