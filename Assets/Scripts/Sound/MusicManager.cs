@@ -20,6 +20,12 @@ public class MusicManager : MonoBehaviour {
 
     private List<SongAndAudioSource> songAndAudioSources = new List<SongAndAudioSource>();
 
+    [Header("Song Scriptable Objects")]
+    /// <summary>
+    /// All the song scriptable objects in the game.
+    /// </summary>
+    [SerializeField] private SongSO[] songSOs;
+
 
     private void Awake()
     {
@@ -72,6 +78,16 @@ public class MusicManager : MonoBehaviour {
         }
     }
 
+    /// <summary>
+    /// Plays a song from an ID if it is not already playing.
+    /// </summary>
+    /// <param name="song"></param>
+    public void PlaySong(string songID,bool stopOthers = true) {
+        SongSO song = GetSongSOFromID(songID);
+        if (song != null) {
+            PlaySong(song,stopOthers);
+        }
+    }
 
     public void StopSong(SongSO song, float fadeOutTime) {
         FadeToVolume(song, 0f, fadeOutTime, destroyAudioSourceObjectOnFadeOut: true);
@@ -138,6 +154,21 @@ public class MusicManager : MonoBehaviour {
         Destroy(songAndAudioSource.audioSource);
         songAndAudioSources.Remove(songAndAudioSource);
     }
+
+    /// <summary>
+    /// Get the SongSO from the songID. Returns null if not found.
+    /// </summary>
+    /// <param name="songID"></param>
+    /// <returns></returns>
+    private SongSO GetSongSOFromID(string songID) {
+        for (int i = 0; i < songSOs.Length; i++) {
+            if (songSOs[i].songID == songID) {
+                return songSOs[i];
+            }
+        }
+        return null;
+    }
+
 
 }
 

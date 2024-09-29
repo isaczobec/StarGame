@@ -7,6 +7,9 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+/// <summary>
+/// Handles the level editor menu. Creating, saving and loading levels. Also handles the transition to the level editor scene.
+/// </summary>
 public class LevelEditorMenuHandler : MonoBehaviour
 {
 

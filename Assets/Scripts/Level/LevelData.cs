@@ -14,6 +14,7 @@ public class LevelStatsData {
     public bool completed = false;
     public string difficulty = "Normal";
     public string author = "John Doe";
+    public string songID = "DefaultLevelSong";
 
     public LevelStatsData(string levelName) {
         this.levelName = levelName;

@@ -17,6 +17,7 @@ public class DefaultPlayerColors: MonoBehaviour
 
     void Awake()
     {
+        if (defaultColorsDict.Count > 0) return;
         defaultColorsDict.Add(PlayerGameModeState.Normal, normalColor);
         defaultColorsDict.Add(PlayerGameModeState.Zap, zapColor);
         defaultColorsDict.Add(PlayerGameModeState.Glide, glideColor);

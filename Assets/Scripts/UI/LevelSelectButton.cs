@@ -99,8 +99,8 @@ public class LevelSelectButton : UIButton
 
         // set the text
         levelNameText.text = levelStatsData.levelName;
-        levelDifficultyText.text = levelStatsData.difficulty; // placeholder
-        authorText.text = levelStatsData.author; // placeholder
+        levelDifficultyText.text = levelStatsData.difficulty; 
+        authorText.text = levelStatsData.author;
         secondsPlayedText.text = ParseSeconds(levelStatsData.secondsPlayed);
         timesDiedText.text = levelStatsData.timesDied.ToString();
 

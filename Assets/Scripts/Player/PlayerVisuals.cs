@@ -190,6 +190,7 @@ public class PlayerVisuals : MonoBehaviour
     {
         PlayerCameraZoomEffect.Instance.PlayZoomEffect(PlayerCameraZoomEffect.Instance.deathZoomCurve, deathZoomMultiplier, deathZoomDuration);
         SetPlayerVisible(false); // make the player invisible on death
+        playerRingVFX.SpawnRingVFX(Color.red);
     }
     private void Player_OnPlayerSpawn(object sender, EventArgs e)
     {
