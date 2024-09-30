@@ -56,7 +56,12 @@ public class EditorObjectData {
     public T GetSetting<T>(string settingName) {
         foreach (EditorObjectSetting setting in settings) {
             if (setting.settingName == settingName) {
-                return (T)Convert.ChangeType(setting.value, typeof(T));
+                try {
+                    return (T)Convert.ChangeType(setting.value, typeof(T));
+                } catch (Exception e) {
+                    Debug.LogWarning("Could not convert setting value to type " + typeof(T) + " with value " + setting.value);
+                    return default;
+                }
             }
         }
         return default;
@@ -118,4 +123,5 @@ public enum SettingValueType {
     FLOAT,
     VECTOR2,
     BOOL,
+    COLOR
 }

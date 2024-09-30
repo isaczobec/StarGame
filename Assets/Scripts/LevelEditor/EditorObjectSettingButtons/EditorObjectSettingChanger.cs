@@ -18,6 +18,7 @@ public class EditorObjectSettingChanger : MonoBehaviour
     [SerializeField] private GameObject intSettingButtonPrefab;
     [SerializeField] private GameObject vector2SettingButtonPrefab;
     [SerializeField] private GameObject boolSettingButtonPrefab;
+    [SerializeField] private GameObject colorSettingButtonPrefab;
 
     [Header("settings")]
     [SerializeField] private Vector2 baseOffsetFromObject;
@@ -41,6 +42,7 @@ public class EditorObjectSettingChanger : MonoBehaviour
         settingButtonPrefabsDict.Add(SettingValueType.INT, intSettingButtonPrefab);
         settingButtonPrefabsDict.Add(SettingValueType.VECTOR2, vector2SettingButtonPrefab);
         settingButtonPrefabsDict.Add(SettingValueType.BOOL, boolSettingButtonPrefab);
+        settingButtonPrefabsDict.Add(SettingValueType.COLOR, colorSettingButtonPrefab);
     
         LevelEditorObjectManager.instance.OnLevelEditorObjectsSelected += OnLevelEditorObjectsSelected;
     }

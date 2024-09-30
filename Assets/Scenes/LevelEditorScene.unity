@@ -991,6 +991,7 @@ MonoBehaviour:
   intSettingButtonPrefab: {fileID: 6525645121491202422, guid: b0975b31b13aa9d4998016655e7f4489, type: 3}
   vector2SettingButtonPrefab: {fileID: 0}
   boolSettingButtonPrefab: {fileID: 6525645121491202422, guid: bbdd5e59577ef8e4a84c11e653d29c2d, type: 3}
+  colorSettingButtonPrefab: {fileID: 6525645121491202422, guid: 03248c6c45fb1184f950b93a4497c02e, type: 3}
   baseOffsetFromObject: {x: 200, y: 0}
   offsetBetweenButtons: {x: 0, y: -50}
 --- !u!1001 &384861238
