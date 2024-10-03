@@ -209,6 +209,8 @@ MonoBehaviour:
     - {fileID: 4367747660681718687, guid: 0b0112eb8cc13d946a96eac81ab37b91, type: 3}
     - {fileID: 4367747660681718687, guid: 11813cff5a45afa4c89c436bf52b1c74, type: 3}
     - {fileID: 3895829853608035045, guid: b8bcb07de270b564dbcdf81e8324f5e4, type: 3}
+    - {fileID: 2591074933963408455, guid: 2f75d8321688e3a42ae259861a684d92, type: 3}
+    - {fileID: 2591074933963408455, guid: c999244f5eff9f4498fe7146b919e995, type: 3}
   - categoryName: EffectorsCool
     objectsInCategoryPrefabs:
     - {fileID: 4367747660681718687, guid: ecd2316318a78dc4086fd9ecae7897f3, type: 3}
