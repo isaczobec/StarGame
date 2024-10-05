@@ -308,13 +308,13 @@ MonoBehaviour:
     scale: {x: 0, y: 0}
     settings:
     - settingName: Color 1
-      value: 
+      value: 16711680
       increment: 0
       min: 0
       max: 0
       valueType: 4
     - settingName: Color 2
-      value: 
+      value: 16711680
       increment: 0
       min: 0
       max: 0

@@ -1171,10 +1171,15 @@ MonoBehaviour:
   hueSlider: {fileID: 6551337193378291453}
   hueButton: {fileID: 2212540945189683366}
   saturationSlider: {fileID: 8101930139092381189}
+  saturationImage: {fileID: 6943763031509139065}
   saturationButton: {fileID: 6568542719962516909}
   valueSlider: {fileID: 204710301054437017}
+  valueImage: {fileID: 9066068015821667892}
   valueButton: {fileID: 7645997824370101329}
   colorImage: {fileID: 6588812897714741616}
+  saturationShader: {fileID: -6465566751694194690, guid: 064784be651356e4a977c396d5033e8a, type: 3}
+  valueShader: {fileID: -6465566751694194690, guid: 28648132f4e0f364589086052faca27f, type: 3}
+  colorSettingName: _Color
 --- !u!1 &7199367461905195125
 GameObject:
   m_ObjectHideFlags: 0
