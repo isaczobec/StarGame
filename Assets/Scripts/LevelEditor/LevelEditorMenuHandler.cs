@@ -116,6 +116,7 @@ public class LevelEditorMenuHandler : MonoBehaviour
         EditorLevelData editorLevelData = new EditorLevelData {
             editorLevelID = levelStatsData.levelID
         };
+        Debug.Log("editorLevelData.editorLevelID: " + editorLevelData.editorObjectDatas.Count);
         DataSerializer.Instance.SaveData(editorLevelData, LevelDataManager.EDITOR_LEVEL_DATA_SUB_PATH_DEFAULT, editorLevelData.editorLevelID);
 
         // create a new level editor menu entry
@@ -128,6 +129,7 @@ public class LevelEditorMenuHandler : MonoBehaviour
         HideMenu();
         LevelHandler.Insance.DestroyDontDestroyOnLoadObjects();
         DontDestroyOnLoad(gameObject); // save this object for the level editor scene
+        MusicManager.insance.StopAllMusic(0.5f);
         SceneManager.LoadScene(LEVEL_EDITOR_SCENE_REF);
         
     }

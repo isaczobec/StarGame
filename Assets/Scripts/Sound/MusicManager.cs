@@ -14,6 +14,7 @@ public class MusicManager : MonoBehaviour {
     [Header("Settings")]
 
     [SerializeField] private float baseFadeTime = 0.5f;
+    [SerializeField] private bool autoPlayMenuMusic = true;
 
     // mixer settings
     private AudioMixerGroup musicGroup;
@@ -44,7 +45,7 @@ public class MusicManager : MonoBehaviour {
     private void Start()
     {
         musicGroup = MainMixer.instance.GetMusicGroup();
-        PlaySong(menuSong);
+        if (autoPlayMenuMusic) PlaySong(menuSong);
     }
 
 
@@ -63,7 +64,6 @@ public class MusicManager : MonoBehaviour {
     /// <param name="song"></param>
     public void PlaySong(SongSO song, bool stopOthers = true) {
         SongAndAudioSource songAndAudioSource = TryGetSongAndAudioSource(song);
-        if (songAndAudioSource == null) {
 
             if (stopOthers) {
                 foreach (var item in songAndAudioSources) {
@@ -71,11 +71,10 @@ public class MusicManager : MonoBehaviour {
                 }
             }
 
-            CreateSongAndAudioSource(song);
+            if (songAndAudioSource == null) CreateSongAndAudioSource(song);
             songAndAudioSource = TryGetSongAndAudioSource(song);
             songAndAudioSource.audioSource.Play();
 
-        }
     }
 
     /// <summary>

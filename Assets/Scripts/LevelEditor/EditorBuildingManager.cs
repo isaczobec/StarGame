@@ -28,6 +28,17 @@ public class EditorBuildingManager : MonoBehaviour
     [SerializeField] private LevelEditorObjectPanel levelEditorObjectPanel;
     [SerializeField] private TilePanel tilePanel;
 
+    /// <summary>
+    /// Can be set by other classes to block the player from placing objects.
+    /// </summary>
+    private bool externalBlockingPlacing = false; 
+    /// <summary>
+    /// Blocks or unblocks the player from placing objects.
+    /// </summary>
+    /// <param name="value"></param>
+    public void SetExternalBlockingPlacing(bool value) {
+        externalBlockingPlacing = value;
+    }
 
 
     private List<UIButton> toolButtons = new List<UIButton>();
@@ -115,7 +126,7 @@ public class EditorBuildingManager : MonoBehaviour
     {
 
         // if hovering ui, return
-        if (isHoveringUI) return;
+        if (isHoveringUI || externalBlockingPlacing) return;
 
         // if is placing, try to place or delete object
         if (LevelEditorInputManager.instance.GetPlayerIsPlacing())
@@ -140,7 +151,7 @@ public class EditorBuildingManager : MonoBehaviour
     {
 
         // if hovering ui, return
-        if (isHoveringUI) return;
+        if (isHoveringUI || externalBlockingPlacing) return;
 
         if (editorMode == EditorMode.BuildMode) {
             LevelEditorObjectManager.instance.TryPlaceEditorObject(GetMouseWorldPosition(), setSelectedByDefault: true, deselectOtherObjects: !LevelEditorInputManager.instance.GetShiftButtonPressed());

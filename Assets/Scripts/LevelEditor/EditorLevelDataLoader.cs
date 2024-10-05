@@ -18,6 +18,11 @@ public class EditorLevelDataLoader : MonoBehaviour
 
     public static EditorLevelDataLoader instance {get; private set;}
 
+    /// <summary>
+    /// The editor level data that was loaded the most recently.
+    /// </summary>
+    public EditorLevelData currentEditorLevelData {get; private set;}
+
     private void Awake() {
         instance = this;
     }
@@ -36,6 +41,9 @@ public class EditorLevelDataLoader : MonoBehaviour
 
             // spawn the objects
             LoadSpawnableLevelObjects(editorLevelData);
+
+            // set the current editor level data
+            currentEditorLevelData = editorLevelData;
         }
 
     }

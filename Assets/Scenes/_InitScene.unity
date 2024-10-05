@@ -7487,8 +7487,10 @@ MonoBehaviour:
   audioName: testMusic
   menuSong: {fileID: 11400000, guid: 990b093c60cdb45438f85ac1efe8e48d, type: 2}
   baseFadeTime: 0.4
+  autoPlayMenuMusic: 1
   songSOs:
   - {fileID: 11400000, guid: 929b30488e8d541459919bb344f1dd29, type: 2}
+  - {fileID: 11400000, guid: 990b093c60cdb45438f85ac1efe8e48d, type: 2}
 --- !u!4 &1982102647
 Transform:
   m_ObjectHideFlags: 0

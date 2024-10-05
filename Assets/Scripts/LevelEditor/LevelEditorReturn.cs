@@ -21,5 +21,6 @@ public class LevelEditorReturn : MonoBehaviour
     public void SaveAndExitToMainMenu() {
         LevelEditorDataManager.instance.SaveData();
         SceneManager.LoadScene(MAIN_MENU_SCENE_REF);
+        MusicManager.insance.PlayMenuMusic();
     }
 }

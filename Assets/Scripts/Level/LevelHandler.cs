@@ -138,7 +138,7 @@ public class LevelHandler : MonoBehaviour
             levelDataManager.StartTrackingLevelData(currentLevelData, Time.time);
 
             // play music
-            MusicManager.insance.PlaySong(currentLevelData.songID);
+            MusicManager.insance.PlaySong(EditorLevelDataLoader.instance.currentEditorLevelData.songID);
 
 
             // invoke event
