@@ -322,7 +322,7 @@ MonoBehaviour:
     - settingName: Transition Time
       value: 0.1
       increment: 0.1
-      min: 0
+      min: 0.1
       max: 5
       valueType: 1
     editorObjectNodes: []

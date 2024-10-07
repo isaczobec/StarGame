@@ -122,7 +122,6 @@ public class LevelButtonHandler : MonoBehaviour
 
     private void SpawnLevelButtons(List<LevelStatsData> levelStatsDatas) {
 
-
         int currentColumn = 0;
         int currentRow = 0;
         int buttonIndex = 0;

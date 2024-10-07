@@ -100,5 +100,6 @@ public class BulletHellSpawner : MonoBehaviour, ISpawnFromEditorObjectData {
         // copy bullet settings
         bulletDirection.x = editorObjectData.GetSetting<float>("Bullet Speed X"); // set the start trigger index
         bulletDirection.y = editorObjectData.GetSetting<float>("Bullet Speed Y"); // set the start trigger index
+        timeBetweenBullets = MathF.Max(editorObjectData.GetSetting<float>("Fire Rate"),0.1f); // set the fire rate
     }
 }
