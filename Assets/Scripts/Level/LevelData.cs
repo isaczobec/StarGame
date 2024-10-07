@@ -16,6 +16,8 @@ public class LevelStatsData {
     public string author = "John Doe";
     public string songID = "DefaultLevelSong";
 
+    public bool isMainLevel = false;
+
     public LevelStatsData(string levelName) {
         this.levelName = levelName;
         this.levelID = Guid.NewGuid().ToString();

@@ -67,6 +67,7 @@ public class LevelEditorMenuHandler : MonoBehaviour
         List<LevelStatsData> levelStatsDatas = LevelHandler.Insance.levelDataManager.GetLevelDataList();
         for (int i = 0; i < levelStatsDatas.Count; i++)
         {
+            if (levelStatsDatas[i].isMainLevel) continue; // dont allow editing of main levels
             LevelStatsData levelStatsData = levelStatsDatas[i];
             CreateLevelEditorMenuEntry(i, levelStatsData);
         }
