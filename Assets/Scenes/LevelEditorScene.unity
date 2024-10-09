@@ -538,7 +538,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mainLevelSOs:
   - {fileID: 11400000, guid: e144e199a9b340249a98f8c7afa93196, type: 2}
-  currentMainLevelSO: {fileID: 11400000, guid: e144e199a9b340249a98f8c7afa93196, type: 2}
+  currentMainLevelSO: {fileID: 11400000, guid: 6f5517666629ab94fabd5003ebbe7bbc, type: 2}
   isInEditorMode: 1
   saveButton: {fileID: 270128840}
 --- !u!4 &134995830
@@ -1200,7 +1200,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 764806548285447064, guid: 6b463c79441dfcc42af23cedf4ee5f03, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
