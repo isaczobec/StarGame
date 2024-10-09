@@ -71,7 +71,7 @@ MonoBehaviour:
   maxNodeAmount: 8
   nodeLineRenderer: {fileID: 0}
   offsetWhenPlace: {x: 0, y: -1.1}
-  sprite: {fileID: 1845046013, guid: 77e5639beb5c8ed4eb88a60a7080a8bf, type: 3}
+  sprite: {fileID: 1677247559, guid: 7257c589f95d42848bce5cd63c239ed0, type: 3}
 --- !u!61 &290618701402807438
 BoxCollider2D:
   m_ObjectHideFlags: 0

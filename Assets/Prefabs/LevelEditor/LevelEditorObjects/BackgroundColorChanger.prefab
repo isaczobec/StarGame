@@ -344,7 +344,7 @@ MonoBehaviour:
   maxNodeAmount: 8
   nodeLineRenderer: {fileID: 0}
   offsetWhenPlace: {x: 0, y: 0}
-  sprite: {fileID: 21300000, guid: 62d29fa01614a384b9d2ff8290de0e20, type: 3}
+  sprite: {fileID: 944085903, guid: 7257c589f95d42848bce5cd63c239ed0, type: 3}
   color1SpriteRenderer: {fileID: 5432093589760704563}
   color2SpriteRenderer: {fileID: 6422004405503489267}
 --- !u!61 &8264050856953350116

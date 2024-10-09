@@ -62,6 +62,7 @@ MonoBehaviour:
   maxScale: {x: 1, y: 1}
   minRotationIncrement: 360
   minPositionIncrement: 0
+  halfStepGridOffset: 0
   minScaleIncrement: 0
   shiftAddedAngleIncrementing: 360
   shiftAddedPositionIncrementing: 1
@@ -71,7 +72,7 @@ MonoBehaviour:
   maxNodeAmount: 8
   nodeLineRenderer: {fileID: 0}
   offsetWhenPlace: {x: 0, y: 0}
-  sprite: {fileID: 21300000, guid: 6243be51f5d783b4dadac400f73f753c, type: 3}
+  sprite: {fileID: 947246557, guid: 7257c589f95d42848bce5cd63c239ed0, type: 3}
 --- !u!58 &2431953682064858199
 CircleCollider2D:
   m_ObjectHideFlags: 0
