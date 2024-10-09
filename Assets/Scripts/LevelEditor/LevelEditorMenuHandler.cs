@@ -22,6 +22,7 @@ public class LevelEditorMenuHandler : MonoBehaviour
     [SerializeField] private TMP_InputField levelNameInputField;
     [SerializeField] private UIButtonAnimated createLevelButton;
     [SerializeField] private UIButtonAnimated returnToMenuButton;
+    [SerializeField] private UIButtonAnimated gameTitleButton;
 
     [SerializeField] private GameObject levelEditorMenuEnrtyPrefab;
 
@@ -51,6 +52,7 @@ public class LevelEditorMenuHandler : MonoBehaviour
     public void ShowMenu() {
         createLevelButton.ChangeVisible(true);
         returnToMenuButton.ChangeVisible(true);
+        gameTitleButton.ChangeVisible(false);
         levelNameInputField.transform.localScale = new Vector3(1, 1, 1);
         CreateLevelEditorMenuEntries();
     }
@@ -58,6 +60,7 @@ public class LevelEditorMenuHandler : MonoBehaviour
     public void HideMenu() {
         createLevelButton.ChangeVisible(false);
         returnToMenuButton.ChangeVisible(false);
+        gameTitleButton.ChangeVisible(true);
         levelNameInputField.transform.localScale = new Vector3(0, 0, 0);
         ClearAndDestroyLevelEditorMenuEntries();
     }

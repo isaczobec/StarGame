@@ -26,6 +26,8 @@ public class BulletHellSpawner : MonoBehaviour, ISpawnFromEditorObjectData {
 
     private float timeSinceLastBullet = 0;
 
+    private List<BulletHellBullet> bullets = new List<BulletHellBullet>();
+
     private void Update() {
         if (isEmitting) {
             timeSinceLastBullet += Time.deltaTime;
@@ -68,6 +70,7 @@ public class BulletHellSpawner : MonoBehaviour, ISpawnFromEditorObjectData {
     private void OnPlayerDeath(object sender, PlayerDeathEventArgs e)
     {
         EndEmittingBullets();
+        DestroyAllBulletHellBullets();
     }
 
 
@@ -90,6 +93,7 @@ public class BulletHellSpawner : MonoBehaviour, ISpawnFromEditorObjectData {
         GameObject bullet = Instantiate(bulletHellPrefab, spawnPos, Quaternion.identity);
         BulletHellBullet bulletHellBullet = bullet.GetComponent<BulletHellBullet>();
         bulletHellBullet.SetSettings(bulletSpeed, bulletDirection,bulletLifeTime);
+        bullets.Add(bulletHellBullet);
     }
 
     public void CopyEditorObjectData(EditorObjectData editorObjectData)
@@ -101,5 +105,14 @@ public class BulletHellSpawner : MonoBehaviour, ISpawnFromEditorObjectData {
         bulletDirection.x = editorObjectData.GetSetting<float>("Bullet Speed X"); // set the start trigger index
         bulletDirection.y = editorObjectData.GetSetting<float>("Bullet Speed Y"); // set the start trigger index
         timeBetweenBullets = MathF.Max(editorObjectData.GetSetting<float>("Fire Rate"),0.1f); // set the fire rate
+    }
+
+    private void DestroyAllBulletHellBullets() {
+        foreach (BulletHellBullet bullet in bullets) {
+            if (bullet != null) {
+            Destroy(bullet.gameObject);
+            }
+        }
+        bullets.Clear();
     }
 }

@@ -20,8 +20,9 @@ public class GamemodeEffectorVisual : MonoBehaviour {
     private void Start() {
         // get and set the corresponding color of the effector
         color = DefaultPlayerColors.defaultColorsDict[gamemodeEffector.GetPlayerGameModeState()];
-        color.a = alpha;
-        spriteRenderer.color = color;
+        // no longer need to set the color as a material does this
+        // color.a = alpha;
+        // spriteRenderer.color = color;
         gamemodeEffector.OnEffectorTriggeredByPlayerEvent += GamemodeEffector_OnEffectorTriggeredByPlayerEvent;
     }
 

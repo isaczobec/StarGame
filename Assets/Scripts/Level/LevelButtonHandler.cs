@@ -25,6 +25,8 @@ public class LevelButtonHandler : MonoBehaviour
 
     [Header("Return to menu settings")]
     [SerializeField] private UIButtonAnimated returnToMenuButton;
+    [SerializeField] private UIButtonAnimated gameTitleButton;
+    
 
     [Header("Level load settings")]
     [SerializeField] private float timeBetweenButtonDisappearances = 0.03f;
@@ -98,6 +100,7 @@ public class LevelButtonHandler : MonoBehaviour
     /// </summary>
     public void DisplayLevelButtons() {
         returnToMenuButton.ChangeVisible(true);
+        gameTitleButton.ChangeVisible(false);
         levelSelectActive = true;
         levelStatDatasToDisplay = LevelHandler.Insance.levelDataManager.GetLevelDataList();
         SpawnLevelButtons(levelStatDatasToDisplay);
@@ -108,6 +111,7 @@ public class LevelButtonHandler : MonoBehaviour
     /// </summary>
     public void HideLevelButtons() {
         returnToMenuButton.ChangeVisible(false);
+        gameTitleButton.ChangeVisible(true);
         levelSelectActive = false;
         DestroyCurrentButtons();
     }

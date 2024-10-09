@@ -175,8 +175,24 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8777549553312162504, guid: 38920fc7e8f5ce74c85275f2b5503edc, type: 3}
       propertyPath: m_Color.a
-      value: 0.22745098
+      value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8777549553312162504, guid: 38920fc7e8f5ce74c85275f2b5503edc, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8777549553312162504, guid: 38920fc7e8f5ce74c85275f2b5503edc, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8777549553312162504, guid: 38920fc7e8f5ce74c85275f2b5503edc, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8777549553312162504, guid: 38920fc7e8f5ce74c85275f2b5503edc, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 240981af050d4f1409c2078d73e25be0, type: 2}
     m_RemovedComponents:
     - {fileID: 2495185829603460026, guid: 38920fc7e8f5ce74c85275f2b5503edc, type: 3}
     - {fileID: 7134258384820175700, guid: 38920fc7e8f5ce74c85275f2b5503edc, type: 3}
