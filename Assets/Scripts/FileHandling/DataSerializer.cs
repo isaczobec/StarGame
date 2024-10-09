@@ -77,11 +77,21 @@ public class DataSerializer : MonoBehaviour
 
     }
 
-    public List<T> LoadDatasInDirectory<T>(string path, string requiredSuffix = "", string defaultExtension = defaultFileExtension) {
+    public List<T> LoadDatasInDirectory<T>(string path, string requiredSuffix = "", string defaultExtension = defaultFileExtension, bool CreateDirectoryIfNotExists = true) {
         List<T> loadedDatas = new List<T>();
 
         DirectoryInfo directoryInfo = new DirectoryInfo(Path.Combine(Application.persistentDataPath, path));
-        FileInfo[] files = directoryInfo.GetFiles("*" + requiredSuffix + defaultExtension);
+        FileInfo[] files; 
+        try {
+            files = directoryInfo.GetFiles("*" + requiredSuffix + defaultExtension);
+        } catch {
+            if (CreateDirectoryIfNotExists) {
+                Directory.CreateDirectory(Path.Combine(Application.persistentDataPath, path));
+                files = directoryInfo.GetFiles("*" + requiredSuffix + defaultExtension);
+            } else {
+                return loadedDatas;
+            }
+        }
 
         foreach (FileInfo file in files) {
             LoadedData<T> loadedData = LoadData<T>(path, file.Name.Replace(defaultExtension, ""));
@@ -91,9 +101,18 @@ public class DataSerializer : MonoBehaviour
         return loadedDatas;
     }
 
-    public FileInfo[] GetFilesInDirectory(string path, string requiredSuffix = "", string defaultExtension = defaultFileExtension) {
+    public FileInfo[] GetFilesInDirectory(string path, string requiredSuffix = "", string defaultExtension = defaultFileExtension, bool CreateDirectoryIfNotExists = true) {
         DirectoryInfo directoryInfo = new DirectoryInfo(Path.Combine(Application.persistentDataPath, path));
-        return directoryInfo.GetFiles("*" + requiredSuffix + defaultExtension);
+        try {
+            return directoryInfo.GetFiles("*" + requiredSuffix + defaultExtension);
+        } catch {
+            if (CreateDirectoryIfNotExists) {
+                Directory.CreateDirectory(Path.Combine(Application.persistentDataPath, path));
+                return directoryInfo.GetFiles("*" + requiredSuffix + defaultExtension);
+            } else {
+                return new FileInfo[0];
+            }
+        }
     }
 }
 

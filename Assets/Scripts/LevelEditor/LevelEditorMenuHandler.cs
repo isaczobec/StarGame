@@ -1,11 +1,8 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 /// <summary>
 /// Handles the level editor menu. Creating, saving and loading levels. Also handles the transition to the level editor scene.

@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using UnityEditor.Timeline;
 using UnityEngine;
 
 public class BulletHellSpawner : MonoBehaviour, ISpawnFromEditorObjectData {
